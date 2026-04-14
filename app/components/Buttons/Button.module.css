@@ -1,0 +1,53 @@
+.Light {
+    background-color: var(--light-blue);
+    color: var(--black);
+}
+.Button.Light:hover {
+    background-color: var(--blue);
+    color: var(--white);
+}
+.Dark {
+    background-color: var(--blue);
+    color: var(--white);
+}
+.Button.Dark:hover {
+    background-color: var(--light-blue);
+    color: var(--black);
+}
+.Button, .HeaderButton {
+    padding: 5px 20px;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    font-size: var(--extra-large-font-size);
+    font-family: var(--font);
+    font-weight: var(--thin);
+    transition: 0.4s;
+}
+.HeaderButton {
+    border-radius: 0;
+    transition: none;
+    font-size: var(--huge-font-size);
+}
+.HeaderButton.Active {
+    pointer-events: none;
+}
+.HeaderButton.Profile {
+    padding: 5px;
+    width: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ScrollButton {
+    background-color: var(--transparent-white);
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+.ScrollButton:hover {
+    background-color: var(--transparent-white-hover);
+}

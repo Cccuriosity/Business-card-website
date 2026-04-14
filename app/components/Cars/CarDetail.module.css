@@ -1,0 +1,62 @@
+.Title {
+    font-size: var(--large-font-size);
+    font-weight: var(--light);
+    margin-bottom: 8px;
+}
+
+.Content {
+    display: flex;
+    gap: 16px;
+}
+
+.Photos {
+    width: 320px;
+}
+
+.Miniatures {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.Info {
+    font-size: var(--small-font-size);
+    width: 320px;
+}
+
+.Price {
+    font-size: var(--big-font-size);
+    font-weight: var(--medium);
+}
+
+.Row {
+    display: flex;
+    align-items: baseline;
+    font-size: var(--medium-font-size);
+    margin: 16px 0;
+}
+
+.Label {
+    color: var(--dark-gray);
+    font-weight: var(--light);
+}
+
+.Dots {
+    flex: 1;
+    border-bottom: 2px dotted var(--dark-gray);
+}
+
+.Value {
+    font-weight: var(--regular);
+}
+
+.SoldBar {
+    margin: 8px 0;
+    height: 1px;
+    background: var(--black);
+    width: 100%;
+}
+.Date {
+    font-size: var(--medium-font-size);
+    font-weight: var(--light);
+}

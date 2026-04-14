@@ -1,0 +1,28 @@
+.Banner {
+    display: flex;
+    font: var(--font);
+    font-weight: var(--light);
+    font-size: var(--big-font-size);
+    position: relative;
+    padding: 16px;
+    background: var(--blue);
+    color: var(--white);
+    border-radius: var(--border-radius);
+    gap: 16px;
+}
+.Close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    border: none;
+    outline: none;
+    background: var(--light-blue);
+    border-radius: 50%;
+    font-size: var(--big-font-size);
+    padding: 0;
+    width: 27px; /* ВРЕМЕННЫЙ КОСТЫЛЬ ПЕРЕПИСАТЬ */
+    cursor: pointer;
+}

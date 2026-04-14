@@ -1,0 +1,20 @@
+.ReviewForm {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--large-font-size);
+    font-weight: var(--light);
+    gap: 1rem;
+}
+.Star {
+    border: none;
+    background: none;
+    padding: 0;
+}
+.Stars {
+    display: flex;
+    gap: 0.5rem;
+}
+.ReviewForm > button:last-child {
+    align-self: flex-start;
+    width: auto;
+}

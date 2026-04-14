@@ -1,0 +1,19 @@
+.ReviewsPage {
+    padding: 6rem 2rem 2rem;
+    width: 100%;
+    height: calc(100vh);
+    box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.ReviewsList::-webkit-scrollbar {
+    display: none;
+}
+.ReviewsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

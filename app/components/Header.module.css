@@ -1,0 +1,19 @@
+.Header {
+    display: flex;
+    width: 100%;
+    background: var(--blue);
+    justify-content: space-between;
+    position: fixed;
+    height: 4rem;
+}
+.Buttons {
+    display: flex;
+}
+.Title {
+    font-size: var(--huge-font-size);
+    color: var(--white);
+    font-weight: var(--extra-light);
+    margin-bottom: auto;
+    margin-top: auto;
+    margin-left: 1rem;
+}

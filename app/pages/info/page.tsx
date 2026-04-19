@@ -1,3 +1,5 @@
+'use client'
+
 import Header from "@/app/components/Header";
 import styles from './InfoPage.module.css'
 import Button from "@/app/components/Buttons/Button";
@@ -6,8 +8,10 @@ import ConsultationForm from "@/app/components/ConsultationForm";
 import StatsBlock from "@/app/components/StatsBlock";
 import Review from "@/app/components/Review/Review";
 import Footer from "@/app/components/Footer";
+import { useRouter } from "next/navigation";
 
 export default function InfoPage() {
+    const router = useRouter();
     return (
         <>
             <Header/>
@@ -72,7 +76,7 @@ export default function InfoPage() {
                                 stars={3}
                                 review={"Ну чета ваще не эстетика конечно, я и лучше у конкурентов видел, а у вас чета не то"}
                                 date={"01.05.2026"}></Review>
-                        <Button variant={"Dark"}>Отзывы</Button>
+                        <Button variant={"Dark"} onClick={() => router.push("/pages/reviews")}>Отзывы ›</Button>
                     </div>
                 </div>
                 <ConsultationForm authorized={true}/>

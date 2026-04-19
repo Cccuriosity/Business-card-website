@@ -4,7 +4,7 @@
     box-sizing: border-box;
     font-weight: var(--light);
     font-size: var(--big-font-size);
-    gap: 8px;
+    gap: 0.5rem;
     background: var(--white);
     padding: 16px;
     border-radius: var(--border-radius);
@@ -15,6 +15,6 @@
 }
 .Status {
     display: flex;
-    gap: 8px; /** НЕ УВЕРЕН НАДО ПОДУМАТЬ */
+    gap: 0.5rem; /** НЕ УВЕРЕН НАДО ПОДУМАТЬ */
     justify-content: end;
 }

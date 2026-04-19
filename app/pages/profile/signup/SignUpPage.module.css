@@ -1,0 +1,26 @@
+.SignUpPage {
+    padding: 6rem 2rem 2rem;
+    width: 100%;
+    height: calc(100vh);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+.Menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.Menu Button {
+    align-self: center;
+}
+.Title {
+    font-size: var(--large-font-size);
+    font-weight: var(--light);
+    align-self: center;
+}
+.Row {
+    display: flex;
+    gap: 0.5rem;
+}

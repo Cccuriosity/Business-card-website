@@ -1,0 +1,69 @@
+.Container {
+    position: relative;
+    width: 100%;
+}
+
+.InputWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--white);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    box-sizing: border-box;
+}
+
+.Input {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    outline: none;
+    font: var(--font);
+    font-weight: var(--light);
+    font-size: var(--big-font-size);
+}
+
+.Arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.List {
+    background: var(--white);
+    position: absolute;
+    margin-top: 0.5rem;
+    width: 100%;
+    border-radius: var(--border-radius);
+    z-index: 1;
+    max-height: 350%;
+    overflow-y: auto;
+}
+.List::-webkit-scrollbar {
+    display: none;
+}
+.Item {
+    cursor: pointer;
+    font: var(--font);
+    font-weight: var(--light);
+    font-size: var(--medium-font-size);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+}
+
+.Item:hover {
+    background: var(--gray);
+}
+
+.Active {
+    background: var(--gray);
+}
+.Empty {
+    font: var(--font);
+    font-weight: var(--light);
+    font-size: var(--medium-font-size);
+    padding: 1rem;
+}

@@ -1,18 +1,14 @@
 'use client';
 
+import {useState} from 'react';
 import Image from "next/image";
-import CarRequest from './CarRequest';
-import ConsultationRequest from './ConsultationRequest';
+import Request from './Request';
 import Button from './Buttons/Button';
 import styles from './Profile.module.css';
+import Input from "@/app/components/Inputs/Input";
+import {useRouter} from "next/navigation";
 
-type carRequest = {
-    car: string;
-    date: string;
-    status: string;
-}
-
-type consultationRequest = {
+type ConsultationRequest = {
     callTime: string;
     car: string;
     comment?: string;
@@ -26,8 +22,7 @@ interface ProfileProps {
     lastName: string;
     email: string;
     phone: string;
-    carRequests?: carRequest[];
-    consultationRequests?: consultationRequest[];
+    consultationRequests?: ConsultationRequest[];
     onEditProfile?: () => void;
     onLogout?: () => void;
 }
@@ -39,57 +34,65 @@ export default function Profile({
                                     email,
                                     phone,
                                     consultationRequests,
-                                    carRequests
                                 }: ProfileProps) {
+    const router = useRouter();
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState({firstName, lastName, email, phone});
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData(prev => ({...prev, [e.target.name]: e.target.value}));
+    };
+
+    if (isEditing) {
+        return (
+            <div className={styles.Container}>
+                <div className={styles.Profile}>
+                    <div className={styles.LeftColumnEdit}>
+                        <div className={styles.ProfileIcon}>
+                            <Image src={avatar} alt="Аватар" width={200} height={200}/>
+                        </div>
+                        <a href={""} className={styles.Link}>Загрузить</a>
+                    </div>
+                    <div className={styles.RightColumn}>
+                        {['lastName', 'firstName', 'email', 'phone'].map((field) => (
+                            <div key={field} className={styles.FormItem}>
+                            <span className={styles.Label}>
+                                {field === 'lastName' ? 'Фамилия' : field === 'firstName' ? 'Имя' : field === 'email' ? 'Почта' : 'Телефон'}
+                            </span>
+                                <Input name={field} value={formData[field as keyof typeof formData]}
+                                       onChange={handleInputChange} type={"text"} placeholder={field}/>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <Button variant={"Dark"} onClick={() => setIsEditing(false)}>Сохринть изменения</Button>
+            </div>
+        );
+    }
+
     return (
         <div className={styles.Profile}>
             <div className={styles.LeftColumn}>
                 <div className={styles.ProfileIcon}>
-                    <Image src={avatar} alt="Аватар пользователя" width={200} height={200}/>
+                    <Image src={avatar} alt="Аватар" width={200} height={200}/>
                 </div>
-                <span className={styles.Content}>{lastName}{firstName}</span>
-                <div>
-                    <span className={styles.Label}>Почта</span>
-                    <span className={styles.Content}> {email}</span>
-                </div>
-                <div>
-                    <span className={styles.Label}>Телефон</span>
-                    <span className={styles.Content}> {phone}</span>
-                </div>
-                <Button variant={"Light"}>Редактировать профиль</Button>
+                <span className={styles.Content}>{lastName} {firstName}</span>
+                <div><span className={styles.Label}>Почта</span><span className={styles.Content}> {email}</span></div>
+                <div><span className={styles.Label}>Телефон</span><span className={styles.Content}> {phone}</span></div>
+                <Button variant={"Light"} onClick={() => setIsEditing(true)}>Редактировать профиль</Button>
             </div>
             <div className={styles.RightColumn}>
                 <span>Мои заявки</span>
                 <div className={styles.Requests}>
-                    {carRequests?.length ? (
-                        <div className={styles.CarRequests}>
-                            {carRequests.map((req, index) => (
-                                <CarRequest
-                                    key={`car-${index}`}
-                                    car={req.car}
-                                    date={req.date}
-                                    status={req.status}
-                                />
-                            ))}
-                        </div>
-                    ) : null}
-
                     {consultationRequests?.length ? (
-                        <div className={styles.ConsultationRequests}>
-                            {consultationRequests.map((req, index) => (
-                                <ConsultationRequest
-                                    key={`consult-${index}`}
-                                    callTime={req.callTime}
-                                    car={req.car}
-                                    comment={req.comment}
-                                    date={req.date}
-                                    status={req.status}
-                                />
-                            ))}
-                        </div>
-                    ) : null}
+                        consultationRequests.map((req, index) => (
+                            <Request key={index} {...req} />
+                        ))
+                    ) : (
+                        <span>У вас пока нет заявок на консультацию</span>
+                    )}
                 </div>
-                <Button variant={"Dark"}>Выйти</Button>
+                <Button variant={"Dark"} onClick={() => router.push("/pages/profile")}>Выйти</Button>
             </div>
         </div>
     );

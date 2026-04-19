@@ -1,36 +1,22 @@
-import Profile from "@/app/components/Profile";
+"use client"
 import Header from "@/app/components/Header";
-import styles from './ProfilePage.module.css'
+import styles from './WelcomePage.module.css'
+import Button from "@/app/components/Buttons/Button";
+import { useRouter } from "next/navigation";
 
-export default function ProfilePage() {
+export default function WelcomePage() {
+    const router = useRouter();
+
     return (
         <>
             <Header/>
-            <div className={styles.ProfilePage}>
-                <Profile
-                    avatar={"/ProfileWhite.png"}
-                    firstName={"Алексей"}
-                    lastName={"Смирнов"}
-                    email={"a.smirnov@example.com"}
-                    phone={"+7 (999) 123-45-67"}
-
-                    carRequests={[
-                        {car: 'BMW X5', date: '2026-04-10', status: 'В обработке'},
-                        {car: 'Kia K5', date: '2026-03-28', status: 'Завершено'}
-                    ]}
-                    consultationRequests={[
-                        {callTime: '14:30', car: 'Audi A4', date: '2026-04-15', status: 'Ожидает'},
-                        {
-                            callTime: '10:00',
-                            car: 'Toyota Camry',
-                            comment: 'Интересует кредит',
-                            date: '2026-04-12',
-                            status: 'Подтверждено'
-                        }
-                    ]}
-                />
+            <div className={styles.WelcomePage}>
+                <div className={styles.Menu}>
+                    <span className={styles.Title}>Добро пожаловать!</span>
+                    <Button variant={"Dark"} onClick={() => router.push("/pages/profile/signup")}>Зарегистрироваться</Button>
+                    <Button variant={"Light"} onClick={() => router.push("/pages/profile/signin")}>Войти</Button>
+                </div>
             </div>
-
         </>
     )
 }

@@ -8,7 +8,7 @@ interface ConsultationRequestProps {
     status: string;
 }
 
-export default function ConsultationRequest({callTime, car, comment, date, status}: ConsultationRequestProps) {
+export default function Request({callTime, car, comment, date, status}: ConsultationRequestProps) {
     return (
         <div className={styles.Request}>
             <span className={styles.Title}>Заявка на бесплатную консультацию</span>

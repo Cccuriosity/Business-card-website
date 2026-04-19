@@ -4,7 +4,6 @@
     padding: 16px;
     border-radius: var(--border-radius);
     background-color: white;
-    width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -12,7 +11,7 @@
 .User {
     display: flex;
     align-items: center;
-    font-size: var(--medium-font-size);
+    font-size: var(--big-font-size);
 }
 .Avatar {
     display: flex;
@@ -31,6 +30,7 @@
 }
 .Comment {
     margin-bottom: 8px;
+    font-size: var(--medium-font-size);
 }
 .Date {
     display: flex;

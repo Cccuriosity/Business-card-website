@@ -1,11 +1,16 @@
 .InfoPage {
-    padding: 6rem 2rem 2rem;
+    padding: 6rem 2rem 0;
     width: 100%;
-    height: calc(100vh);
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: none;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     gap: 2rem;
+}
+.InfoPage::-webkit-scrollbar {
+    display: none;
 }
 .Title {
     font-size: var(--huge-font-size);
@@ -57,8 +62,9 @@
     margin: 0;
 }
 .Reviews {
-    display: flex;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 1rem;
 }
 .Reviews Button {
     align-self: center;

@@ -6,7 +6,7 @@ import styles from './Header.module.css'
 
 const ROUTES = {
     seller: "/pages/info",
-    catalog: "/catalog",
+    catalog: "/pages/catalog",
     reviews: "/pages/reviews",
     profile: "/pages/profile"
 } as const;
@@ -16,6 +16,7 @@ export default function Header() {
     const router = useRouter();
 
     const isActive = (path: (typeof ROUTES)[keyof typeof ROUTES]) => pathname === path;
+    const isProfileActive = pathname?.startsWith('/pages/profile');
 
     return (
         <div className={styles.Header}>
@@ -43,12 +44,12 @@ export default function Header() {
                 </HeaderButton>
 
                 <HeaderButton
-                    active={isActive(ROUTES.profile)}
+                    active={isProfileActive}
                     isProfile
                     onClick={() => router.push(ROUTES.profile)}
                 >
                     <Image
-                        src={isActive(ROUTES.profile) ? "/ProfileBlack.png" : "/ProfileWhite.png"}
+                        src={isProfileActive ? "/ProfileBlack.png" : "/ProfileWhite.png"}
                         alt="profile"
                         width={32}
                         height={32}

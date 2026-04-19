@@ -1,3 +1,4 @@
+'use client'
 import Button from "@/app/components/Buttons/Button";
 import Header from "@/app/components/Header";
 import Review from "@/app/components/Review/Review";
@@ -11,11 +12,14 @@ import PhoneBanner from "@/app/components/PhoneBanner";
 import ConsultationForm from "@/app/components/ConsultationForm";
 import FullReview from "@/app/components/Review/FullReview";
 import SortMenu from "@/app/components/SortMenu";
-import CarRequest from "@/app/components/CarRequest";
-import ConsultationRequest from "@/app/components/ConsultationRequest";
+import Request from "@/app/components/Request";
 import Profile from "@/app/components/Profile";
+import DropDownInput from "@/app/components/DropDownInput";
+import {useState} from "react";
 
 export default function Home () {
+    const [brand, setBrand] = useState('')
+    const brands = ['BMW', 'Mercedes', 'Audi', 'Toyota', 'Kia', 'Lada']
     return (<div style={{ display: "flex", flexDirection: "column", gap: 15, alignItems: "start" }}>
             <Button variant={'Dark'}>Темная</Button>
             <Button variant={'Light'}>Светлая</Button>
@@ -52,6 +56,12 @@ export default function Home () {
                     { id: "4", src: "/tundra4.jpg" },
                 ]}
             />
+            <DropDownInput
+                options={brands}
+                value={brand}
+                onChange={setBrand}
+                placeholder="Выберите марку"
+            />
             <div style={{ display: "flex", gap: 16 }}>
                 <StatsBlock content={"Каждый покупатель доволен"} image={"/Driver.png"}/>
                 <StatsBlock content={"35 Лет опыта работы"} image={"/Bag.png"}/>
@@ -66,10 +76,9 @@ export default function Home () {
             <FullReview avatar={"/ProfileWhite.png"} userName={"Икона Илоновна"}
                         stars={5} review={"Ну ваще имба"} date={"15.06.2025"} footerText={"Купил ладу гранту 12.06.2025"}/>
             <SortMenu/>
-            <CarRequest car={"Subaru forester"} date={"14.03.2026"} status={"в обработке"}/>
-            <ConsultationRequest callTime={"16:35"} car={"Toyota alphard"} date={"16.04.2026"} status={"В обработке"}/>
-            <ConsultationRequest callTime={"16:35"} car={"Toyota alphard"} comment={"Хочу розовенькую"}
-                                 date={"16.04.2026"} status={"В обработке"}/>
+            <Request callTime={"16:35"} car={"Toyota alphard"} date={"16.04.2026"} status={"В обработке"}/>
+            <Request callTime={"16:35"} car={"Toyota alphard"} comment={"Хочу розовенькую"}
+                     date={"16.04.2026"} status={"В обработке"}/>
             <Profile
                 avatar={"/ProfileWhite.png"}
                 firstName={"Алексей"}
@@ -77,10 +86,6 @@ export default function Home () {
                 email={"a.smirnov@example.com"}
                 phone={"+7 (999) 123-45-67"}
 
-                carRequests={[
-                    { car: 'BMW X5', date: '2026-04-10', status: 'В обработке' },
-                    { car: 'Kia K5', date: '2026-03-28', status: 'Завершено' }
-                ]}
                 consultationRequests={[
                     { callTime: '14:30', car: 'Audi A4', date: '2026-04-15', status: 'Ожидает' },
                     { callTime: '10:00', car: 'Toyota Camry', comment: 'Интересует кредит', date: '2026-04-12', status: 'Подтверждено' }

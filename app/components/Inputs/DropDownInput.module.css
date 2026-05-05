@@ -1,18 +1,15 @@
 .Container {
     position: relative;
-    width: 100%;
 }
-
 .InputWrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
     background: var(--white);
-    padding: 1rem;
+    padding: 0.5rem;
     border-radius: var(--border-radius);
     box-sizing: border-box;
 }
-
 .Input {
     flex: 1;
     min-width: 0;
@@ -20,18 +17,16 @@
     border: none;
     background: transparent;
     outline: none;
-    font: var(--font);
+    font-family: var(--font);
     font-weight: var(--light);
-    font-size: var(--big-font-size);
+    font-size: var(--large-font-size);
 }
-
 .Arrow {
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
 }
-
 .List {
     background: var(--white);
     position: absolute;
@@ -47,23 +42,21 @@
 }
 .Item {
     cursor: pointer;
-    font: var(--font);
+    font-family: var(--font);
     font-weight: var(--light);
-    font-size: var(--medium-font-size);
-    padding: 1rem;
+    font-size: var(--large-font-size);
+    padding: 0.5rem;
     border-radius: var(--border-radius);
 }
-
 .Item:hover {
     background: var(--gray);
 }
-
 .Active {
     background: var(--gray);
 }
 .Empty {
-    font: var(--font);
+    font-family: var(--font);
     font-weight: var(--light);
-    font-size: var(--medium-font-size);
-    padding: 1rem;
+    font-size: var(--large-font-size);
+    padding: 0.5rem;
 }

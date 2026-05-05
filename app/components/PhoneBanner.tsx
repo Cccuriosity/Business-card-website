@@ -26,7 +26,9 @@ export default function PhoneBanner({number}: PhoneBannerProps) {
         <div className={styles.Banner}>
             <Image src={"/Phone.png"} alt={"Phone Image"} width={30} height={30}/>
             <span>{number}</span>
-            <button className={styles.Close} onClick={() => {setVisible(false)}}>×</button>
+            <button className={styles.Close} onClick={() => {setVisible(false)}}>
+                <Image src={"/close.png"} alt={"close"} width={10} height={10}/>
+            </button>
         </div>
     )
 }

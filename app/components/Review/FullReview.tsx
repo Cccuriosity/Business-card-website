@@ -1,33 +1,29 @@
-import Image from "next/image";
+import Image from "next/image"
+import { Review } from "@/app/types/review";
 import styles from "./FullReview.module.css"
 
 interface FullReviewProps {
-    avatar: string;
-    userName: string;
-    stars: number;
-    review: string;
-    date: string;
-    footerText: string;
+    review: Review;
 }
 
-export default function FullReview({avatar, userName, stars, review, date, footerText}: FullReviewProps) {
+export default function FullReview({review}: FullReviewProps) {
     return (
         <div className={styles.Review}>
             <div className={styles.Header}>
                 <div className={styles.User}>
                     <div className={styles.Avatar}>
-                        <Image src={avatar} alt={"Аватар"} width={40} height={40}/>
+                        <Image src={review.user.avatar} alt={"Аватар"} width={40} height={40}/>
                     </div>
-                    <span>{userName}</span>
+                    <span>{review.user.firstName} {review.user.lastName}</span>
                 </div>
-                <span className={styles.Date}>{date}</span>
+                <span className={styles.Date}>{review.date}</span>
             </div>
 
             <div className={styles.Stars}>
                 {[...Array(5)].map((_, i) => (
                     <Image
                         key={i}
-                        src={i < stars ? "/GoldStar.png" : "/GrayStar.png"}
+                        src={i < review.stars ? "/GoldStar.png" : "/GrayStar.png"}
                         alt={"star"}
                         width={35}
                         height={35}
@@ -35,11 +31,11 @@ export default function FullReview({avatar, userName, stars, review, date, foote
                 ))}
             </div>
             <div className={styles.Comment}>
-                {review}
+                {review.content}
             </div>
             <div className={styles.Footer}>
                 <div className={styles.Divider}/>
-                {footerText}
+                Купил(а) {review.car.brand} {review.car.model}
             </div>
         </div>
     )

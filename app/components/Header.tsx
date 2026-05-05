@@ -9,7 +9,7 @@ const ROUTES = {
     catalog: "/pages/catalog",
     reviews: "/pages/reviews",
     profile: "/pages/profile"
-} as const;
+}
 
 export default function Header() {
     const pathname = usePathname();
@@ -17,6 +17,7 @@ export default function Header() {
 
     const isActive = (path: (typeof ROUTES)[keyof typeof ROUTES]) => pathname === path;
     const isProfileActive = pathname?.startsWith('/pages/profile');
+    const isCatalogActive = pathname?.startsWith('/pages/catalog');
 
     return (
         <div className={styles.Header}>
@@ -30,7 +31,7 @@ export default function Header() {
                 </HeaderButton>
 
                 <HeaderButton
-                    active={isActive(ROUTES.catalog)}
+                    active={isCatalogActive}
                     onClick={() => router.push(ROUTES.catalog)}
                 >
                     Каталог

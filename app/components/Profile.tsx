@@ -2,42 +2,29 @@
 
 import {useState} from 'react';
 import Image from "next/image";
-import Request from './Request';
+import ConsultationRequest from './ConsultationRequest';
 import Button from './Buttons/Button';
 import styles from './Profile.module.css';
 import Input from "@/app/components/Inputs/Input";
 import {useRouter} from "next/navigation";
-
-type ConsultationRequest = {
-    callTime: string;
-    car: string;
-    comment?: string;
-    date: string;
-    status: string;
-}
+import {User} from "@/app/types/user";
 
 interface ProfileProps {
-    avatar: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    consultationRequests?: ConsultationRequest[];
+    user: User;
     onEditProfile?: () => void;
     onLogout?: () => void;
+    onDeleteUser?: () => void;
 }
 
-export default function Profile({
-                                    avatar,
-                                    firstName,
-                                    lastName,
-                                    email,
-                                    phone,
-                                    consultationRequests,
-                                }: ProfileProps) {
+export default function Profile( { user, onDeleteUser }: ProfileProps) {
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
-    const [formData, setFormData] = useState({firstName, lastName, email, phone});
+    const [formData, setFormData] = useState({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+    });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData(prev => ({...prev, [e.target.name]: e.target.value}));
@@ -49,7 +36,7 @@ export default function Profile({
                 <div className={styles.Profile}>
                     <div className={styles.LeftColumnEdit}>
                         <div className={styles.ProfileIcon}>
-                            <Image src={avatar} alt="Аватар" width={200} height={200}/>
+                            <Image src={user.avatar} alt="Аватар" width={200} height={200}/>
                         </div>
                         <a href={""} className={styles.Link}>Загрузить</a>
                     </div>
@@ -74,25 +61,40 @@ export default function Profile({
         <div className={styles.Profile}>
             <div className={styles.LeftColumn}>
                 <div className={styles.ProfileIcon}>
-                    <Image src={avatar} alt="Аватар" width={200} height={200}/>
+                    <Image src={user.avatar} alt="Аватар" width={200} height={200}/>
                 </div>
-                <span className={styles.Content}>{lastName} {firstName}</span>
-                <div><span className={styles.Label}>Почта</span><span className={styles.Content}> {email}</span></div>
-                <div><span className={styles.Label}>Телефон</span><span className={styles.Content}> {phone}</span></div>
-                <Button variant={"Light"} onClick={() => setIsEditing(true)}>Редактировать профиль</Button>
+                <span className={styles.Content}>{user.lastName} {user.firstName}</span>
+                <div><span className={styles.Label}>Почта</span><span className={styles.Content}> {user.email}</span></div>
+                <div><span className={styles.Label}>Телефон</span><span className={styles.Content}> {user.phone}</span></div>
+
+                {!user.isAdmin && (
+                    <Button variant={"Light"} onClick={() => setIsEditing(true)}>Редактировать профиль</Button>
+                )}
+
             </div>
             <div className={styles.RightColumn}>
                 <span>Мои заявки</span>
                 <div className={styles.Requests}>
-                    {consultationRequests?.length ? (
-                        consultationRequests.map((req, index) => (
-                            <Request key={index} {...req} />
+                    {user.Requests?.length ? (
+                        user.Requests.map((req, index) => (
+                            <ConsultationRequest key={index} request={req}  isAdmin={user.isAdmin} />
                         ))
                     ) : (
                         <span>У вас пока нет заявок на консультацию</span>
                     )}
                 </div>
-                <Button variant={"Dark"} onClick={() => router.push("/pages/profile")}>Выйти</Button>
+
+                {!user.isAdmin && ( /* НАДО ПЕРЕДЕЛАТЬ ПОД АВТОРИЗИРОВАННОГО ПОЛЬЗОВАТЕЛЯ**/
+                    <Button variant={"Dark"} onClick={() => router.push("/pages/profile")}>
+                        Выйти
+                    </Button>
+                )}
+
+                {user.isAdmin && ( /* ТУТ ТАК ЖЕ**/
+                    <Button variant={"Dark"} onClick={onDeleteUser}>
+                        Удалить пользователя
+                    </Button>
+                )}
             </div>
         </div>
     );

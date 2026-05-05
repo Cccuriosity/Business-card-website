@@ -1,5 +1,4 @@
 .CarCard {
-    font-family: var(--font);
     font-weight: var(--light);
     background: var(--white);
     border-radius: 10px;

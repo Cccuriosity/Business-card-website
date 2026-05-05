@@ -6,15 +6,19 @@ import Button from "@/app/components/Buttons/Button";
 import Image from "next/image";
 import ConsultationForm from "@/app/components/ConsultationForm";
 import StatsBlock from "@/app/components/StatsBlock";
-import Review from "@/app/components/Review/Review";
+import MiniReview from "@/app/components/Review/MiniReview";
 import Footer from "@/app/components/Footer";
 import { useRouter } from "next/navigation";
+import { mockReviews } from "@/app/mocks/reviews";
+import PhoneBanner from "@/app/components/PhoneBanner";
 
 export default function InfoPage() {
     const router = useRouter();
+
     return (
         <>
             <Header/>
+            <PhoneBanner number={"+79025223190"}/>
             <div className={styles.InfoPage}>
                 <div>
                     <span className={styles.Title}>Самойлов Аркадий Викторович</span>
@@ -64,19 +68,12 @@ export default function InfoPage() {
                 <div className={styles.Info}>
                     <span className={styles.Title}>Отзывы</span>
                     <div className={styles.Reviews}>
-                        <Review avatar={"/ProfileWhite.png"} userName={"Левшин Илья"}
-                                stars={4}
-                                review={"Классный продавец, всем советую рекомендую, а машина еще лучше"}
-                                date={"08.03.2026"}></Review>
-                        <Review avatar={"/ProfileWhite.png"} userName={"Костин Дмитрий"}
-                                stars={5}
-                                review={"Да нормально все будет"}
-                                date={"22.04.2022"}></Review>
-                        <Review avatar={"/ProfileWhite.png"} userName={"Иванов Иван"}
-                                stars={3}
-                                review={"Ну чета ваще не эстетика конечно, я и лучше у конкурентов видел, а у вас чета не то"}
-                                date={"01.05.2026"}></Review>
-                        <Button variant={"Dark"} onClick={() => router.push("/pages/reviews")}>Отзывы ›</Button>
+                        {mockReviews.map((review, index) => (
+                            <MiniReview key={index} review={review} />
+                        ))}
+                        <Button variant={"Dark"} onClick={() => router.push("/pages/reviews")}>
+                            Отзывы ›
+                        </Button>
                     </div>
                 </div>
                 <ConsultationForm authorized={true}/>

@@ -8,7 +8,7 @@ type DropDownInputProps = {
     options: string[]
     value: string
     onChange: (value: string) => void
-    placeholder: string
+    placeholder?: string
 }
 
 export default function DropDownInput({

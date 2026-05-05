@@ -2,8 +2,8 @@ import styles from "./Input.module.css"
 
 interface InputProps {
     type: string
-    placeholder: string
-    value?: string
+    placeholder?: string
+    value?: string | number
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     name?: string
 }

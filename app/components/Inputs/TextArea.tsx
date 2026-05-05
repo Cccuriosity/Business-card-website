@@ -2,7 +2,7 @@ import React from 'react';
 import styles from "./Input.module.css";
 
 interface TextAreaProps {
-    placeholder: string;
+    placeholder?: string;
     value?: string;
     onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     name?: string;

@@ -1,14 +1,21 @@
 import styles from './Button.module.css'
-import Image from "next/image";
+import Image from "next/image"
+import BaseButton from './BaseButton'
 
-interface ButtonProps {
+interface ScrollButtonProps {
     direction: "right" | "left";
-    onClick?: () => void
+    onClick: () => void;
 }
-export default function ScrollButton ({direction, onClick}: ButtonProps) {
+
+export default function ScrollButton({ direction, onClick }: ScrollButtonProps) {
     return (
-        <button className={`${styles.Button} ${styles.ScrollButton}`} onClick={onClick}>
-            <Image src={direction === "right"? "/ArrowRight.png" : "/ArrowLeft.png"} alt={"Arrow"} width={12} height={20}></Image>
-        </button>
+        <BaseButton className={`${styles.Button} ${styles.ScrollButton}`} onClick={onClick}>
+            <Image
+                src={direction === "right" ? "/ArrowRight.png" : "/ArrowLeft.png"}
+                alt="Arrow"
+                width={12}
+                height={20}
+            />
+        </BaseButton>
     )
 }

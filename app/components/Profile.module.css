@@ -1,0 +1,68 @@
+.Profile {
+    display: flex;
+    gap: 2rem;
+    font-size: var(--large-font-size);
+    font-weight: var(--light);
+    width: 100%;
+    justify-content: center;
+}
+.Container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.LeftColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 60%;
+}
+.LeftColumnEdit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+}
+.RightColumn {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.RightColumn > button:last-child {
+    align-self: flex-end;
+    width: auto;
+}
+.Label {
+    font-weight: var(--extra-light);
+}
+.Requests {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: scroll;
+}
+.CarRequests, .ConsultationRequests {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.ProfileIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gray);
+    width: 100%;
+    aspect-ratio: 1 / 1;
+}
+.FormItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.Link {
+    color: var(--dark-gray);
+}

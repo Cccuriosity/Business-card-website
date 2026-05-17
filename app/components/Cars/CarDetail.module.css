@@ -1,0 +1,82 @@
+.Title {
+    font-size: var(--huge-font-size);
+    font-weight: var(--light);
+    margin-bottom: 0.5rem;
+}
+.Details {
+    width: 100%;
+}
+.Content {
+    display: flex;
+    gap: 1rem;
+}
+.Miniatures {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.Info {
+    width: 100%;
+}
+.Price {
+    font-size: var(--huge-font-size);
+    font-weight: var(--medium);
+}
+.Row {
+    display: flex;
+    align-items: baseline;
+    font-size: var(--extra-large-font-size);
+    margin: 1rem 0;
+}
+.Label {
+    color: var(--dark-gray);
+    font-weight: var(--light);
+}
+.Dots {
+    flex: 1;
+    border-bottom: 3px dotted var(--dark-gray);
+}
+.Value {
+    font-weight: var(--regular);
+}
+.SoldBar {
+    margin: 8px 0;
+    height: 1px;
+    background: var(--black);
+    width: 100%;
+}
+.Date {
+    font-size: var(--large-font-size);
+    font-weight: var(--light);
+}
+.EditHeader {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.EditHeaderItem {
+    display: flex;
+    gap: 0.5rem;
+    font-size: var(--large-font-size);
+    font-weight: var(--light);
+    align-items: center;
+}
+.AdminActions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+.Link {
+    font-size: var(--big-font-size);
+    color: var(--dark-gray);
+    display: block;
+    margin: 0.5rem auto 0;
+    text-align: center;
+}
+.ImageWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 640px;
+    height: 480px;
+}

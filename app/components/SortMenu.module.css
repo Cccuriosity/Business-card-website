@@ -1,0 +1,21 @@
+.Container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font: var(--font);
+    font-size: var(--big-font-size);
+    font-weight: var(--light);
+}
+
+.Button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font: var(--font);
+    font-size: var(--big-font-size);
+    font-weight: var(--light);
+    background: none;
+}

@@ -1,0 +1,12 @@
+.StatsBlock {
+    display: flex;
+    font-size: var(--large-font-size);
+    font-weight: var(--light);
+    align-items: center;
+    gap: 16px;
+    max-width: 320px;
+    background: var(--light-blue);
+    padding: 16px;
+    border-radius: var(--border-radius);
+    text-align: center;
+}

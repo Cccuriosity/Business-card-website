@@ -1,0 +1,33 @@
+.CarCard {
+    font-weight: var(--light);
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+}
+.CarPhotos {
+    display: flex;
+    position: relative;
+}
+.CarPhotos button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.CarPhotos button:first-child {
+    left: 8px;
+}
+.CarPhotos button:last-child {
+    right: 8px;
+}
+.Description {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+}
+.Description span:first-child {
+    font-size: var(--big-font-size);
+}
+.Description span:nth-child(2) {
+    font-size: var(--medium-font-size);
+}

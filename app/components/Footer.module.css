@@ -1,0 +1,13 @@
+.Footer {
+    background: var(--light-blue);
+    display: flex;
+    justify-content: space-evenly;
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.Link {
+    margin: 0;
+    padding: 0;
+}

@@ -1,0 +1,37 @@
+.Container {
+    position: relative;
+    display: flex;
+    gap: 32px;
+    padding: 24px;
+    font: var(--font);
+    font-weight: var(--light);
+    background: var(--light-blue);
+    margin: 32px;
+    border-radius: var(--border-radius);
+}
+.Title {
+    position: absolute;
+    top: -24px;
+    left: 0;
+    font-size: var(--large-font-size);
+    background: var(--blue);
+    padding: 8px;
+    color: var(--white);
+    border-radius: var(--border-radius) var(--border-radius) var(--border-radius) 0;
+}
+.Form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+    justify-content: center;
+}
+.Content {
+    width: 40%;
+    font-size: var(--big-font-size);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+}

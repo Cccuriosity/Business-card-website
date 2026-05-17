@@ -3,7 +3,7 @@ import BaseButton from './BaseButton'
 import { ReactNode } from 'react'
 
 interface ButtonProps {
-    variant: string;
+    variant: "Dark" | "Light";
     children: ReactNode;
     onClick: () => void;
     type?: "button" | "submit";

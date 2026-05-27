@@ -43,12 +43,16 @@ export default function CatalogPage() {
                     <div className={styles.Divider}></div>
                     <DropDownInput options={filters.years} value={year} onChange={setYear} placeholder="Год" />
                     <DropDownInput options={filters.colors} value={color} onChange={setColor} placeholder="Цвет" />
-                    <DropDownInput options={filters.mileage} value={mileage} onChange={setMileage} placeholder="Пробег" />
                     <DropDownInput options={filters.transmission} value={transmission} onChange={setTransmission} placeholder="КПП" />
                     <DropDownInput options={filters.engineVolume} value={engineVolume} onChange={setEngineVolume} placeholder="Объем" />
                     <DropDownInput options={filters.driveType} value={driveType} onChange={setDriveType} placeholder="Привод" />
+                    <span className={styles.Placeholder}>Пробег</span>
+                    <div className={styles.Range}>
+                        <Input type="text" placeholder="1000" />
+                        <Input type="text" placeholder="67000" />
+                    </div>
                     <span className={styles.Placeholder}>Цена</span>
-                    <div className={styles.Price}>
+                    <div className={styles.Range}>
                         <Input type="text" placeholder="1500000" />
                         <Input type="text" placeholder="9000000" />
                     </div>

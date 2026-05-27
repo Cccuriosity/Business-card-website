@@ -13,12 +13,13 @@
 .Miniatures {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    gap: 0.5rem;
+    justify-content: flex-start;
 }
 .Info {
     width: 100%;
 }
-.Price {
+.Range {
     font-size: var(--huge-font-size);
     font-weight: var(--medium);
 }
@@ -79,4 +80,5 @@
     justify-content: center;
     width: 640px;
     height: 480px;
+    margin-bottom: 0.5rem;
 }

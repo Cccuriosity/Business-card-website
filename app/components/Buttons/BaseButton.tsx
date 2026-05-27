@@ -2,7 +2,7 @@ import {ReactNode} from "react";
 
 interface BaseButtonProps {
     children?: ReactNode;
-    onClick: () => void;
+    onClick?: () => void;
     className: string;
     type?: "button" | "submit";
 }

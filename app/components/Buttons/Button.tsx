@@ -5,7 +5,7 @@ import { ReactNode } from 'react'
 interface ButtonProps {
     variant: "Dark" | "Light";
     children: ReactNode;
-    onClick: () => void;
+    onClick?: () => void;
     type?: "button" | "submit";
 }
 

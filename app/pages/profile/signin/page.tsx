@@ -16,7 +16,7 @@ export default function SignInPage() {
                     <Input type={"email"} placeholder={"Почта"}/>
                     <Input type={"password"} placeholder={"Пароль"}/>
                     <Button variant={"Dark"} type={"button"} onClick={() => router.push("/pages/profile/user")}>Войти</Button>
-                    <a href={""} className={styles.Link}>Забыли пароль?</a>
+                    <span onClick={() => router.push("/pages/profile/confirmation")} className={styles.Link}>Забыли пароль?</span>
                 </form>
             </div>
         </>

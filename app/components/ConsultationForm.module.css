@@ -35,3 +35,11 @@
     justify-content: center;
     gap: 16px;
 }
+.Warning {
+    width: 100%;
+    font-size: var(--large-font-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

@@ -76,7 +76,7 @@ export default function InfoPage() {
                         </Button>
                     </div>
                 </div>
-                <ConsultationForm authorized={true}/>
+                <ConsultationForm authorized={false}/>
                 <Footer/>
             </div>
         </>

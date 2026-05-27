@@ -21,6 +21,10 @@ export default function SignUpPage() {
                         <Input type={"text"} placeholder={"Имя"}/>
                         <Input type={"text"} placeholder={"Номер телефона"}/>
                     </div>
+                    <div className={styles.Row}>
+                        <Input type={"text"} placeholder={"Пароль"}/>
+                        <Input type={"text"} placeholder={"Повторите пароль"}/>
+                    </div>
                     <Button variant={"Dark"} type={"button"} onClick={() => router.push("/pages/profile/user")}>Зарегистрироваться</Button>
                 </form>
             </div>

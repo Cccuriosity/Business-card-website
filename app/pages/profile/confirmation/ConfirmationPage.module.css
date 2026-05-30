@@ -7,18 +7,43 @@
     align-items: center;
     box-sizing: border-box;
 }
+
 .Menu {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
+
 .Title {
     font-size: var(--large-font-size);
     font-weight: var(--light);
     align-self: center;
 }
+
 .Form {
     display: flex;
     gap: 1rem;
     justify-content: center;
+}
+
+.Error {
+    font-size: var(--big-font-size);
+    font-weight: var(--light);
+    align-self: center;
+}
+
+@media (max-width: 768px) {
+    .ConfirmationPage {
+        padding: 5rem 1rem 1rem;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .Menu {
+        width: 100%;
+    }
+
+    .Form {
+        flex-direction: column;
+    }
 }

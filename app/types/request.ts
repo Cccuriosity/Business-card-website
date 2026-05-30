@@ -1,8 +1,8 @@
 export interface Request {
-    callTime: string;
-    car: string;
+    id: number;
+    callTime?: string;
+    carName?: string;
     comment?: string;
-    date: string;
-    status: string;
-    isAdmin?: boolean;
+    createdAt: string;
+    isSolved: boolean;
 }

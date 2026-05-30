@@ -1,10 +1,12 @@
-import { User } from "@/app/types/user";
-import { Car } from "@/app/types/car";
-
 export interface Review {
-    user: Pick <User, 'avatar' | 'firstName' | 'lastName'>;
-    stars: number;
-    content: string;
-    date: string;
-    car: Pick <Car, 'brand' | 'model'>;
+    id: number;
+    lotId: number | null;
+    brand: string | null;
+    model: string | null;
+    authorName: string;
+    authorLastName: string;
+    avatarUrl: string | null;
+    rating: number;
+    comment: string;
+    createdAt: string;
 }

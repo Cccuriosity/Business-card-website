@@ -1,10 +1,10 @@
-import styles from './Button.module.css'
-import Image from "next/image"
-import BaseButton from './BaseButton'
+import styles from "./Button.module.css";
+import Image from "next/image";
+import BaseButton from "./BaseButton";
 
 interface ScrollButtonProps {
     direction: "right" | "left";
-    onClick: () => void;
+    onClick: (e: React.MouseEvent) => void;
 }
 
 export default function ScrollButton({ direction, onClick }: ScrollButtonProps) {
@@ -17,5 +17,5 @@ export default function ScrollButton({ direction, onClick }: ScrollButtonProps) 
                 height={20}
             />
         </BaseButton>
-    )
+    );
 }

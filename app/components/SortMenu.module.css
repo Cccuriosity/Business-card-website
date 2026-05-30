@@ -19,3 +19,15 @@
     font-weight: var(--light);
     background: none;
 }
+
+@media (max-width: 768px) {
+    .Container {
+        font-size: var(--medium-font-size);
+        gap: 8px;
+    }
+
+    .Button {
+        font-size: var(--medium-font-size);
+        gap: 4px;
+    }
+}

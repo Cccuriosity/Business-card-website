@@ -8,3 +8,10 @@
     overflow-y: auto;
     scrollbar-width: none;
 }
+
+@media (max-width: 768px) {
+    .PreviewPage {
+        padding: 5rem 1rem 1rem;
+        height: auto;
+    }
+}

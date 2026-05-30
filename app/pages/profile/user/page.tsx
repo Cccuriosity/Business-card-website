@@ -1,16 +1,56 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Profile from "@/app/components/Profile";
 import Header from "@/app/components/Header";
-import styles from './UserPage.module.css'
-import {mockUsers} from "@/app/mocks/users";
+import styles from "./UserPage.module.css";
+import { UserRepository } from "@/app/repositories/user.repository";
+import { User } from "@/app/types/user";
+import { AdminRepository } from "@/app/repositories/admin.repository";
 
 export default function UserPage() {
+    const router = useRouter();
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        UserRepository.getProfile().then(setUser);
+    }, []);
+
+    const handleSave = async (data: Partial<User>, avatarFile?: File) => {
+        const updated = await UserRepository.updateProfile(data, avatarFile);
+        setUser(updated);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        router.push("/pages/auth/login");
+    };
+
+    const handleDeleteUser = async () => {
+        if (!user) return;
+        await AdminRepository.deleteUser(user.id);
+        router.push("/pages/admin/users");
+    };
+
+    const handleSaveRequest = async (id: number, data: { status?: string; comment?: string }) => {
+        await AdminRepository.updateRequest(id, data);
+    };
+
+    if (!user) return null;
+
     return (
         <>
-            <Header/>
+            <Header />
             <div className={styles.UserPage}>
-                <Profile user={mockUsers[1]} />
+                <Profile
+                    user={user}
+                    onSave={handleSave}
+                    onDeleteUser={handleDeleteUser}
+                    onLogout={handleLogout}
+                    onSaveRequest={handleSaveRequest}
+                />
             </div>
-
         </>
-    )
+    );
 }

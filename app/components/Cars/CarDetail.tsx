@@ -1,74 +1,73 @@
-"use client"
+"use client";
 
-import { useState, useRef } from "react"
-import { Car } from "@/app/types/car"
-import Image from "next/image"
-import styles from "./CarDetail.module.css"
-import Button from "@/app/components/Buttons/Button"
-import Input from "@/app/components/Inputs/Input"
-import DropDownInput from "@/app/components/Inputs/DropDownInput"
+import { useState, useRef } from "react";
+import { Car } from "@/app/types/car";
+import Image from "next/image";
+import styles from "./CarDetail.module.css";
+import Button from "@/app/components/Buttons/Button";
+import Input from "@/app/components/Inputs/Input";
+import DropDownInput from "@/app/components/Inputs/DropDownInput";
 
-function InfoRow({label, value,}: { label: string; value: string; }) {
+function InfoRow({ label, value }: { label: string; value: string }) {
     return (
         <div className={styles.Row}>
             <span className={styles.Label}>{label}</span>
             <span className={styles.Dots}></span>
             <span className={styles.Value}>{value}</span>
         </div>
-    )
+    );
 }
 
 interface CarDetailProps {
-    car: Car
-    isAdmin?: boolean
-    onSave?: (carData: Car) => void
-    onDelete?: () => void
+    car: Car;
+    isAdmin?: boolean;
+    onSave?: (carData: Car) => void;
+    onDelete?: () => void;
 }
 
 export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: CarDetailProps) {
+    const [activeImage, setActiveImage] = useState(car.images[0]);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [editData, setEditData] = useState<Car>({ ...car });
+    const [imagePreviews, setImagePreviews] = useState<string[]>(car.images);
 
-    const [activeImage, setActiveImage] = useState(car.images[0])
-    const [isEditMode, setIsEditMode] = useState(false)
-    const [editData, setEditData] = useState<Car>({...car})
-    const [imagePreviews, setImagePreviews] = useState<string[]>(car.images)
-
-    const fileInputRef = useRef<HTMLInputElement>(null)
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleEdit = () => {
-        setIsEditMode(true)
-        setEditData({...car})
-        setImagePreviews(car.images)
-        setActiveImage(car.images[0])
-    }
+        setIsEditMode(true);
+        setEditData({ ...car });
+        setImagePreviews(car.images);
+        setActiveImage(car.images[0]);
+    };
 
     const handleCancel = () => {
-        setIsEditMode(false)
-        setImagePreviews(car.images)
-        setActiveImage(car.images[0])
-    }
+        setIsEditMode(false);
+        setImagePreviews(car.images);
+        setActiveImage(car.images[0]);
+    };
 
     const handleSave = () => {
-        onSave?.({...editData, images: imagePreviews})
-        setIsEditMode(false)
-    }
+        onSave?.({ ...editData, images: imagePreviews });
+        setIsEditMode(false);
+    };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || [])
-        if (!files.length) return
+        const files = Array.from(e.target.files || []);
+        if (!files.length) return;
 
-        const newPreviews = files.map(file => URL.createObjectURL(file))
-        setImagePreviews(prev => [...prev, ...newPreviews])
-    }
+        const newPreviews = files.map((file) => URL.createObjectURL(file));
+        setImagePreviews((prev) => [...prev, ...newPreviews]);
+    };
 
     const handleDelete = () => {
-        if (confirm('Вы уверены, что хотите удалить этот автомобиль?')) {
-            onDelete?.()
+        if (confirm("Вы уверены, что хотите удалить этот автомобиль?")) {
+            onDelete?.();
         }
-    }
+    };
 
     const formatPrice = (price: number) => {
-        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽"
-    }
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽";
+    };
 
     if (isEditMode) {
         return (
@@ -76,41 +75,69 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
                 <div className={styles.EditHeader}>
                     <div className={styles.EditHeaderItem}>
                         <span>Марка</span>
-                        <Input type="text" placeholder={""}
-                               value={editData.brand}
-                               onChange={(e) => setEditData({...editData, brand: e.target.value})} />
+                        <Input
+                            type="text"
+                            placeholder={""}
+                            value={editData.manufacturer}
+                            onChange={(e) =>
+                                setEditData({ ...editData, manufacturer: e.target.value })
+                            }
+                        />
                     </div>
                     <div className={styles.EditHeaderItem}>
                         <span>Модель</span>
-                        <Input type="text" placeholder={""}
-                               value={editData.model}
-                               onChange={(e) => setEditData({...editData, model: e.target.value})} />
+                        <Input
+                            type="text"
+                            placeholder={""}
+                            value={editData.model}
+                            onChange={(e) => setEditData({ ...editData, model: e.target.value })}
+                        />
                     </div>
                     <div className={styles.EditHeaderItem}>
                         <span>Год</span>
-                        <Input type="number" placeholder={""}
-                               value={editData.year}
-                               onChange={(e) => setEditData({...editData, year: parseInt(e.target.value)})} />
+                        <Input
+                            type="number"
+                            placeholder={""}
+                            value={editData.year}
+                            onChange={(e) =>
+                                setEditData({ ...editData, year: parseInt(e.target.value) })
+                            }
+                        />
                     </div>
                 </div>
 
                 <div className={styles.Content}>
                     <div className={styles.Photos}>
                         <div className={styles.ImageWrapper}>
-                            <Image src={activeImage} alt="car" width={640} height={480} />
+                            <Image
+                                src={activeImage}
+                                alt="car"
+                                fill
+                                style={{ objectFit: "cover" }}
+                            />
                         </div>
 
                         {imagePreviews.length > 1 && (
                             <div className={styles.Miniatures}>
-                                {imagePreviews.map((src, index) => (
-                                    <div
-                                        key={src + index}
-                                        onClick={() => setActiveImage(src)}
-                                        className={activeImage === src ? styles.Active : ''}
-                                    >
-                                        <Image src={src} alt={`thumb-${index}`} width={208} height={156} />
-                                    </div>
-                                ))}
+                                {imagePreviews.map(
+                                    (
+                                        src,
+                                        index // было car.images
+                                    ) => (
+                                        <div
+                                            key={src + index}
+                                            onClick={() => setActiveImage(src)}
+                                            className={`${styles.Miniature} ${activeImage === src ? styles.Active : ""}`}
+                                        >
+                                            <Image
+                                                src={src}
+                                                alt={`thumb-${index}`}
+                                                fill
+                                                style={{ objectFit: "cover" }}
+                                            />
+                                        </div>
+                                    )
+                                )}
                             </div>
                         )}
 
@@ -119,10 +146,14 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
                             type="file"
                             accept="image/*"
                             multiple
-                            style={{ display: 'none' }}
+                            style={{ display: "none" }}
                             onChange={handleFileChange}
                         />
-                        <a onClick={() => fileInputRef.current?.click()} className={styles.Link} style={{ cursor: 'pointer' }}>
+                        <a
+                            onClick={() => fileInputRef.current?.click()}
+                            className={styles.Link}
+                            style={{ cursor: "pointer" }}
+                        >
                             Загрузить
                         </a>
                     </div>
@@ -131,59 +162,97 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
                         <div className={styles.Row}>
                             <span className={styles.Label}>Цена</span>
                             <span className={styles.Dots}></span>
-                            <Input type="number" placeholder={""}
-                                   value={editData.price}
-                                   onChange={(e) => setEditData({...editData, price: parseInt(e.target.value)})} />
+                            <Input
+                                type="number"
+                                placeholder={""}
+                                value={editData.price}
+                                onChange={(e) =>
+                                    setEditData({ ...editData, price: parseInt(e.target.value) })
+                                }
+                            />
                         </div>
                         <div className={styles.Row}>
                             <span className={styles.Label}>Пробег</span>
                             <span className={styles.Dots}></span>
-                            <Input type="number" placeholder={""}
-                                   value={editData.mileage}
-                                   onChange={(e) => setEditData({...editData, mileage: parseInt(e.target.value)})} />
+                            <Input
+                                type="number"
+                                placeholder={""}
+                                value={editData.mileage}
+                                onChange={(e) =>
+                                    setEditData({ ...editData, mileage: parseInt(e.target.value) })
+                                }
+                            />
                         </div>
                         <div className={styles.Row}>
                             <span className={styles.Label}>Объем</span>
                             <span className={styles.Dots}></span>
-                            <Input type="number" placeholder={""}
-                                   value={editData.engineVolume}
-                                   onChange={(e) => setEditData({...editData, engineVolume: parseInt(e.target.value)})} />
+                            <Input
+                                type="number"
+                                placeholder={""}
+                                value={editData.engineVolume}
+                                onChange={(e) =>
+                                    setEditData({
+                                        ...editData,
+                                        engineVolume: parseInt(e.target.value),
+                                    })
+                                }
+                            />
                         </div>
                         <div className={styles.Row}>
                             <span className={styles.Label}>Цвет</span>
                             <span className={styles.Dots}></span>
-                            <Input type="string" placeholder={""}
-                                   value={editData.color}
-                                   onChange={(e) => setEditData({...editData, color: e.target.value})} />
+                            <Input
+                                type="string"
+                                placeholder={""}
+                                value={editData.color}
+                                onChange={(e) =>
+                                    setEditData({ ...editData, color: e.target.value })
+                                }
+                            />
                         </div>
                         <div className={styles.Row}>
                             <span className={styles.Label}>КПП</span>
                             <span className={styles.Dots}></span>
-                            <Input type="string" placeholder={""}
-                                   value={editData.transmission}
-                                   onChange={(e) => setEditData({...editData, transmission: e.target.value})} />
+                            <Input
+                                type="string"
+                                placeholder={""}
+                                value={editData.transmission}
+                                onChange={(e) =>
+                                    setEditData({ ...editData, transmission: e.target.value })
+                                }
+                            />
                         </div>
                         <div className={styles.Row}>
                             <span className={styles.Label}>Привод</span>
                             <span className={styles.Dots}></span>
-                            <Input type="string" placeholder={""}
-                                   value={editData.drive}
-                                   onChange={(e) => setEditData({...editData, drive: e.target.value})} />
+                            <Input
+                                type="string"
+                                placeholder={""}
+                                value={editData.drive}
+                                onChange={(e) =>
+                                    setEditData({ ...editData, drive: e.target.value })
+                                }
+                            />
                         </div>
                         <div className={styles.Row}>
                             <span className={styles.Label}>Кузов</span>
                             <span className={styles.Dots}></span>
-                            <Input type="string" placeholder={""}
-                                   value={editData.vin}
-                                   onChange={(e) => setEditData({...editData, vin: e.target.value})} />
+                            <Input
+                                type="string"
+                                placeholder={""}
+                                value={editData.vin}
+                                onChange={(e) => setEditData({ ...editData, vin: e.target.value })}
+                            />
                         </div>
                         <div className={styles.Row}>
                             <span className={styles.Label}>Статус</span>
                             <span className={styles.Dots}></span>
                             <DropDownInput
-                                options={['Доступен', 'Продан']}
-                                value={editData.isSold ? 'Продан' : 'Доступен'}
-                                onChange={(val) => setEditData({...editData, isSold: val === 'Продан'})}
+                                options={["Доступен", "Продан"]}
+                                value={editData.isSold ? "Продан" : "Доступен"}
+                                onChange={(val) =>
+                                    setEditData({ ...editData, isSold: val === "Продан" })
+                                }
                                 placeholder=""
                             />
                         </div>
@@ -191,38 +260,54 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
                             <div className={styles.Row}>
                                 <span className={styles.Label}>Дата продажи</span>
                                 <span className={styles.Dots}></span>
-                                <Input type="string" placeholder={""}
-                                       value={editData.soldAt}
-                                       onChange={(e) => setEditData({...editData, soldAt: e.target.value})} />
+                                <Input
+                                    type="string"
+                                    placeholder={""}
+                                    value={editData.soldAt}
+                                    onChange={(e) =>
+                                        setEditData({ ...editData, soldAt: e.target.value })
+                                    }
+                                />
                             </div>
                         )}
                     </div>
                 </div>
 
                 <div className={styles.AdminActions}>
-                    <Button variant={"Light"} onClick={handleCancel}>Отмена</Button>
-                    <Button variant={"Dark"} onClick={handleSave}>Сохранить</Button>
+                    <Button variant={"Light"} onClick={handleCancel}>
+                        Отмена
+                    </Button>
+                    <Button variant={"Dark"} onClick={handleSave}>
+                        Сохранить
+                    </Button>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
         <div className={styles.Details}>
             <div className={styles.Title}>
-                {car.brand} {car.model} {car.year}
+                {car.manufacturer} {car.model} {car.year}
             </div>
             <div className={styles.Content}>
                 <div className={styles.Photos}>
-                    <Image src={activeImage} alt="car" width={640} height={480} />
+                    <div className={styles.ImageWrapper}>
+                        <Image src={activeImage} alt="car" fill style={{ objectFit: "cover" }} />
+                    </div>
                     <div className={styles.Miniatures}>
                         {car.images.map((imgSrc, index) => (
                             <div
                                 key={imgSrc + index}
                                 onClick={() => setActiveImage(imgSrc)}
-                                className={activeImage === imgSrc ? styles.Active : ''}
+                                className={`${styles.Miniature} ${activeImage === imgSrc ? styles.Active : ""}`}
                             >
-                                <Image src={imgSrc} alt={`thumb-${index}`} width={208} height={156} />
+                                <Image
+                                    src={imgSrc}
+                                    alt={`thumb-${index}`}
+                                    fill
+                                    style={{ objectFit: "cover" }}
+                                />
                             </div>
                         ))}
                     </div>
@@ -240,17 +325,21 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
 
             {car.isSold && (
                 <>
-                    <div className={styles.SoldBar}/>
+                    <div className={styles.SoldBar} />
                     <span className={styles.Date}>Дата продажи: {car.soldAt}</span>
                 </>
             )}
 
             {isAdmin && (
                 <div className={styles.AdminActions}>
-                    <Button variant={"Dark"} onClick={handleEdit}>Редактировать</Button>
-                    <Button variant={"Light"} onClick={handleDelete}>Удалить</Button>
+                    <Button variant={"Dark"} onClick={handleEdit}>
+                        Редактировать
+                    </Button>
+                    <Button variant={"Light"} onClick={handleDelete}>
+                        Удалить
+                    </Button>
                 </div>
             )}
         </div>
-    )
+    );
 }

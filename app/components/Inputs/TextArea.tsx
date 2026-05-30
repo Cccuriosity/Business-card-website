@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import styles from "./Input.module.css";
 
 interface TextAreaProps {
@@ -9,15 +9,15 @@ interface TextAreaProps {
     rows?: number;
 }
 
-export default function TextArea({ placeholder, name, value, onChange}: TextAreaProps) {
+export default function TextArea({ placeholder, name, value, onChange }: TextAreaProps) {
     return (
-            <textarea
-                className={styles.Input}
-                name={name}
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
-                rows={3}
-            />
+        <textarea
+            className={styles.Input}
+            name={name}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            rows={3}
+        />
     );
 }

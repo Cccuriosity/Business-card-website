@@ -9,10 +9,12 @@
     border-radius: var(--border-radius);
     padding: 2rem;
 }
+
 .Stars {
     display: flex;
     gap: 0.5rem;
 }
+
 .Avatar {
     display: flex;
     align-items: center;
@@ -21,26 +23,56 @@
     border-radius: 50%;
     padding: 1rem;
 }
+
 .User {
     display: flex;
     align-items: center;
     font-size: var(--large-font-size);
     gap: 1rem;
 }
+
 .Header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .Comment {
     font-size: var(--big-font-size);
 }
-.Footer, .Date {
+
+.Footer,
+.Date {
     font-size: var(--medium-font-size);
 }
+
 .Divider {
     height: 1px;
     background: var(--gray);
     margin-bottom: 0.5rem;
     width: 100%;
+}
+
+.CarLink {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .Review {
+        padding: 1rem;
+    }
+
+    .User {
+        font-size: var(--big-font-size);
+    }
+
+    .Comment {
+        font-size: var(--small-font-size);
+    }
+
+    .Footer,
+    .Date {
+        font-size: var(--small-font-size);
+    }
 }

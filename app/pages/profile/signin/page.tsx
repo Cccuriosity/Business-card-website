@@ -1,24 +1,52 @@
-"use client"
+"use client";
 import Header from "@/app/components/Header";
-import styles from './SignInPage.module.css'
+import styles from "./SignInPage.module.css";
 import Button from "@/app/components/Buttons/Button";
 import Input from "@/app/components/Inputs/Input";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { AuthRepository } from "@/app/repositories/auth.repository";
 
 export default function SignInPage() {
     const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const handleLogin = async () => {
+        await AuthRepository.login({ email, password });
+        const isAdmin = localStorage.getItem("isAdmin") === "true";
+        if (isAdmin) {
+            router.push("/pages/admin");
+        } else {
+            router.push("/pages/profile/user");
+        }
+    };
     return (
         <>
-            <Header/>
+            <Header />
             <div className={styles.SignInPage}>
                 <form className={styles.Menu}>
                     <span className={styles.Title}>С возвращением!</span>
-                    <Input type={"email"} placeholder={"Почта"}/>
-                    <Input type={"password"} placeholder={"Пароль"}/>
-                    <Button variant={"Dark"} type={"button"} onClick={() => router.push("/pages/profile/user")}>Войти</Button>
-                    <span onClick={() => router.push("/pages/profile/confirmation")} className={styles.Link}>Забыли пароль?</span>
+                    <Input
+                        type={"email"}
+                        placeholder={"Почта"}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Input
+                        type={"password"}
+                        placeholder={"Пароль"}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <Button variant={"Dark"} type={"button"} onClick={handleLogin}>
+                        Войти
+                    </Button>
+                    <span
+                        onClick={() => router.push("/pages/profile/confirmation")}
+                        className={styles.Link}
+                    >
+                        Забыли пароль?
+                    </span>
                 </form>
             </div>
         </>
-    )
+    );
 }

@@ -10,3 +10,12 @@
     border-radius: var(--border-radius);
     text-align: center;
 }
+
+@media (max-width: 768px) {
+    .StatsBlock {
+        width: 100%;
+        max-width: 100%;
+        font-size: var(--big-font-size);
+        box-sizing: border-box;
+    }
+}

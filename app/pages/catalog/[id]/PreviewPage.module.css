@@ -3,10 +3,21 @@
     width: 100%;
     height: calc(100vh);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     box-sizing: border-box;
     overflow-y: auto;
     scrollbar-width: none;
+}
+
+.OrderButton {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem 2rem 2rem;
+}
+
+.Review {
+    display: flex;
+    justify-content: flex-start;
 }
 
 @media (max-width: 768px) {

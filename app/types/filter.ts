@@ -6,4 +6,6 @@ export interface FilterOptions {
     transmissions: string[];
     driveTypes: string[];
     years: number[];
+    priceRange: { min: number; max: number };
+    mileageRange: { min: number; max: number };
 }

@@ -3,35 +3,41 @@
 import Image from "next/image";
 import styles from "./SortMenu.module.css";
 
-export type SortType = "date" | "rating";
-export type SortOrder = "asc" | "desc";
-
 interface SortMenuProps {
-    orders: Record<SortType, SortOrder>;
-    onSort: (orders: Record<SortType, SortOrder>) => void;
+    dateOrder: "asc" | "desc";
+    ratingOrder: "asc" | "desc";
+    onDateOrder: (val: "asc" | "desc") => void;
+    onRatingOrder: (val: "asc" | "desc") => void;
 }
 
-export default function SortMenu({ orders, onSort }: SortMenuProps) {
-    const flip = (type: SortType) => {
-        onSort({ ...orders, [type]: orders[type] === "asc" ? "desc" : "asc" });
-    };
-
+export default function SortMenu({
+    dateOrder,
+    ratingOrder,
+    onDateOrder,
+    onRatingOrder,
+}: SortMenuProps) {
     return (
         <div className={styles.Container}>
             <span>Сортировка по:</span>
-            <button className={styles.Button} onClick={() => flip("date")}>
+            <button
+                className={styles.Button}
+                onClick={() => onDateOrder(dateOrder === "asc" ? "desc" : "asc")}
+            >
                 <span>Дате</span>
                 <Image
-                    src={orders.date === "asc" ? "/Up.png" : "/Down.png"}
+                    src={dateOrder === "asc" ? "/Up.png" : "/Down.png"}
                     alt="sort"
                     width={24}
                     height={24}
                 />
             </button>
-            <button className={styles.Button} onClick={() => flip("rating")}>
+            <button
+                className={styles.Button}
+                onClick={() => onRatingOrder(ratingOrder === "asc" ? "desc" : "asc")}
+            >
                 <span>Оценке</span>
                 <Image
-                    src={orders.rating === "asc" ? "/Up.png" : "/Down.png"}
+                    src={ratingOrder === "asc" ? "/Up.png" : "/Down.png"}
                     alt="sort"
                     width={24}
                     height={24}

@@ -32,6 +32,8 @@ const MOCK_FILTERS: FilterOptionsDTO = {
     transmissions: ["Автомат", "Механика", "Робот", "Вариатор"],
     drive_types: ["Полный", "Передний", "Задний"],
     years: Array.from({ length: 10 }, (_, i) => 2025 - i),
+    price_range: { min: 1500000, max: 9000000 },
+    mileage_range: { min: 1000, max: 200000 },
 };
 
 export const FilterRepository = {

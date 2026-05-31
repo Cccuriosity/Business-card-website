@@ -22,6 +22,11 @@
     width: auto;
 }
 
+.LotSelect {
+    display: flex;
+    justify-content: flex-start;
+}
+
 @media (max-width: 768px) {
     .ReviewForm {
         font-size: var(--big-font-size);

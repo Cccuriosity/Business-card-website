@@ -19,3 +19,15 @@
     font-weight: var(--light);
     align-self: center;
 }
+
+@media (max-width: 768px) {
+    .AdminPage {
+        padding: 5rem 1rem 1rem;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .Menu {
+        width: 100%;
+    }
+}

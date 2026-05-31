@@ -19,23 +19,27 @@ export default function DropDownInput({
 }: DropDownInputProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [search, setSearch] = useState(value);
+    const [isTyping, setIsTyping] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (!ref.current?.contains(e.target as Node)) {
                 setIsOpen(false);
+                setIsTyping(false);
             }
         };
-
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const filtered = options.filter((opt) => opt.toLowerCase().includes(search.toLowerCase()));
+    const filtered = isTyping
+        ? options.filter((opt) => opt.toLowerCase().includes(search.toLowerCase()))
+        : options;
 
     const handleSelect = (opt: string) => {
         setSearch(opt);
+        setIsTyping(false);
         onChange(opt);
         setIsOpen(false);
     };
@@ -48,6 +52,7 @@ export default function DropDownInput({
                     value={search}
                     onChange={(e) => {
                         setSearch(e.target.value);
+                        setIsTyping(true);
                         setIsOpen(true);
                     }}
                     placeholder={placeholder}
@@ -58,7 +63,10 @@ export default function DropDownInput({
                         transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
                         transition: "transform 0.3s",
                     }}
-                    onClick={() => setIsOpen((prev) => !prev)}
+                    onClick={() => {
+                        setIsOpen((prev) => !prev);
+                        setIsTyping(false);
+                    }}
                 >
                     <Image src="/DropDown.png" alt="dropdown" width={20} height={20} />
                 </div>
@@ -70,7 +78,7 @@ export default function DropDownInput({
                         filtered.map((opt) => (
                             <div
                                 key={opt}
-                                className={`${styles.Item} ${search && opt.toLowerCase() === search.toLowerCase() ? styles.Active : ""}`}
+                                className={`${styles.Item} ${opt === value ? styles.Active : ""}`}
                                 onClick={() => handleSelect(opt)}
                             >
                                 {opt}

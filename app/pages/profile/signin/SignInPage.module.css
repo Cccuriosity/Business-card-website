@@ -28,6 +28,11 @@
     text-decoration: underline;
 }
 
+.Error {
+    font-size: var(--big-font-size);
+    font-weight: var(--light);
+}
+
 @media (max-width: 768px) {
     .SignInPage {
         padding: 5rem 1rem 1rem;

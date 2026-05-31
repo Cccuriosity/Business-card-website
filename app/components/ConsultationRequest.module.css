@@ -44,3 +44,15 @@
     flex-direction: column;
     gap: 0.5rem;
 }
+
+@media (max-width: 768px) {
+    .Request {
+        font-size: var(--medium-font-size);
+    }
+
+    .Wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}

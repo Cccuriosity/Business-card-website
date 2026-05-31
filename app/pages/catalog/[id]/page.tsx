@@ -8,6 +8,8 @@ import CarDetail from "@/app/components/Cars/CarDetail";
 import { CarRepository } from "@/app/repositories/car.repository";
 import { Car } from "@/app/types/car";
 import { AdminRepository } from "@/app/repositories/admin.repository";
+import Button from "@/app/components/Buttons/Button";
+import MiniReview from "@/app/components/Review/MiniReview";
 
 export default function PreviewPage() {
     const router = useRouter();
@@ -54,6 +56,23 @@ export default function PreviewPage() {
                     onSave={handleSave}
                     onDelete={handleDeleteCar}
                 />
+                {!isAdmin && (
+                    <div className={styles.OrderButton}>
+                        <Button
+                            variant="Dark"
+                            onClick={() =>
+                                router.push(`/pages/info?car=${car.manufacturer} ${car.model}`)
+                            }
+                        >
+                            Оставить заявку
+                        </Button>
+                    </div>
+                )}
+                {!isAdmin && car.review && (
+                    <div className={styles.Review}>
+                        <MiniReview review={car.review} />
+                    </div>
+                )}
             </div>
         </>
     );

@@ -14,7 +14,6 @@ import { CarRepository } from "@/app/repositories/car.repository";
 import { FilterRepository } from "@/app/repositories/filter.repository";
 import { FilterOptions } from "@/app/types/filter";
 import Button from "@/app/components/Buttons/Button";
-import { router } from "next/client";
 
 export default function CatalogPage() {
     const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
@@ -32,7 +31,10 @@ export default function CatalogPage() {
     const [mileageTo, setMileageTo] = useState("");
     const [filtersOpen, setFiltersOpen] = useState(false);
     const [search, setSearch] = useState("");
-    const [isAdmin] = useState(() => localStorage.getItem("isAdmin") === "true");
+    const [isAdmin] = useState(() => {
+        if (typeof window === "undefined") return false;
+        return localStorage.getItem("isAdmin") === "true";
+    });
     const router = useRouter();
 
     useEffect(() => {
@@ -147,13 +149,13 @@ export default function CatalogPage() {
                     <div className={styles.Range}>
                         <Input
                             type="text"
-                            placeholder="1000"
+                            placeholder={filterOptions?.mileageRange.min.toString()}
                             value={mileageFrom}
                             onChange={(e) => setMileageFrom(e.target.value)}
                         />
                         <Input
                             type="text"
-                            placeholder="67000"
+                            placeholder={filterOptions?.mileageRange.max.toString()}
                             value={mileageTo}
                             onChange={(e) => setMileageTo(e.target.value)}
                         />
@@ -162,13 +164,13 @@ export default function CatalogPage() {
                     <div className={styles.Range}>
                         <Input
                             type="text"
-                            placeholder="1500000"
+                            placeholder={filterOptions?.priceRange.min.toString()}
                             value={priceFrom}
                             onChange={(e) => setPriceFrom(e.target.value)}
                         />
                         <Input
                             type="text"
-                            placeholder="9000000"
+                            placeholder={filterOptions?.priceRange.max.toString()}
                             value={priceTo}
                             onChange={(e) => setPriceTo(e.target.value)}
                         />

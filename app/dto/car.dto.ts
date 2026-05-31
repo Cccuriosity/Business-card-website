@@ -1,3 +1,5 @@
+import { ReviewDTO } from "@/app/dto/review.dto";
+
 export interface LotListItemDTO {
     id: number;
     manufacturer: string;
@@ -24,4 +26,5 @@ export interface LotDetailDTO {
     is_sold: boolean;
     sold_date: string | null;
     images: string[];
+    review: ReviewDTO | null;
 }

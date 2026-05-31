@@ -25,7 +25,7 @@ const MOCK_USERS: UserListItemDTO[] = [
         last_name: "Петров",
         phone_number: "+7 (999) 123-45-67",
         avatar_url: "/ProfileWhite.png",
-        active_requests_count: 2,
+        active_requests_count: 1,
         is_admin: false,
     },
     {
@@ -43,7 +43,7 @@ const MOCK_USERS: UserListItemDTO[] = [
         last_name: "Кузнецов",
         phone_number: "+7 (999) 555-00-11",
         avatar_url: "/ProfileWhite.png",
-        active_requests_count: 1,
+        active_requests_count: 2,
         is_admin: false,
     },
 ];
@@ -96,7 +96,7 @@ export const AdminRepository = {
 
     async updateRequest(
         id: number,
-        data: { status?: string; comment?: string; is_solved?: boolean }
+        data: { comment?: string; is_solved?: boolean; lot_id?: number | null }
     ): Promise<void> {
         await apiRequest(`/requests/${id}`, {
             method: "PATCH",

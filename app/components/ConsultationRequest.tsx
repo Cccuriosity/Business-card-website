@@ -4,26 +4,35 @@ import Image from "next/image";
 import Button from "@/app/components/Buttons/Button";
 import TextArea from "@/app/components/Inputs/TextArea";
 import { Request } from "@/app/types/request";
+import DropDownInput from "@/app/components/Inputs/DropDownInput";
 
 interface ConsultationRequestProps {
     request: Request;
     isAdmin?: boolean;
-    onSave?: (id: number, data: { is_solved?: boolean; comment?: string }) => void;
-    onDelete?: (id: number) => void;
+    availableLots?: { id: number; label: string }[];
+    onSave?: (
+        id: number,
+        data: { is_solved?: boolean; comment?: string; lot_id?: number | null }
+    ) => void;
 }
 
 export default function ConsultationRequest({
     request,
     isAdmin,
+    availableLots,
     onSave,
-    onDelete,
 }: ConsultationRequestProps) {
     const [isEditing, setIsEditing] = useState(false);
     const [editedComment, setEditedComment] = useState(request.comment ?? "");
     const [editedSolved, setEditedSolved] = useState(request.isSolved);
+    const [editedLotId, setEditedLotId] = useState<number | null>(request.lot?.id ?? null);
 
     const handleSave = () => {
-        onSave?.(request.id, { is_solved: editedSolved, comment: editedComment });
+        onSave?.(request.id, {
+            is_solved: editedSolved,
+            comment: editedComment,
+            lot_id: editedLotId,
+        });
         setIsEditing(false);
     };
 
@@ -38,6 +47,20 @@ export default function ConsultationRequest({
             <div className={styles.Request}>
                 <span className={styles.Title}>Заявка на бесплатную консультацию</span>
                 <div className={styles.CommentWrapper}>
+                    {availableLots && availableLots.length > 0 && (
+                        <div className={styles.Wrapper}>
+                            <span className={styles.Label}>Автомобиль: </span>
+                            <DropDownInput
+                                options={availableLots.map((l) => l.label)}
+                                value={availableLots.find((l) => l.id === editedLotId)?.label ?? ""}
+                                onChange={(val) => {
+                                    const lot = availableLots.find((l) => l.label === val);
+                                    setEditedLotId(lot?.id ?? null);
+                                }}
+                                placeholder="Выберите лот"
+                            />
+                        </div>
+                    )}
                     <span className={styles.Label}>Комментарий: </span>
                     <TextArea
                         value={editedComment}
@@ -84,10 +107,14 @@ export default function ConsultationRequest({
                     <span className={styles.Content}>{request.callTime}</span>
                 </div>
             )}
-            {request.carName && (
+            {(request.lot || request.carName) && (
                 <div>
                     <span className={styles.Label}>Автомобиль: </span>
-                    <span className={styles.Content}>{request.carName}</span>
+                    <span className={styles.Content}>
+                        {request.lot
+                            ? `${request.lot.manufacturer} ${request.lot.model} ${request.lot.year}`
+                            : request.carName}
+                    </span>
                 </div>
             )}
             {request.comment && (

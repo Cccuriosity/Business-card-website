@@ -1,3 +1,5 @@
+import { Review } from "@/app/types/review";
+
 export interface Car {
     id: number;
     manufacturer: string;
@@ -13,4 +15,5 @@ export interface Car {
     isSold: boolean;
     soldAt?: string;
     images: string[];
+    review?: Review;
 }

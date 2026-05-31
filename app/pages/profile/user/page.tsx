@@ -14,7 +14,10 @@ export default function UserPage() {
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
-        UserRepository.getProfile().then(setUser);
+        UserRepository.getProfile().then((user) => {
+            if (user.isAdmin) router.push("/pages/admin");
+            else setUser(user);
+        });
     }, []);
 
     const handleSave = async (data: Partial<User>, avatarFile?: File) => {
@@ -24,7 +27,8 @@ export default function UserPage() {
 
     const handleLogout = () => {
         localStorage.removeItem("token");
-        router.push("/pages/auth/login");
+        localStorage.removeItem("isAdmin");
+        router.push("/pages/profile");
     };
 
     const handleDeleteUser = async () => {

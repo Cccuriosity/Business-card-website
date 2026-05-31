@@ -5,7 +5,7 @@
     justify-content: space-between;
     position: fixed;
     height: 4rem;
-    z-index: 100;
+    z-index: 1;
 }
 
 .Buttons {
@@ -56,7 +56,7 @@
         left: 0;
         width: 100%;
         background: var(--blue);
-        z-index: 100;
+        z-index: 1;
     }
 
     .ButtonsOpen {

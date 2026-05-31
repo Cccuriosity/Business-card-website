@@ -19,6 +19,16 @@ export interface EngineVolumeDTO {
     volume: number;
 }
 
+export interface PriceRangeDTO {
+    min: number;
+    max: number;
+}
+
+export interface MileageRangeDTO {
+    min: number;
+    max: number;
+}
+
 export interface FilterOptionsDTO {
     manufacturers: ManufacturerDTO[];
     car_models: CarModelDTO[];
@@ -27,4 +37,6 @@ export interface FilterOptionsDTO {
     transmissions: string[];
     drive_types: string[];
     years: number[];
+    price_range: PriceRangeDTO;
+    mileage_range: MileageRangeDTO;
 }

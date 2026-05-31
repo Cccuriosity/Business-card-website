@@ -29,10 +29,19 @@
     gap: 0.5rem;
 }
 
+.RowBottom {
+    align-items: flex-end;
+}
+
 .Error {
     font-size: var(--big-font-size);
     font-weight: var(--light);
-    align-self: center;
+}
+
+.Wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 @media (max-width: 768px) {

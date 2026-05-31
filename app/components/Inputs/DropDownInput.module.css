@@ -69,3 +69,17 @@
     font-size: var(--large-font-size);
     padding: 0.5rem;
 }
+
+@media (max-width: 768px) {
+    .Input {
+        font-size: var(--medium-font-size);
+    }
+
+    .Item {
+        font-size: var(--medium-font-size);
+    }
+
+    .Empty {
+        font-size: var(--medium-font-size);
+    }
+}

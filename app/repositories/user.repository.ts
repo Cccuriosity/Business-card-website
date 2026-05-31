@@ -21,11 +21,27 @@ const MOCK_USER: ProfileDTO = {
 const MOCK_REQUESTS: RequestDTO[] = [
     {
         id: 1,
-        car_name: "BMW X5",
+        car_name: "Toyota Tundra",
+        lot: {
+            id: 1,
+            manufacturer: "Toyota",
+            model: "Tundra",
+            year: 2023,
+            body_number: "5TFDY5F19PX123456",
+        },
         call_time: "14:00",
         comment: "Хочу узнать подробнее",
-        is_solved: false,
+        is_solved: true,
         created_at: "2025-05-01",
+    },
+    {
+        id: 2,
+        car_name: "BMW X5",
+        lot: null,
+        call_time: "10:00",
+        comment: null,
+        is_solved: false,
+        created_at: "2025-05-15",
     },
 ];
 

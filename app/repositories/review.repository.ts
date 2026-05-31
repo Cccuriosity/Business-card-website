@@ -31,25 +31,24 @@ const MOCK_REVIEWS: ReviewDTO[] = [
         comment: "Хорошая машина, но расход великоват.",
         created_at: "2025-04-15",
     },
-    {
-        id: 3,
-        lot_id: 3,
-        manufacturer: "BMW",
-        model: "X5",
-        first_name: "Сергей",
-        last_name: "Кузнецов",
-        avatar_url: "/ProfileWhite.png",
-        rating: 5,
-        comment: "Мечта, а не машина!",
-        created_at: "2025-03-20",
-    },
 ];
 
 export const ReviewRepository = {
-    async getReviews(): Promise<Review[]> {
+    async getReviews(params?: {
+        date_order?: "asc" | "desc";
+        rating_order?: "asc" | "desc";
+        page?: number;
+        limit?: number;
+    }): Promise<Review[]> {
         if (USE_MOCK) return MOCK_REVIEWS.map(mapReviewToDomain);
 
-        const res = await fetch(`${API_BASE}/reviews`);
+        const query = new URLSearchParams();
+        if (params?.date_order) query.set("date_order", params.date_order);
+        if (params?.rating_order) query.set("rating_order", params.rating_order);
+        if (params?.page) query.set("page", params.page.toString());
+        if (params?.limit) query.set("limit", params.limit.toString());
+
+        const res = await fetch(`${API_BASE}/reviews?${query.toString()}`);
         if (!res.ok) throw new Error(`Ошибка ${res.status}`);
         const data: ReviewDTO[] = await res.json();
         return data.map(mapReviewToDomain);

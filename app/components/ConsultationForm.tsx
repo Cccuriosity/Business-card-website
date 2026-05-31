@@ -1,20 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ConsultationForm.module.css";
 import Input from "@/app/components/Inputs/Input";
 import Button from "@/app/components/Buttons/Button";
 import TextArea from "@/app/components/Inputs/TextArea";
 import { RequestRepository } from "@/app/repositories/request.repository";
+import { useSearchParams } from "next/navigation";
 
 interface ConsultationFormProps {
     authorized: boolean;
 }
 
 export default function ConsultationForm({ authorized }: ConsultationFormProps) {
-    const [carName, setCarName] = useState("");
+    const searchParams = useSearchParams();
     const [callTime, setCallTime] = useState("");
     const [comment, setComment] = useState("");
+    const [carName, setCarName] = useState(searchParams.get("car") ?? "");
+
+    useEffect(() => {
+        if (searchParams.get("car")) {
+            document.getElementById("consultation")?.scrollIntoView({ behavior: "smooth" });
+        }
+    }, []);
 
     const handleSubmit = async () => {
         if (!carName || !callTime) return;
@@ -25,7 +33,7 @@ export default function ConsultationForm({ authorized }: ConsultationFormProps) 
     };
 
     return (
-        <div className={styles.Container}>
+        <div className={styles.Container} id="consultation">
             <span className={styles.Title}>Закажите бесплатную консультацию</span>
             {authorized ? (
                 <form className={styles.Form}>

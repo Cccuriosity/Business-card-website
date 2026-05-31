@@ -13,8 +13,12 @@ import { User } from "@/app/types/user";
 interface ProfileProps {
     user: User;
     viewerIsAdmin?: boolean;
+    availableLots?: { id: number; label: string }[];
     onSave?: (data: Partial<User>, avatarFile?: File) => void;
-    onSaveRequest?: (id: number, data: { status?: string; comment?: string }) => void;
+    onSaveRequest?: (
+        id: number,
+        data: { is_solved?: boolean; comment?: string; lot_id?: number | null }
+    ) => void;
     onLogout?: () => void;
     onDeleteUser?: () => void;
 }
@@ -30,8 +34,10 @@ export default function Profile({
     user,
     viewerIsAdmin = false,
     onSave,
+    onLogout,
     onDeleteUser,
     onSaveRequest,
+    availableLots,
 }: ProfileProps) {
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -158,6 +164,7 @@ export default function Profile({
                                 request={req}
                                 isAdmin={viewerIsAdmin}
                                 onSave={onSaveRequest}
+                                availableLots={availableLots}
                             />
                         ))
                     ) : (
@@ -166,7 +173,7 @@ export default function Profile({
                 </div>
 
                 {!viewerIsAdmin && (
-                    <Button variant={"Dark"} onClick={() => router.push("/pages/profile")}>
+                    <Button variant={"Dark"} onClick={onLogout}>
                         Выйти
                     </Button>
                 )}

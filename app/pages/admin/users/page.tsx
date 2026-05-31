@@ -20,7 +20,7 @@ export default function AdminUsersPage() {
     return (
         <>
             <Header />
-            <div className={styles.Page}>
+            <div className={styles.AdminUsersPage}>
                 <span className={styles.Title}>Администрирование</span>
                 <span className={styles.Subtitle}>Пользователи</span>
 

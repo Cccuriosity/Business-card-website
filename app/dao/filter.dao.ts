@@ -14,5 +14,7 @@ export function mapFiltersToDomain(dto: FilterOptionsDTO): FilterOptions {
         transmissions: dto.transmissions,
         driveTypes: dto.drive_types,
         years: dto.years,
+        priceRange: { min: dto.price_range.min, max: dto.price_range.max },
+        mileageRange: { min: dto.mileage_range.min, max: dto.mileage_range.max },
     };
 }

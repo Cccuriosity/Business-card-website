@@ -1,5 +1,6 @@
 import { LotListItemDTO, LotDetailDTO } from "@/app/dto/car.dto";
 import { Car } from "@/app/types/car";
+import { mapReviewToDomain } from "@/app/dao/review.dao";
 
 export function mapLotListItemToDomain(dto: LotListItemDTO): Car {
     return {
@@ -42,5 +43,6 @@ export function mapLotDetailToDomain(dto: LotDetailDTO): Car {
         isSold: dto.is_sold,
         soldAt: parseDate(dto.sold_date),
         images: dto.images,
+        review: dto.review ? mapReviewToDomain(dto.review) : undefined,
     };
 }

@@ -1,4 +1,4 @@
-.Page {
+.AdminUsersPage {
     padding: 6rem 2rem 2rem;
     width: 100%;
     min-height: 100vh;
@@ -36,4 +36,22 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .AdminUsersPage {
+        padding: 5rem 1rem 1rem;
+    }
+
+    .Title {
+        font-size: var(--extra-large-font-size);
+    }
+
+    .Subtitle {
+        font-size: var(--large-font-size);
+    }
+
+    .Grid {
+        grid-template-columns: 1fr;
+    }
 }

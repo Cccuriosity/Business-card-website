@@ -1,8 +1,17 @@
+export interface LotShort {
+    id: number;
+    manufacturer: string;
+    model: string;
+    year: number;
+    bodyNumber: string;
+}
+
 export interface Request {
     id: number;
-    callTime?: string;
     carName?: string;
+    lot?: LotShort;
+    callTime?: string;
     comment?: string;
-    createdAt: string;
     isSolved: boolean;
+    createdAt: string;
 }

@@ -7,6 +7,7 @@ import styles from "./CarDetail.module.css";
 import Button from "@/app/components/Buttons/Button";
 import Input from "@/app/components/Inputs/Input";
 import DropDownInput from "@/app/components/Inputs/DropDownInput";
+import { validateCar } from "@/app/utils/validateCar";
 
 function InfoRow({ label, value }: { label: string; value: string }) {
     return (
@@ -30,6 +31,7 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
     const [isEditMode, setIsEditMode] = useState(false);
     const [editData, setEditData] = useState<Car>({ ...car });
     const [imagePreviews, setImagePreviews] = useState<string[]>(car.images);
+    const [error, setError] = useState("");
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -47,6 +49,12 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
     };
 
     const handleSave = () => {
+        const err = validateCar(editData);
+        if (err) {
+            setError(err);
+            return;
+        }
+        setError("");
         onSave?.({ ...editData, images: imagePreviews });
         setIsEditMode(false);
     };
@@ -272,7 +280,7 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
                         )}
                     </div>
                 </div>
-
+                {error && <span className={styles.Error}>{error}</span>}
                 <div className={styles.AdminActions}>
                     <Button variant={"Light"} onClick={handleCancel}>
                         Отмена

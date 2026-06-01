@@ -8,9 +8,13 @@ import styles from "./CarDetail.module.css";
 import Button from "@/app/components/Buttons/Button";
 import Input from "@/app/components/Inputs/Input";
 import DropDownInput from "@/app/components/Inputs/DropDownInput";
+import { validateCar } from "@/app/utils/validateCar";
+import { useToast } from "@/app/hooks/useToast";
+import Toast from "@/app/components/Toast";
 
 export default function CarCreate() {
     const router = useRouter();
+    const [error, setError] = useState("");
     const [formData, setFormData] = useState<Car>({
         id: 0,
         manufacturer: "",
@@ -31,6 +35,7 @@ export default function CarCreate() {
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [activeImage, setActiveImage] = useState<string>("/DefaultImage.png");
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const { toast, showToast } = useToast();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
@@ -44,8 +49,19 @@ export default function CarCreate() {
     };
 
     const handleSubmit = async () => {
-        await AdminRepository.createCar({ ...formData, images: imagePreviews });
-        router.push("/pages/catalog");
+        const err = validateCar({ ...formData, images: imagePreviews });
+        if (err) {
+            setError(err);
+            return;
+        }
+        setError("");
+        try {
+            await AdminRepository.createCar({ ...formData, images: imagePreviews });
+            showToast("Машина добавлена");
+            router.push("/pages/catalog");
+        } catch {
+            showToast("Ошибка при добавлении", "error");
+        }
     };
 
     return (
@@ -241,12 +257,13 @@ export default function CarCreate() {
                     )}
                 </div>
             </div>
-
             <div className={styles.Actions}>
+                {error && <span className={styles.Error}>{error}</span>}
                 <Button variant="Dark" type="button" onClick={handleSubmit}>
                     Добавить
                 </Button>
             </div>
+            {toast && <Toast message={toast.message} type={toast.type} />}
         </div>
     );
 }

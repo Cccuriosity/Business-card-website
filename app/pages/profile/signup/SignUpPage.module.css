@@ -36,6 +36,7 @@
 .Error {
     font-size: var(--big-font-size);
     font-weight: var(--light);
+    align-self: center;
 }
 
 .Wrapper {

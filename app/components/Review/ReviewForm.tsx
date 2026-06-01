@@ -7,6 +7,7 @@ import Image from "next/image";
 import TextArea from "@/app/components/Inputs/TextArea";
 import { ReviewRepository } from "@/app/repositories/review.repository";
 import DropDownInput from "@/app/components/Inputs/DropDownInput";
+import Input from "@/app/components/Inputs/Input";
 
 interface ReviewFormProps {
     onSubmit: () => void;
@@ -17,14 +18,37 @@ export default function ReviewForm({ onSubmit, availableLots = [] }: ReviewFormP
     const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
     const [comment, setComment] = useState("");
-    const [lotId, setLotId] = useState<number | null>(null);
+    const [lotId, setLotId] = useState<number | null>(
+        availableLots.length === 1 ? availableLots[0].id : null
+    );
+    const [error, setError] = useState("");
 
     const handleSubmit = async () => {
-        if (!rating || !comment || !lotId) return;
-        await ReviewRepository.createReview({ lot_id: lotId, rating, comment });
-        setRating(0);
-        setComment("");
-        onSubmit?.();
+        const resolvedLotId = availableLots.length === 1 ? availableLots[0].id : lotId;
+
+        if (!resolvedLotId) {
+            setError("Выберите автомобиль");
+            return;
+        }
+        if (!rating) {
+            setError("Выберите оценку");
+            return;
+        }
+        if (!comment.trim()) {
+            setError("Напишите комментарий");
+            return;
+        }
+
+        setError("");
+        try {
+            await ReviewRepository.createReview({ lot_id: resolvedLotId, rating, comment });
+            setRating(0);
+            setComment("");
+            onSubmit?.();
+        } catch (err) {
+            setError("Ошибка при отправке отзыва");
+            console.error(err);
+        }
     };
 
     if (!availableLots.length) {
@@ -39,17 +63,28 @@ export default function ReviewForm({ onSubmit, availableLots = [] }: ReviewFormP
     return (
         <form className={styles.ReviewForm}>
             <span className={styles.Title}>Приобрели авто из Японии? Оставьте отзыв!</span>
-            <div className={styles.LotSelect}>
-                <DropDownInput
-                    options={availableLots.map((l) => l.label)}
-                    value={availableLots.find((l) => l.id === lotId)?.label ?? ""}
-                    onChange={(val) => {
-                        const lot = availableLots.find((l) => l.label === val);
-                        setLotId(lot?.id ?? null);
-                    }}
-                    placeholder="Выберите автомобиль"
-                />
-            </div>
+            {availableLots.length === 1 ? (
+                <div className={styles.LotSelect}>
+                    <Input
+                        type="text"
+                        value={availableLots[0].label}
+                        placeholder=""
+                        onChange={() => {}}
+                        readOnly
+                    />
+                </div>
+            ) : (
+                <div className={styles.LotSelect}>
+                    <DropDownInput
+                        options={availableLots.map((l) => l.label)}
+                        value={availableLots.find((l) => l.id === lotId)?.label ?? ""}
+                        onChange={(val) =>
+                            setLotId(availableLots.find((l) => l.label === val)?.id ?? null)
+                        }
+                        placeholder="Выберите автомобиль"
+                    />
+                </div>
+            )}
             <div className={styles.Stars}>
                 {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -76,6 +111,7 @@ export default function ReviewForm({ onSubmit, availableLots = [] }: ReviewFormP
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
             />
+            {error && <span className={styles.Error}>{error}</span>}
             <Button variant="Dark" type="button" onClick={handleSubmit}>
                 Оставить отзыв
             </Button>

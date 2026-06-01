@@ -10,6 +10,10 @@
     resize: none;
 }
 
+.Input:read-only {
+    cursor: default;
+}
+
 .Input::placeholder {
     color: var(--dark-gray);
     font-weight: var(--thin);

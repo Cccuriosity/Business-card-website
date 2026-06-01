@@ -9,12 +9,15 @@ import { AdminRepository } from "@/app/repositories/admin.repository";
 import { User } from "@/app/types/user";
 import { Car } from "@/app/types/car";
 import { CarRepository } from "@/app/repositories/car.repository";
+import { useToast } from "@/app/hooks/useToast";
+import Toast from "@/app/components/Toast";
 
 export default function AdminUserPage() {
     const { id } = useParams();
     const router = useRouter();
     const [user, setUser] = useState<User | null>(null);
     const [cars, setCars] = useState<Car[]>([]);
+    const { toast, showToast } = useToast();
 
     useEffect(() => {
         AdminRepository.getUserById(Number(id)).then(setUser);
@@ -31,17 +34,26 @@ export default function AdminUserPage() {
 
     const handleDeleteUser = async () => {
         if (!user) return;
-        await AdminRepository.deleteUser(user.id);
-        router.push("/pages/admin/users");
+        try {
+            await AdminRepository.deleteUser(user.id);
+            router.push("/pages/admin/users");
+        } catch {
+            showToast("Ошибка при удалении", "error");
+        }
     };
 
     const handleSaveRequest = async (
         requestId: number,
         data: { is_solved?: boolean; comment?: string; lot_id?: number | null }
     ) => {
-        await AdminRepository.updateRequest(requestId, data);
-        const updated = await AdminRepository.getUserById(Number(id));
-        setUser(updated);
+        try {
+            await AdminRepository.updateRequest(requestId, data);
+            const updated = await AdminRepository.getUserById(Number(id));
+            setUser(updated);
+            showToast("Заявка обновлена");
+        } catch {
+            showToast("Ошибка при обновлении заявки", "error");
+        }
     };
 
     if (!user) return null;
@@ -57,6 +69,7 @@ export default function AdminUserPage() {
                     viewerIsAdmin={true}
                     availableLots={availableLots}
                 />
+                {toast && <Toast message={toast.message} type={toast.type} />}
             </div>
         </>
     );

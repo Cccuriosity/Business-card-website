@@ -53,7 +53,7 @@ const MOCK_CAR_DETAIL: LotDetailDTO[] = [
         drive: "Полный",
         body_number: "5TFDY5F19PX123456",
         is_sold: true,
-        sold_date: "2026-06-15",
+        sold_date: "2026.06.15",
         review: {
             id: 1,
             lot_id: 1,

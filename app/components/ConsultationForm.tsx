@@ -7,6 +7,9 @@ import Button from "@/app/components/Buttons/Button";
 import TextArea from "@/app/components/Inputs/TextArea";
 import { RequestRepository } from "@/app/repositories/request.repository";
 import { useSearchParams } from "next/navigation";
+import { CreateRequestDTO } from "@/app/dto/request.dto";
+import { useToast } from "@/app/hooks/useToast";
+import Toast from "@/app/components/Toast";
 
 interface ConsultationFormProps {
     authorized: boolean;
@@ -17,6 +20,7 @@ export default function ConsultationForm({ authorized }: ConsultationFormProps) 
     const [callTime, setCallTime] = useState("");
     const [comment, setComment] = useState("");
     const [carName, setCarName] = useState(searchParams.get("car") ?? "");
+    const { toast, showToast } = useToast();
 
     useEffect(() => {
         if (searchParams.get("car")) {
@@ -25,11 +29,20 @@ export default function ConsultationForm({ authorized }: ConsultationFormProps) 
     }, []);
 
     const handleSubmit = async () => {
-        if (!carName || !callTime) return;
-        await RequestRepository.createRequest({ car_name: carName, call_time: callTime, comment });
-        setCarName("");
-        setCallTime("");
-        setComment("");
+        try {
+            const data: CreateRequestDTO = {
+                car_name: carName || undefined,
+                call_time: callTime || undefined,
+                comment: comment || undefined,
+            };
+            await RequestRepository.createRequest(data);
+            setCarName("");
+            setCallTime("");
+            setComment("");
+            showToast("Заявка отправлена");
+        } catch {
+            showToast("Ошибка при отправке заявки", "error");
+        }
     };
 
     return (
@@ -54,6 +67,7 @@ export default function ConsultationForm({ authorized }: ConsultationFormProps) 
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                     />
+                    {toast && <Toast message={toast.message} type={toast.type} />}
                     <Button variant="Dark" type="button" onClick={handleSubmit}>
                         Отправить заявку
                     </Button>

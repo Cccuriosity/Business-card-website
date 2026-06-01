@@ -15,26 +15,24 @@ export default function SignUpPage() {
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [error, setError] = useState("");
     const validate = () => {
-        const newErrors: Record<string, string> = {};
-        if (!lastName.trim()) newErrors.lastName = "Введите фамилию";
-        if (!firstName.trim()) newErrors.firstName = "Введите имя";
-        if (!email.trim()) newErrors.email = "Введите почту";
-        else if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = "Некорректная почта";
-        if (!phone.trim()) newErrors.phone = "Введите телефон";
-        if (!password) newErrors.password = "Введите пароль";
-        else if (password.length < 6) newErrors.password = "Минимум 6 символов";
-        if (password !== confirmPassword) newErrors.confirm = "Пароли не совпадают";
-        return newErrors;
+        if (!lastName.trim()) return "Введите фамилию";
+        if (!firstName.trim()) return "Введите имя";
+        if (!email.trim()) return "Введите почту";
+        if (!/\S+@\S+\.\S+/.test(email)) return "Некорректная почта";
+        if (!phone.trim()) return "Введите телефон";
+        if (!password) return "Введите пароль";
+        if (password !== confirmPassword) return "Пароли не совпадают";
+        return "";
     };
     const handleRegister = async () => {
-        const newErrors = validate();
-        if (Object.keys(newErrors).length) {
-            setErrors(newErrors);
+        const err = validate();
+        if (err) {
+            setError(err);
             return;
         }
-        setErrors({});
+        setError("");
         try {
             await AuthRepository.register({
                 first_name: firstName,
@@ -45,7 +43,7 @@ export default function SignUpPage() {
             });
             router.push(`/pages/auth/confirmation?email=${email}&type=register`);
         } catch {
-            setErrors({ general: "Ошибка при регистрации" });
+            setError("Ошибка при регистрации");
         }
     };
     return (
@@ -56,9 +54,6 @@ export default function SignUpPage() {
                     <span className={styles.Title}>Добро пожаловать!</span>
                     <div className={styles.Row}>
                         <div className={styles.Wrapper}>
-                            {errors.lastName && (
-                                <span className={styles.Error}>{errors.lastName}</span>
-                            )}
                             <Input
                                 type="text"
                                 placeholder="Фамилия"
@@ -67,7 +62,6 @@ export default function SignUpPage() {
                             />
                         </div>
                         <div className={styles.Wrapper}>
-                            {errors.email && <span className={styles.Error}>{errors.email}</span>}
                             <Input
                                 type="email"
                                 placeholder="Почта"
@@ -78,9 +72,6 @@ export default function SignUpPage() {
                     </div>
                     <div className={styles.Row}>
                         <div className={styles.Wrapper}>
-                            {errors.firstName && (
-                                <span className={styles.Error}>{errors.firstName}</span>
-                            )}
                             <Input
                                 type="text"
                                 placeholder="Имя"
@@ -89,7 +80,6 @@ export default function SignUpPage() {
                             />
                         </div>
                         <div className={styles.Wrapper}>
-                            {errors.phone && <span className={styles.Error}>{errors.phone}</span>}
                             <Input
                                 type="text"
                                 placeholder="Номер телефона"
@@ -100,9 +90,6 @@ export default function SignUpPage() {
                     </div>
                     <div className={`${styles.Row} ${styles.RowBottom}`}>
                         <div className={styles.Wrapper}>
-                            {errors.password && (
-                                <span className={styles.Error}>{errors.password}</span>
-                            )}
                             <Input
                                 type="password"
                                 placeholder="Пароль"
@@ -111,9 +98,6 @@ export default function SignUpPage() {
                             />
                         </div>
                         <div className={styles.Wrapper}>
-                            {errors.confirm && (
-                                <span className={styles.Error}>{errors.confirm}</span>
-                            )}
                             <Input
                                 type="password"
                                 placeholder="Повторите пароль"
@@ -122,7 +106,7 @@ export default function SignUpPage() {
                             />
                         </div>
                     </div>
-                    {errors.general && <span className={styles.Error}>{errors.general}</span>}
+                    {error && <span className={styles.Error}>{error}</span>}
                     <Button variant={"Dark"} type={"button"} onClick={handleRegister}>
                         Зарегистрироваться
                     </Button>

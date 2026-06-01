@@ -45,7 +45,12 @@ export default function InfoPage() {
                             </span>
                         </div>
                         <div className={styles.Photo}>
-                            <Image src="/ProfileWhite.png" alt="Фото" width={120} height={120} />
+                            <Image
+                                src="/Seller.jpg"
+                                alt="Фото"
+                                fill
+                                style={{ objectFit: "cover" }}
+                            />
                         </div>
                     </div>
                 </div>

@@ -7,10 +7,12 @@ import Header from "@/app/components/Header";
 import styles from "./UserPage.module.css";
 import { UserRepository } from "@/app/repositories/user.repository";
 import { User } from "@/app/types/user";
-import { AdminRepository } from "@/app/repositories/admin.repository";
+import { useToast } from "@/app/hooks/useToast";
+import Toast from "@/app/components/Toast";
 
 export default function UserPage() {
     const router = useRouter();
+    const { toast, showToast } = useToast();
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
@@ -21,8 +23,13 @@ export default function UserPage() {
     }, []);
 
     const handleSave = async (data: Partial<User>, avatarFile?: File) => {
-        const updated = await UserRepository.updateProfile(data, avatarFile);
-        setUser(updated);
+        try {
+            const updated = await UserRepository.updateProfile(data, avatarFile);
+            setUser(updated);
+            showToast("Профиль обновлён");
+        } catch {
+            showToast("Ошибка при сохранении", "error");
+        }
     };
 
     const handleLogout = () => {
@@ -31,30 +38,15 @@ export default function UserPage() {
         router.push("/pages/profile");
     };
 
-    const handleDeleteUser = async () => {
-        if (!user) return;
-        await AdminRepository.deleteUser(user.id);
-        router.push("/pages/admin/users");
-    };
-
-    const handleSaveRequest = async (id: number, data: { status?: string; comment?: string }) => {
-        await AdminRepository.updateRequest(id, data);
-    };
-
     if (!user) return null;
 
     return (
         <>
             <Header />
             <div className={styles.UserPage}>
-                <Profile
-                    user={user}
-                    onSave={handleSave}
-                    onDeleteUser={handleDeleteUser}
-                    onLogout={handleLogout}
-                    onSaveRequest={handleSaveRequest}
-                />
+                <Profile user={user} onSave={handleSave} onLogout={handleLogout} />
             </div>
+            {toast && <Toast message={toast.message} type={toast.type} />}
         </>
     );
 }

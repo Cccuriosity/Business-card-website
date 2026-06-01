@@ -42,12 +42,9 @@
 }
 
 .Photo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background: var(--gray);
+    position: relative;
+    width: 80%;
+    aspect-ratio: 3 / 4;
 }
 
 .Stats {

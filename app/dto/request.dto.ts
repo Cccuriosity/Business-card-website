@@ -17,7 +17,7 @@ export interface RequestDTO {
 }
 
 export interface CreateRequestDTO {
-    car_name: string;
-    call_time: string;
+    car_name?: string;
+    call_time?: string;
     comment?: string;
 }

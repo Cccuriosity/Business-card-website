@@ -15,10 +15,15 @@ export default function PasswordChangePage() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
     const handleReset = async () => {
+        if (!newPassword) {
+            setError("Введите новый пароль");
+            return;
+        }
         if (newPassword !== confirmPassword) {
             setError("Пароли не совпадают");
             return;
         }
+
         try {
             await AuthRepository.forgotPasswordReset({
                 reset_token: token,
@@ -26,7 +31,8 @@ export default function PasswordChangePage() {
             });
             router.push("/pages/auth/login");
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Ошибка при смене пароля");
+            setError("Ошибка при смене пароля");
+            console.error(err);
         }
     };
     return (

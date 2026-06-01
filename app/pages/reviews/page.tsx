@@ -11,12 +11,27 @@ import { ReviewRepository } from "@/app/repositories/review.repository";
 import { Review } from "@/app/types/review";
 import { User } from "@/app/types/user";
 import { UserRepository } from "@/app/repositories/user.repository";
+import { useToast } from "@/app/hooks/useToast";
+import Toast from "@/app/components/Toast";
 
 export default function ReviewsPage() {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [user, setUser] = useState<User | null>(null);
     const [dateOrder, setDateOrder] = useState<"asc" | "desc">("desc");
     const [ratingOrder, setRatingOrder] = useState<"asc" | "desc">("desc");
+    const { toast, showToast } = useToast();
+
+    const loadUser = () => {
+        UserRepository.getProfile()
+            .then(setUser)
+            .catch(() => setUser(null));
+    };
+
+    const handleReviewSubmit = () => {
+        loadUser();
+        loadReviews();
+        showToast("Отзыв отправлен");
+    };
 
     useEffect(() => {
         UserRepository.getProfile()
@@ -31,9 +46,9 @@ export default function ReviewsPage() {
     }, [dateOrder, ratingOrder]);
 
     const loadReviews = () => {
-        ReviewRepository.getReviews({ date_order: dateOrder, rating_order: ratingOrder }).then(
-            setReviews
-        );
+        ReviewRepository.getReviews({ date_order: dateOrder, rating_order: ratingOrder })
+            .then(setReviews)
+            .catch(() => showToast("Ошибка загрузки отзывов", "error"));
     };
 
     const availableLots =
@@ -49,7 +64,8 @@ export default function ReviewsPage() {
             <Header />
             <PhoneBanner number={"+79025223190"} />
             <div className={styles.ReviewsPage}>
-                <ReviewForm onSubmit={loadReviews} availableLots={availableLots} />
+                <ReviewForm onSubmit={handleReviewSubmit} availableLots={availableLots} />
+                {toast && <Toast message={toast.message} type={toast.type} />}
                 <SortMenu
                     dateOrder={dateOrder}
                     ratingOrder={ratingOrder}

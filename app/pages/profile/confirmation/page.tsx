@@ -20,16 +20,30 @@ export default function ConfirmationPage() {
     const [error, setError] = useState("");
 
     const handleSendCode = async () => {
+        if (!email.trim()) {
+            setError("Введите почту");
+            return;
+        }
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            setError("Некорректная почта");
+            return;
+        }
+
         try {
             await AuthRepository.forgotPasswordRequest({ email });
             setCodeSent(true);
             setError("");
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Ошибка отправки кода");
+        } catch {
+            setError("Ошибка отправки кода");
         }
     };
 
     const handleVerify = async () => {
+        if (!code.trim()) {
+            setError("Введите код");
+            return;
+        }
+
         try {
             if (type === "register") {
                 await AuthRepository.verify({ email, code });
@@ -38,8 +52,8 @@ export default function ConfirmationPage() {
                 const resetToken = await AuthRepository.forgotPasswordVerify({ email, code });
                 router.push(`/pages/profile/passwordchange?token=${resetToken}`);
             }
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Неверный код");
+        } catch {
+            setError("Неверный код");
         }
     };
 
@@ -58,6 +72,7 @@ export default function ConfirmationPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
+                            {error && <span className={styles.Error}>{error}</span>}
                             <Button variant="Dark" type="button" onClick={handleSendCode}>
                                 Отправить код
                             </Button>
@@ -73,13 +88,12 @@ export default function ConfirmationPage() {
                                 value={code}
                                 onChange={(e) => setCode(e.target.value)}
                             />
+                            {error && <span className={styles.Error}>{error}</span>}
                             <Button variant="Dark" type="button" onClick={handleVerify}>
                                 Проверить
                             </Button>
                         </>
                     )}
-
-                    {error && <span className={styles.Error}>{error}</span>}
                 </form>
             </div>
         </>

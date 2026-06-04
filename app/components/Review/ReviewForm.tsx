@@ -8,13 +8,19 @@ import TextArea from "@/app/components/Inputs/TextArea";
 import { ReviewRepository } from "@/app/repositories/review.repository";
 import DropDownInput from "@/app/components/Inputs/DropDownInput";
 import Input from "@/app/components/Inputs/Input";
+import { useRouter } from "next/navigation";
 
 interface ReviewFormProps {
     onSubmit: () => void;
     availableLots?: { id: number; label: string }[];
+    authorized?: boolean;
 }
 
-export default function ReviewForm({ onSubmit, availableLots = [] }: ReviewFormProps) {
+export default function ReviewForm({
+    onSubmit,
+    availableLots = [],
+    authorized = false,
+}: ReviewFormProps) {
     const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
     const [comment, setComment] = useState("");
@@ -22,6 +28,7 @@ export default function ReviewForm({ onSubmit, availableLots = [] }: ReviewFormP
         availableLots.length === 1 ? availableLots[0].id : null
     );
     const [error, setError] = useState("");
+    const router = useRouter();
 
     const handleSubmit = async () => {
         const resolvedLotId = availableLots.length === 1 ? availableLots[0].id : lotId;
@@ -50,6 +57,20 @@ export default function ReviewForm({ onSubmit, availableLots = [] }: ReviewFormP
             console.error(err);
         }
     };
+
+    if (!authorized) {
+        return (
+            <div className={styles.ReviewForm}>
+                <span className={styles.Title}>Приобрели авто из Японии? Оставьте отзыв!</span>
+                <span>
+                    Чтобы оставить отзыв необходимо{" "}
+                    <span className={styles.Link} onClick={() => router.push("/")}>
+                        авторизоваться
+                    </span>
+                </span>
+            </div>
+        );
+    }
 
     if (!availableLots.length) {
         return (

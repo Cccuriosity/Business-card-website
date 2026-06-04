@@ -48,6 +48,17 @@
     text-align: center;
 }
 
+.Link {
+    color: var(--blue);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.Hint {
+    font-size: var(--big-font-size);
+    font-weight: var(--light);
+}
+
 @media (max-width: 768px) {
     .Container {
         flex-direction: column;
@@ -67,5 +78,8 @@
 
     .Warning {
         font-size: var(--big-font-size);
+    }
+    .Hint {
+        font-size: var(--medium-font-size);
     }
 }

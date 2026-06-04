@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Header from "@/app/components/Header";
 import styles from "./InfoPage.module.css";
 import Button from "@/app/components/Buttons/Button";
@@ -97,7 +97,9 @@ export default function InfoPage() {
                         </Button>
                     </div>
                 </div>
-                <ConsultationForm authorized={authorized} />
+                <Suspense fallback={null}>
+                    <ConsultationForm authorized={authorized} />
+                </Suspense>
                 <Footer />
             </div>
         </>

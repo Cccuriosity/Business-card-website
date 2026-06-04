@@ -17,6 +17,7 @@
 
 .Review {
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
 }
 
@@ -24,5 +25,9 @@
     .PreviewPage {
         padding: 5rem 1rem 1rem;
         height: auto;
+    }
+    .OrderButton {
+        justify-content: flex-start;
+        padding: 1rem 0;
     }
 }

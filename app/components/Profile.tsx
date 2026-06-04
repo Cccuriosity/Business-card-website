@@ -110,11 +110,7 @@ export default function Profile({
                         ))}
 
                         <span
-                            onClick={() =>
-                                router.push(
-                                    `/pages/profile/confirmation?email=${user.email}&type=forgot`
-                                )
-                            }
+                            onClick={() => router.push(`/pages/profile/changepassword`)}
                             className={styles.Link}
                         >
                             Изменить пароль

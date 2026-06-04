@@ -127,25 +127,20 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
 
                         {imagePreviews.length > 1 && (
                             <div className={styles.Miniatures}>
-                                {imagePreviews.map(
-                                    (
-                                        src,
-                                        index // было car.images
-                                    ) => (
-                                        <div
-                                            key={src + index}
-                                            onClick={() => setActiveImage(src)}
-                                            className={`${styles.Miniature} ${activeImage === src ? styles.Active : ""}`}
-                                        >
-                                            <Image
-                                                src={src}
-                                                alt={`thumb-${index}`}
-                                                fill
-                                                style={{ objectFit: "cover" }}
-                                            />
-                                        </div>
-                                    )
-                                )}
+                                {imagePreviews.map((src, index) => (
+                                    <div
+                                        key={src + index}
+                                        onClick={() => setActiveImage(src)}
+                                        className={`${styles.Miniature} ${activeImage === src ? styles.Active : ""}`}
+                                    >
+                                        <Image
+                                            src={src}
+                                            alt={`thumb-${index}`}
+                                            fill
+                                            style={{ objectFit: "cover" }}
+                                        />
+                                    </div>
+                                ))}
                             </div>
                         )}
 

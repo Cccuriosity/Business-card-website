@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import Header from "@/app/components/Header";
@@ -14,6 +15,7 @@ import { CarRepository } from "@/app/repositories/car.repository";
 import { FilterRepository } from "@/app/repositories/filter.repository";
 import { FilterOptions } from "@/app/types/filter";
 import Button from "@/app/components/Buttons/Button";
+import { useInfiniteScroll } from "@/app/hooks/useInfiniteScroll";
 
 export default function CatalogPage() {
     const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
@@ -36,12 +38,18 @@ export default function CatalogPage() {
         return localStorage.getItem("isAdmin") === "true";
     });
     const router = useRouter();
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const loaderRef = useInfiniteScroll(() => setPage((prev) => prev + 1), hasMore, loading);
 
     useEffect(() => {
         FilterRepository.getFilters().then(setFilterOptions);
     }, []);
 
     useEffect(() => {
+        if (!hasMore || loading) return;
+        setLoading(true);
         CarRepository.getCars(
             {
                 search,
@@ -56,10 +64,18 @@ export default function CatalogPage() {
                 priceTo: priceTo ? Number(priceTo) : undefined,
                 mileageFrom: mileageFrom ? Number(mileageFrom) : undefined,
                 mileageTo: mileageTo ? Number(mileageTo) : undefined,
+                page,
+                limit: 10,
             },
             filterOptions
-        ).then(setCars);
+        )
+            .then((newCars) => {
+                if (newCars.length < 10) setHasMore(false);
+                setCars((prev) => (page === 1 ? newCars : [...prev, ...newCars]));
+            })
+            .finally(() => setLoading(false));
     }, [
+        page,
         brand,
         model,
         year,
@@ -71,6 +87,7 @@ export default function CatalogPage() {
         priceTo,
         mileageFrom,
         mileageTo,
+        search,
     ]);
 
     const availableCars = cars.filter((car) => !car.isSold);
@@ -208,6 +225,10 @@ export default function CatalogPage() {
                                 ))}
                             </div>
                         </>
+                    )}
+                    <div ref={loaderRef} style={{ height: "1px" }} />
+                    {loading && (
+                        <div style={{ textAlign: "center", padding: "1rem" }}>Загрузка...</div>
                     )}
                 </div>
             </div>

@@ -1,14 +1,13 @@
 "use client";
-
 import Header from "@/app/components/Header";
 import styles from "./ConfirmationPage.module.css";
 import Button from "@/app/components/Buttons/Button";
 import Input from "@/app/components/Inputs/Input";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AuthRepository } from "@/app/repositories/auth.repository";
 
-export default function ConfirmationPage() {
+function ConfirmationForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const emailFromParams = searchParams.get("email") || "";
@@ -50,7 +49,7 @@ export default function ConfirmationPage() {
                 router.push("/pages/auth/login");
             } else {
                 const resetToken = await AuthRepository.forgotPasswordVerify({ email, code });
-                router.push(`/pages/profile/passwordchange?token=${resetToken}`);
+                router.push(`/pages/profile/resetpassword?token=${resetToken}`);
             }
         } catch {
             setError("Неверный код");
@@ -58,44 +57,52 @@ export default function ConfirmationPage() {
     };
 
     return (
+        <div className={styles.ConfirmationPage}>
+            <form className={styles.Menu}>
+                <span className={styles.Title}>Подтверждение</span>
+
+                {!emailFromParams && (
+                    <>
+                        <Input
+                            type="email"
+                            placeholder="Введите вашу почту"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        {error && <span className={styles.Error}>{error}</span>}
+                        <Button variant="Dark" type="button" onClick={handleSendCode}>
+                            Отправить код
+                        </Button>
+                    </>
+                )}
+
+                {codeSent && (
+                    <>
+                        <span className={styles.Title}>Код отправлен на {email}</span>
+                        <Input
+                            type="text"
+                            placeholder="Код подтверждения"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
+                        />
+                        {error && <span className={styles.Error}>{error}</span>}
+                        <Button variant="Dark" type="button" onClick={handleVerify}>
+                            Проверить
+                        </Button>
+                    </>
+                )}
+            </form>
+        </div>
+    );
+}
+
+export default function ConfirmationPage() {
+    return (
         <>
             <Header />
-            <div className={styles.ConfirmationPage}>
-                <form className={styles.Menu}>
-                    <span className={styles.Title}>Подтверждение</span>
-
-                    {!emailFromParams && (
-                        <>
-                            <Input
-                                type="email"
-                                placeholder="Введите вашу почту"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                            {error && <span className={styles.Error}>{error}</span>}
-                            <Button variant="Dark" type="button" onClick={handleSendCode}>
-                                Отправить код
-                            </Button>
-                        </>
-                    )}
-
-                    {codeSent && (
-                        <>
-                            <span className={styles.Title}>Код отправлен на {email}</span>
-                            <Input
-                                type="text"
-                                placeholder="Код подтверждения"
-                                value={code}
-                                onChange={(e) => setCode(e.target.value)}
-                            />
-                            {error && <span className={styles.Error}>{error}</span>}
-                            <Button variant="Dark" type="button" onClick={handleVerify}>
-                                Проверить
-                            </Button>
-                        </>
-                    )}
-                </form>
-            </div>
+            <Suspense fallback={null}>
+                <ConfirmationForm />
+            </Suspense>
         </>
     );
 }

@@ -45,6 +45,24 @@
     flex: 1;
 }
 
+.Agreement {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.AgreementText {
+    font-size: var(--small-font-size);
+    font-weight: var(--light);
+}
+
+.Link {
+    color: var(--blue);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 @media (max-width: 768px) {
     .SignUpPage {
         padding: 5rem 1rem 1rem;

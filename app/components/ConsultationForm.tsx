@@ -10,6 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { CreateRequestDTO } from "@/app/dto/request.dto";
 import { useToast } from "@/app/hooks/useToast";
 import Toast from "@/app/components/Toast";
+import { useRouter } from "next/navigation";
 
 interface ConsultationFormProps {
     authorized: boolean;
@@ -21,6 +22,7 @@ export default function ConsultationForm({ authorized }: ConsultationFormProps) 
     const [comment, setComment] = useState("");
     const [carName, setCarName] = useState(searchParams.get("car") ?? "");
     const { toast, showToast } = useToast();
+    const router = useRouter();
 
     useEffect(() => {
         if (searchParams.get("car")) {
@@ -50,6 +52,10 @@ export default function ConsultationForm({ authorized }: ConsultationFormProps) 
             <span className={styles.Title}>Закажите бесплатную консультацию</span>
             {authorized ? (
                 <form className={styles.Form}>
+                    <span className={styles.Hint}>
+                        Поля необязательны к заполнению, при отправке пустой формы с вами свяжутся в
+                        ближайшее время
+                    </span>
                     <Input
                         type="text"
                         placeholder="Желаемый автомобиль"
@@ -63,7 +69,7 @@ export default function ConsultationForm({ authorized }: ConsultationFormProps) 
                         onChange={(e) => setCallTime(e.target.value)}
                     />
                     <TextArea
-                        placeholder="Комментарий к заявке (необязательно)"
+                        placeholder="Комментарий к заявке"
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                     />
@@ -76,7 +82,9 @@ export default function ConsultationForm({ authorized }: ConsultationFormProps) 
                 <div className={styles.Warning}>
                     <span>
                         Для того, чтобы оставить заявку на бесплатную консультацию, необходимо{" "}
-                        <span>авторизироваться</span>
+                        <span onClick={() => router.push("/pages/profile")} className={styles.Link}>
+                            авторизоваться
+                        </span>
                     </span>
                 </div>
             )}

@@ -16,6 +16,7 @@ export default function SignUpPage() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
+    const [agreed, setAgreed] = useState(false);
     const validate = () => {
         if (!lastName.trim()) return "Введите фамилию";
         if (!firstName.trim()) return "Введите имя";
@@ -27,6 +28,10 @@ export default function SignUpPage() {
         return "";
     };
     const handleRegister = async () => {
+        if (!agreed) {
+            setError("Необходимо согласие на обработку персональных данных");
+            return;
+        }
         const err = validate();
         if (err) {
             setError(err);
@@ -88,7 +93,7 @@ export default function SignUpPage() {
                             />
                         </div>
                     </div>
-                    <div className={`${styles.Row} ${styles.RowBottom}`}>
+                    <div className={styles.Row}>
                         <div className={styles.Wrapper}>
                             <Input
                                 type="password"
@@ -106,8 +111,22 @@ export default function SignUpPage() {
                             />
                         </div>
                     </div>
+                    <div className={styles.Agreement}>
+                        <input
+                            type="checkbox"
+                            checked={agreed}
+                            onChange={(e) => setAgreed(e.target.checked)}
+                            style={{ width: "20px", height: "20px", cursor: "pointer" }}
+                        />
+                        <span className={styles.AgreementText}>
+                            Я согласен на{" "}
+                            <a href="/pages/privacy" target="_blank" className={styles.Link}>
+                                обработку персональных данных
+                            </a>
+                        </span>
+                    </div>
                     {error && <span className={styles.Error}>{error}</span>}
-                    <Button variant={"Dark"} type={"button"} onClick={handleRegister}>
+                    <Button variant="Dark" type="button" onClick={handleRegister}>
                         Зарегистрироваться
                     </Button>
                 </form>

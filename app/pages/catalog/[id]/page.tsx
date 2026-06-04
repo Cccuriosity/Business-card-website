@@ -81,9 +81,12 @@ export default function PreviewPage() {
                     </div>
                 )}
                 {!isAdmin && car.review && (
-                    <div className={styles.Review}>
-                        <MiniReview review={car.review} />
-                    </div>
+                    <>
+                        <div className={styles.Review}>
+                            <span>Отзыв покупателя:</span>
+                            <MiniReview review={car.review} />
+                        </div>
+                    </>
                 )}
                 {toast && <Toast message={toast.message} type={toast.type} />}
             </div>

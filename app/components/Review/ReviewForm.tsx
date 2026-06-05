@@ -64,7 +64,7 @@ export default function ReviewForm({
                 <span className={styles.Title}>Приобрели авто из Японии? Оставьте отзыв!</span>
                 <span>
                     Чтобы оставить отзыв необходимо{" "}
-                    <span className={styles.Link} onClick={() => router.push("/")}>
+                    <span className={styles.Link} onClick={() => router.push("/pages/profile")}>
                         авторизоваться
                     </span>
                 </span>

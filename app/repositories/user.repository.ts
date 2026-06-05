@@ -4,8 +4,8 @@ import { mapProfileToDomain } from "@/app/dao/user.dao";
 import { getAuthHeaders } from "@/app/utils/auth";
 import { User } from "@/app/types/user";
 
-const USE_MOCK = true;
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+const USE_MOCK = false;
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 const MOCK_USER: ProfileDTO = {
     id: 1,
@@ -77,7 +77,12 @@ export const UserRepository = {
             body: formData,
         });
         if (!res.ok) throw new Error(`Ошибка ${res.status}`);
-        const dto = await res.json();
-        return mapProfileToDomain(dto, []);
+
+        const newToken = res.headers.get("x-new-auth-token");
+        if (newToken) {
+            localStorage.setItem("token", newToken);
+        }
+
+        return this.getProfile();
     },
 };

@@ -26,6 +26,11 @@ export default function Header() {
         setMenuOpen(false);
     };
 
+    const handleProfileClick = () => {
+        const token = localStorage.getItem("token");
+        router.push(token ? "/pages/profile/user" : "/pages/profile");
+    };
+
     return (
         <div className={styles.Header}>
             <span className={styles.Title}>Авто из Японии</span>
@@ -52,11 +57,7 @@ export default function Header() {
                 >
                     Отзывы
                 </HeaderButton>
-                <HeaderButton
-                    active={isProfileActive}
-                    isProfile
-                    onClick={() => navigate(ROUTES.profile)}
-                >
+                <HeaderButton active={isProfileActive} isProfile onClick={handleProfileClick}>
                     <span className={styles.ProfileText}>Профиль</span>
                     <Image
                         src={isProfileActive ? "/ProfileBlack.png" : "/ProfileWhite.png"}

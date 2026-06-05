@@ -83,7 +83,7 @@ export default function PreviewPage() {
                 {!isAdmin && car.review && (
                     <>
                         <div className={styles.Review}>
-                            <span>Отзыв покупателя:</span>
+                            <span className={styles.Title}>Отзыв покупателя:</span>
                             <MiniReview review={car.review} />
                         </div>
                     </>

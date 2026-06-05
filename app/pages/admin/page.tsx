@@ -8,6 +8,11 @@ import { useRouter } from "next/navigation";
 export default function AdminPage() {
     const router = useRouter();
 
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        router.push("/pages/profile");
+    };
+
     return (
         <>
             <Header />
@@ -19,6 +24,9 @@ export default function AdminPage() {
                     </Button>
                     <Button variant="Dark" onClick={() => router.push("/pages/admin/users")}>
                         Пользователи
+                    </Button>
+                    <Button variant="Light" onClick={handleLogout}>
+                        Выход
                     </Button>
                 </div>
             </div>

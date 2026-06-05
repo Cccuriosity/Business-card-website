@@ -64,8 +64,12 @@ export default function Profile({
     };
 
     const handleSave = () => {
-        onSave?.(formData, avatarFile);
-        setIsEditing(false);
+        try {
+            onSave?.(formData, avatarFile);
+            setIsEditing(false);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleDownloadClick = () => fileInputRef.current?.click();

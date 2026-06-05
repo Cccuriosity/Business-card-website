@@ -38,6 +38,9 @@ function ConfirmationForm() {
     };
 
     const handleVerify = async () => {
+        console.log("type:", type);
+        console.log("code:", code);
+        console.log("email:", email);
         if (!code.trim()) {
             setError("Введите код");
             return;
@@ -46,7 +49,7 @@ function ConfirmationForm() {
         try {
             if (type === "register") {
                 await AuthRepository.verify({ email, code });
-                router.push("/pages/auth/login");
+                router.push("/pages/profile/signin");
             } else {
                 const resetToken = await AuthRepository.forgotPasswordVerify({ email, code });
                 router.push(`/pages/profile/resetpassword?token=${resetToken}`);

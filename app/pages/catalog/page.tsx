@@ -33,10 +33,7 @@ export default function CatalogPage() {
     const [mileageTo, setMileageTo] = useState("");
     const [filtersOpen, setFiltersOpen] = useState(false);
     const [search, setSearch] = useState("");
-    const [isAdmin] = useState(() => {
-        if (typeof window === "undefined") return false;
-        return localStorage.getItem("isAdmin") === "true";
-    });
+    const isAdmin = typeof window !== "undefined" && localStorage.getItem("isAdmin") === "true";
     const router = useRouter();
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);

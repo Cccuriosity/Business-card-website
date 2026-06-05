@@ -46,7 +46,7 @@ export default function SignUpPage() {
                 phone_number: phone,
                 password,
             });
-            router.push(`/pages/auth/confirmation?email=${email}&type=register`);
+            router.push(`/pages/profile/confirmation?email=${email}&type=register`);
         } catch {
             setError("Ошибка при регистрации");
         }

@@ -5,8 +5,8 @@ import { User, UserListItem } from "@/app/types/user";
 import { mapProfileToDomain, mapUserListItemToDomain } from "@/app/dao/user.dao";
 import { RequestDTO } from "@/app/dto/request.dto";
 
-const USE_MOCK = true;
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+const USE_MOCK = false;
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 async function apiRequest<T = void>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const res = await fetch(`${API_BASE}${endpoint}`, {
@@ -15,7 +15,11 @@ async function apiRequest<T = void>(endpoint: string, options: RequestInit = {})
     });
     if (!res.ok) throw new Error(`Ошибка ${res.status}`);
     if (res.status === 204) return undefined as T;
-    return res.json();
+
+    const text = await res.text();
+    if (!text) return undefined as T;
+
+    return JSON.parse(text);
 }
 
 const MOCK_USERS: UserListItemDTO[] = [

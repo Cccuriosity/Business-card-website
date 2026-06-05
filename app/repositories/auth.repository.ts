@@ -10,7 +10,16 @@ import {
 } from "@/app/dto/auth.dto";
 import { getAuthHeaders } from "@/app/utils/auth";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+
+function decodeJwtRole(token: string): boolean {
+    try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.roles?.includes("ROLE_ADMIN") ?? false;
+    } catch {
+        return false;
+    }
+}
 
 async function apiRequest<T>(endpoint: string, body: unknown): Promise<T> {
     const res = await fetch(`${API_BASE}${endpoint}`, {
@@ -21,15 +30,26 @@ async function apiRequest<T>(endpoint: string, body: unknown): Promise<T> {
         },
         body: JSON.stringify(body),
     });
-    if (!res.ok) throw new Error(`Ошибка ${res.status}`);
-    return res.json();
+
+    if (!res.ok) {
+        throw new Error(`Ошибка ${res.status}`);
+    }
+
+    const text = await res.text();
+    if (!text) return {} as T;
+
+    try {
+        return JSON.parse(text);
+    } catch {
+        return {} as T;
+    }
 }
 
 export const AuthRepository = {
     async login(data: LoginDTO): Promise<void> {
         const res = await apiRequest<LoginResponseDTO>("/auth/login", data);
         localStorage.setItem("token", res.token);
-        localStorage.setItem("isAdmin", String(res.is_admin));
+        localStorage.setItem("isAdmin", String(decodeJwtRole(res.token)));
     },
 
     async register(data: RegisterDTO): Promise<void> {

@@ -27,6 +27,12 @@
     justify-content: flex-start;
 }
 
+.Link {
+    color: var(--blue);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 @media (max-width: 768px) {
     .ReviewForm {
         font-size: var(--big-font-size);

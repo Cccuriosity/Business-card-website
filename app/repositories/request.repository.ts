@@ -1,8 +1,8 @@
 import { getAuthHeaders } from "@/app/utils/auth";
 import { CreateRequestDTO } from "@/app/dto/request.dto";
 
-const USE_MOCK = true;
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+const USE_MOCK = false;
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 export const RequestRepository = {
     async createRequest(data: CreateRequestDTO): Promise<void> {

@@ -24,22 +24,9 @@ export default function PreviewPage() {
         if (id) CarRepository.getCarById(Number(id)).then(setCar);
     }, [id]);
 
-    const handleSave = async (carData: Car) => {
+    const handleSave = async (carData: Car, newImageFiles: File[], deletedImages: string[]) => {
         try {
-            await AdminRepository.updateCar(carData.id, {
-                manufacturer: carData.manufacturer,
-                model: carData.model,
-                price: carData.price,
-                year: carData.year,
-                mileage: carData.mileage,
-                engine_volume: carData.engineVolume,
-                color: carData.color,
-                transmission: carData.transmission,
-                drive: carData.drive,
-                body_number: carData.vin,
-                is_sold: carData.isSold,
-                sold_date: carData.soldAt ?? null,
-            });
+            await AdminRepository.updateCar(carData.id, carData, newImageFiles, deletedImages);
             showToast("Машина обновлена");
         } catch {
             showToast("Ошибка при сохранении", "error");

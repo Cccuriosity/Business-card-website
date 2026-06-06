@@ -121,6 +121,21 @@
     justify-content: center;
 }
 
+.Delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    border: none;
+    outline: none;
+    background: var(--white);
+    border-radius: 50%;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
 @media (max-width: 768px) {
     .Title {
         font-size: var(--extra-large-font-size);

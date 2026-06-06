@@ -26,7 +26,11 @@ export default function ConsultationForm({ authorized }: ConsultationFormProps) 
 
     useEffect(() => {
         if (searchParams.get("car")) {
-            document.getElementById("consultation")?.scrollIntoView({ behavior: "smooth" });
+            setTimeout(() => {
+                document
+                    .getElementById("consultation")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 100);
         }
     }, []);
 

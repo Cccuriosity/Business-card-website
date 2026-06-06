@@ -22,6 +22,23 @@ async function apiRequest<T = void>(endpoint: string, options: RequestInit = {})
     return JSON.parse(text);
 }
 
+function carToFormData(data: Car): FormData {
+    const formData = new FormData();
+    formData.append("manufacturer", data.manufacturer);
+    formData.append("model", data.model);
+    formData.append("year", data.year.toString());
+    formData.append("price", data.price.toString());
+    formData.append("mileage", data.mileage.toString());
+    formData.append("engine_volume", data.engineVolume.toString());
+    formData.append("color", data.color);
+    formData.append("transmission", data.transmission);
+    formData.append("drive", data.drive);
+    formData.append("body_number", data.vin);
+    if (data.isSold) formData.append("is_sold", "true");
+    if (data.soldAt) formData.append("sold_date", data.soldAt);
+    return formData;
+}
+
 const MOCK_USERS: UserListItemDTO[] = [
     {
         id: 1,
@@ -112,31 +129,34 @@ export const AdminRepository = {
         await apiRequest(`/admin/users/${id}`, { method: "DELETE" });
     },
 
-    async updateCar(id: number, data: object): Promise<void> {
-        await apiRequest(`/catalog/${id}`, {
-            method: "PATCH",
-            body: JSON.stringify(data),
-        });
-    },
-    async createCar(data: Car): Promise<void> {
-        await apiRequest("/catalog", {
+    async createCar(data: Car, imageFiles: File[]): Promise<void> {
+        const formData = carToFormData(data);
+        imageFiles.forEach((file) => formData.append("images", file));
+
+        const res = await fetch(`${API_BASE}/catalog`, {
             method: "POST",
-            body: JSON.stringify({
-                manufacturer: data.manufacturer,
-                model: data.model,
-                price: data.price,
-                year: data.year,
-                mileage: data.mileage,
-                engine_volume: data.engineVolume,
-                color: data.color,
-                transmission: data.transmission,
-                drive: data.drive,
-                body_number: data.vin,
-                is_sold: data.isSold,
-                sold_date: data.soldAt ?? null,
-                images: data.images,
-            }),
+            headers: getAuthHeaders(),
+            body: formData,
         });
+        if (!res.ok) throw new Error(`Ошибка ${res.status}`);
+    },
+
+    async updateCar(
+        id: number,
+        data: Car,
+        newImageFiles: File[],
+        deletedImages: string[]
+    ): Promise<void> {
+        const formData = carToFormData(data);
+        deletedImages.forEach((url) => formData.append("deleted_images", url));
+        newImageFiles.forEach((file) => formData.append("new_images", file));
+
+        const res = await fetch(`${API_BASE}/catalog/${id}`, {
+            method: "PATCH",
+            headers: getAuthHeaders(),
+            body: formData,
+        });
+        if (!res.ok) throw new Error(`Ошибка ${res.status}`);
     },
 
     async deleteCar(id: number): Promise<void> {

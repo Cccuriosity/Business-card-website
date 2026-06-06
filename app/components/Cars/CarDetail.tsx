@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Car } from "@/app/types/car";
 import Image from "next/image";
 import styles from "./CarDetail.module.css";
@@ -8,6 +8,8 @@ import Button from "@/app/components/Buttons/Button";
 import Input from "@/app/components/Inputs/Input";
 import DropDownInput from "@/app/components/Inputs/DropDownInput";
 import { validateCar } from "@/app/utils/validateCar";
+import { FilterRepository } from "@/app/repositories/filter.repository";
+import { FilterOptions } from "@/app/types/filter";
 
 function InfoRow({ label, value }: { label: string; value: string }) {
     return (
@@ -22,7 +24,7 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 interface CarDetailProps {
     car: Car;
     isAdmin?: boolean;
-    onSave?: (carData: Car) => void;
+    onSave?: (carData: Car, newImageFiles: File[], deletedImages: string[]) => void;
     onDelete?: () => void;
 }
 
@@ -30,8 +32,15 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
     const [activeImage, setActiveImage] = useState(car.images[0]);
     const [isEditMode, setIsEditMode] = useState(false);
     const [editData, setEditData] = useState<Car>({ ...car });
-    const [imagePreviews, setImagePreviews] = useState<string[]>(car.images);
     const [error, setError] = useState("");
+    const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
+    const [deletedImages, setDeletedImages] = useState<string[]>([]);
+    const [imagePreviews, setImagePreviews] = useState<string[]>(car.images);
+    const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
+
+    useEffect(() => {
+        FilterRepository.getFilters().then(setFilterOptions);
+    }, []);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -49,21 +58,21 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
     };
 
     const handleSave = () => {
-        const err = validateCar(editData);
+        const err = validateCar({ ...editData, images: imagePreviews });
         if (err) {
             setError(err);
             return;
         }
         setError("");
-        onSave?.({ ...editData, images: imagePreviews });
+        onSave?.({ ...editData, images: imagePreviews }, newImageFiles, deletedImages);
         setIsEditMode(false);
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
         if (!files.length) return;
-
         const newPreviews = files.map((file) => URL.createObjectURL(file));
+        setNewImageFiles((prev) => [...prev, ...files]);
         setImagePreviews((prev) => [...prev, ...newPreviews]);
     };
 
@@ -73,9 +82,33 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
         }
     };
 
+    const handleDeleteImage = (src: string) => {
+        if (car.images.includes(src)) {
+            setDeletedImages((prev) => [...prev, src]);
+        } else {
+            const index = imagePreviews.indexOf(src);
+            setNewImageFiles((prev) =>
+                prev.filter((_, i) => i !== index - car.images.length + deletedImages.length)
+            );
+        }
+        const remaining = imagePreviews.filter((p) => p !== src);
+        setImagePreviews(remaining);
+        setActiveImage(remaining.length > 0 ? remaining[0] : "/DefaultImage.png");
+    };
+
     const formatPrice = (price: number) => {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽";
     };
+
+    const availableModels =
+        filterOptions?.models
+            .filter((m) => {
+                const manufacturer = filterOptions.brands.find(
+                    (b) => b.name === editData.manufacturer
+                );
+                return manufacturer ? m.manufacturerId === manufacturer.id : false;
+            })
+            .map((m) => m.name) ?? [];
 
     if (isEditMode) {
         return (
@@ -83,22 +116,22 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
                 <div className={styles.EditHeader}>
                     <div className={styles.EditHeaderItem}>
                         <span>Марка</span>
-                        <Input
-                            type="text"
-                            placeholder={""}
+                        <DropDownInput
+                            options={filterOptions?.brands.map((b) => b.name) ?? []}
                             value={editData.manufacturer}
-                            onChange={(e) =>
-                                setEditData({ ...editData, manufacturer: e.target.value })
+                            onChange={(val) =>
+                                setEditData({ ...editData, manufacturer: val, model: "" })
                             }
+                            placeholder="Марка"
                         />
                     </div>
                     <div className={styles.EditHeaderItem}>
                         <span>Модель</span>
-                        <Input
-                            type="text"
-                            placeholder={""}
+                        <DropDownInput
+                            options={availableModels}
                             value={editData.model}
-                            onChange={(e) => setEditData({ ...editData, model: e.target.value })}
+                            onChange={(val) => setEditData({ ...editData, model: val })}
+                            placeholder="Модель"
                         />
                     </div>
                     <div className={styles.EditHeaderItem}>
@@ -124,13 +157,11 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
                                 style={{ objectFit: "cover" }}
                             />
                         </div>
-
-                        {imagePreviews.length > 1 && (
+                        {imagePreviews.length > 0 && (
                             <div className={styles.Miniatures}>
                                 {imagePreviews.map((src, index) => (
                                     <div
                                         key={src + index}
-                                        onClick={() => setActiveImage(src)}
                                         className={`${styles.Miniature} ${activeImage === src ? styles.Active : ""}`}
                                     >
                                         <Image
@@ -138,7 +169,19 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
                                             alt={`thumb-${index}`}
                                             fill
                                             style={{ objectFit: "cover" }}
+                                            onClick={() => setActiveImage(src)}
                                         />
+                                        <button
+                                            className={styles.Delete}
+                                            onClick={() => handleDeleteImage(src)}
+                                        >
+                                            <Image
+                                                src={"/close.png"}
+                                                alt={"close"}
+                                                width={10}
+                                                height={10}
+                                            />
+                                        </button>
                                     </div>
                                 ))}
                             </div>
@@ -189,52 +232,46 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
                         <div className={styles.Row}>
                             <span className={styles.Label}>Объем</span>
                             <span className={styles.Dots}></span>
-                            <Input
-                                type="number"
-                                placeholder={""}
-                                value={editData.engineVolume}
-                                onChange={(e) =>
-                                    setEditData({
-                                        ...editData,
-                                        engineVolume: parseInt(e.target.value),
-                                    })
+                            <DropDownInput
+                                options={
+                                    filterOptions?.engineVolumes.map((e) => e.volume.toString()) ??
+                                    []
                                 }
+                                value={editData.engineVolume.toString()}
+                                onChange={(val) =>
+                                    setEditData({ ...editData, engineVolume: Number(val) })
+                                }
+                                placeholder="Объем"
                             />
                         </div>
                         <div className={styles.Row}>
                             <span className={styles.Label}>Цвет</span>
                             <span className={styles.Dots}></span>
-                            <Input
-                                type="string"
-                                placeholder={""}
+                            <DropDownInput
+                                options={filterOptions?.colors.map((c) => c.name) ?? []}
                                 value={editData.color}
-                                onChange={(e) =>
-                                    setEditData({ ...editData, color: e.target.value })
-                                }
+                                onChange={(val) => setEditData({ ...editData, color: val })}
+                                placeholder="Цвет"
                             />
                         </div>
                         <div className={styles.Row}>
                             <span className={styles.Label}>КПП</span>
                             <span className={styles.Dots}></span>
-                            <Input
-                                type="string"
-                                placeholder={""}
+                            <DropDownInput
+                                options={filterOptions?.transmissions ?? []}
                                 value={editData.transmission}
-                                onChange={(e) =>
-                                    setEditData({ ...editData, transmission: e.target.value })
-                                }
+                                onChange={(val) => setEditData({ ...editData, transmission: val })}
+                                placeholder="КПП"
                             />
                         </div>
                         <div className={styles.Row}>
                             <span className={styles.Label}>Привод</span>
                             <span className={styles.Dots}></span>
-                            <Input
-                                type="string"
-                                placeholder={""}
+                            <DropDownInput
+                                options={filterOptions?.driveTypes ?? []}
                                 value={editData.drive}
-                                onChange={(e) =>
-                                    setEditData({ ...editData, drive: e.target.value })
-                                }
+                                onChange={(val) => setEditData({ ...editData, drive: val })}
+                                placeholder="Привод"
                             />
                         </div>
                         <div className={styles.Row}>

@@ -155,7 +155,7 @@ export default function Profile({
             </div>
 
             <div className={styles.RightColumn}>
-                <span>Мои заявки</span>
+                <span>{viewerIsAdmin ? "Заявки пользователя" : "Мои заявки"}</span>
                 <div className={styles.Requests}>
                     {user.requests?.length ? (
                         user.requests.map((req, index) => (

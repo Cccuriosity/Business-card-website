@@ -9,7 +9,7 @@ import ConsultationForm from "@/app/components/ConsultationForm";
 import StatsBlock from "@/app/components/StatsBlock";
 import MiniReview from "@/app/components/Review/MiniReview";
 import Footer from "@/app/components/Footer";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import PhoneBanner from "@/app/components/PhoneBanner";
 import { ReviewRepository } from "@/app/repositories/review.repository";
 import { UserRepository } from "@/app/repositories/user.repository";
@@ -19,6 +19,7 @@ export default function InfoPage() {
     const router = useRouter();
     const [reviews, setReviews] = useState<Review[]>([]);
     const [authorized, setAuthorized] = useState(false);
+    const searchParams = useSearchParams();
 
     useEffect(() => {
         ReviewRepository.getReviews().then(setReviews);

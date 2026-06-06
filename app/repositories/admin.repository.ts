@@ -29,11 +29,11 @@ function carToFormData(data: Car): FormData {
     formData.append("year", data.year.toString());
     formData.append("price", data.price.toString());
     formData.append("mileage", data.mileage.toString());
-    formData.append("engine_volume", data.engineVolume.toString());
+    formData.append("engineVolume", data.engineVolume.toString());
     formData.append("color", data.color);
     formData.append("transmission", data.transmission);
     formData.append("drive", data.drive);
-    formData.append("body_number", data.vin);
+    formData.append("bodyNumber", data.vin);
     if (data.isSold) formData.append("is_sold", "true");
     if (data.soldAt) formData.append("sold_date", data.soldAt);
     return formData;
@@ -148,11 +148,11 @@ export const AdminRepository = {
         deletedImages: string[]
     ): Promise<void> {
         const formData = carToFormData(data);
-        deletedImages.forEach((url) => formData.append("deleted_images", url));
-        newImageFiles.forEach((file) => formData.append("new_images", file));
+        deletedImages.forEach((url) => formData.append("deletedImages", url));
+        newImageFiles.forEach((file) => formData.append("newImages", file));
 
         const res = await fetch(`${API_BASE}/catalog/${id}`, {
-            method: "PATCH",
+            method: "POST",
             headers: getAuthHeaders(),
             body: formData,
         });

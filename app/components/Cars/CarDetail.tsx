@@ -39,6 +39,14 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
     const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setImagePreviews(car.images);
+        setActiveImage(car.images[0]);
+        setNewImageFiles([]);
+        setDeletedImages([]);
+    }, [car]);
+
+    useEffect(() => {
         FilterRepository.getFilters().then(setFilterOptions);
     }, []);
 

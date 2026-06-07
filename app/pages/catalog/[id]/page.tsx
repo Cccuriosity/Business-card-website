@@ -30,6 +30,9 @@ export default function PreviewPage() {
     const handleSave = async (carData: Car, newImageFiles: File[], deletedImages: string[]) => {
         try {
             await AdminRepository.updateCar(carData.id, carData, newImageFiles, deletedImages);
+            const updatedCar = await CarRepository.getCarById(Number(id));
+            setCar(updatedCar);
+
             showToast("Машина обновлена");
         } catch {
             showToast("Ошибка при сохранении", "error");

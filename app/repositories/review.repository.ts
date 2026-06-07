@@ -3,8 +3,8 @@ import { mapReviewToDomain } from "@/app/dao/review.dao";
 import { getAuthHeaders } from "@/app/utils/auth";
 import { Review } from "@/app/types/review";
 
-const USE_MOCK = true;
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+const USE_MOCK = false;
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 const MOCK_REVIEWS: ReviewDTO[] = [
     {

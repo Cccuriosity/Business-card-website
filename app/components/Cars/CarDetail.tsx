@@ -24,7 +24,7 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 interface CarDetailProps {
     car: Car;
     isAdmin?: boolean;
-    onSave?: (carData: Car, newImageFiles: File[], deletedImages: string[]) => void;
+    onSave?: (carData: Car, newImageFiles: File[], deletedImages: string[]) => void | Promise<void>;
     onDelete?: () => void;
 }
 
@@ -65,14 +65,16 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
         setActiveImage(car.images[0]);
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const err = validateCar({ ...editData, images: imagePreviews });
         if (err) {
             setError(err);
             return;
         }
         setError("");
-        onSave?.({ ...editData, images: imagePreviews }, newImageFiles, deletedImages);
+
+        await onSave?.({ ...editData, images: imagePreviews }, newImageFiles, deletedImages);
+
         setIsEditMode(false);
     };
 
@@ -80,8 +82,16 @@ export default function CarDetail({ car, isAdmin = false, onSave, onDelete }: Ca
         const files = Array.from(e.target.files || []);
         if (!files.length) return;
         const newPreviews = files.map((file) => URL.createObjectURL(file));
+
+        const shouldUpdateActive =
+            imagePreviews.length === 0 || activeImage === "/DefaultImage.png";
+
         setNewImageFiles((prev) => [...prev, ...files]);
         setImagePreviews((prev) => [...prev, ...newPreviews]);
+
+        if (shouldUpdateActive) {
+            setActiveImage(newPreviews[0]);
+        }
     };
 
     const handleDelete = () => {

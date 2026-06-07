@@ -26,6 +26,11 @@ export function mapLotListItemToDomain(dto: LotListItemDTO): Car {
 export function mapLotDetailToDomain(dto: LotDetailDTO): Car {
     const parseDate = (d: string | null) => {
         if (!d) return undefined;
+
+        if (d.includes("-")) {
+            return d.split("T")[0];
+        }
+
         const parts = d.split(".");
         return parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : undefined;
     };

@@ -2,8 +2,8 @@ import { FilterOptionsDTO } from "@/app/dto/filter.dto";
 import { mapFiltersToDomain } from "@/app/dao/filter.dao";
 import { FilterOptions } from "@/app/types/filter";
 
-const USE_MOCK = true;
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+const USE_MOCK = false;
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 const MOCK_FILTERS: FilterOptionsDTO = {
     manufacturers: [

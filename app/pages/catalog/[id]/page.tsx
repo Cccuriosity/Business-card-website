@@ -17,7 +17,10 @@ export default function PreviewPage() {
     const router = useRouter();
     const { id } = useParams();
     const [car, setCar] = useState<Car | null>(null);
-    const [isAdmin] = useState(() => localStorage.getItem("isAdmin") === "true");
+    const [isAdmin] = useState(() => {
+        if (typeof window === "undefined") return false;
+        return localStorage.getItem("isAdmin") === "true";
+    });
     const { toast, showToast } = useToast();
 
     useEffect(() => {

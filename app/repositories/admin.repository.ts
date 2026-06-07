@@ -34,7 +34,7 @@ function carToFormData(data: Car): FormData {
     formData.append("transmission", data.transmission);
     formData.append("drive", data.drive);
     formData.append("bodyNumber", data.vin);
-    if (data.isSold) formData.append("is_sold", "true");
+    formData.append("is_sold", data.isSold ? "true" : "false");
     if (data.soldAt) formData.append("sold_date", data.soldAt);
     return formData;
 }
@@ -131,7 +131,7 @@ export const AdminRepository = {
 
     async createCar(data: Car, imageFiles: File[]): Promise<void> {
         const formData = carToFormData(data);
-        imageFiles.forEach((file) => formData.append("images", file));
+        imageFiles.forEach((file) => formData.append("images[]", file));
 
         const res = await fetch(`${API_BASE}/catalog`, {
             method: "POST",
@@ -148,8 +148,8 @@ export const AdminRepository = {
         deletedImages: string[]
     ): Promise<void> {
         const formData = carToFormData(data);
-        deletedImages.forEach((url) => formData.append("deletedImages", url));
-        newImageFiles.forEach((file) => formData.append("newImages", file));
+        deletedImages.forEach((url) => formData.append("deletedImages[]", url));
+        newImageFiles.forEach((file) => formData.append("newImages[]", file));
 
         const res = await fetch(`${API_BASE}/catalog/${id}`, {
             method: "POST",

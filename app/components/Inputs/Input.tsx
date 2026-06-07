@@ -16,7 +16,7 @@ export default function Input({ type, placeholder, name, value, onChange, readOn
             type={type}
             name={name}
             placeholder={placeholder}
-            value={value}
+            value={value ?? ""}
             onChange={onChange}
             readOnly={readOnly}
         />

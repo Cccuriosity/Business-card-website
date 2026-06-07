@@ -2,6 +2,8 @@ import { LotListItemDTO, LotDetailDTO } from "@/app/dto/car.dto";
 import { Car } from "@/app/types/car";
 import { mapReviewToDomain } from "@/app/dao/review.dao";
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+
 export function mapLotListItemToDomain(dto: LotListItemDTO): Car {
     return {
         id: dto.id,
@@ -17,7 +19,7 @@ export function mapLotListItemToDomain(dto: LotListItemDTO): Car {
         vin: "",
         isSold: dto.is_sold,
         soldAt: undefined,
-        images: dto.images,
+        images: dto.images.map((img) => `${BASE_URL}/${img.startsWith("/") ? img.slice(1) : img}`),
     };
 }
 
@@ -42,7 +44,7 @@ export function mapLotDetailToDomain(dto: LotDetailDTO): Car {
         vin: dto.body_number,
         isSold: dto.is_sold,
         soldAt: parseDate(dto.sold_date),
-        images: dto.images,
+        images: dto.images.map((img) => `${BASE_URL}/${img.startsWith("/") ? img.slice(1) : img}`),
         review: dto.review ? mapReviewToDomain(dto.review) : undefined,
     };
 }

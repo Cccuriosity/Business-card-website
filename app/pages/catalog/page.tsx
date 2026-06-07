@@ -33,12 +33,16 @@ export default function CatalogPage() {
     const [mileageTo, setMileageTo] = useState("");
     const [filtersOpen, setFiltersOpen] = useState(false);
     const [search, setSearch] = useState("");
-    const isAdmin = typeof window !== "undefined" && localStorage.getItem("isAdmin") === "true";
+    const [isAdmin, setIsAdmin] = useState(false);
     const router = useRouter();
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
     const loaderRef = useInfiniteScroll(() => setPage((prev) => prev + 1), hasMore, loading);
+
+    useEffect(() => {
+        setIsAdmin(localStorage.getItem("isAdmin") === "true");
+    }, []);
 
     useEffect(() => {
         FilterRepository.getFilters().then(setFilterOptions);
@@ -190,7 +194,11 @@ export default function CatalogPage() {
                         />
                     </div>
                     {isAdmin && (
-                        <Button variant="Dark" onClick={() => router.push("/pages/admin/create")}>
+                        <Button
+                            variant="Dark"
+                            onClick={() => router.push("/pages/admin/create")}
+                            type="button"
+                        >
                             Добавить автомобиль
                         </Button>
                     )}

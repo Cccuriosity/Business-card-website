@@ -15,6 +15,8 @@ export default function CarCard({ car }: CarCardProps) {
     const [currentImage, setCurrentImage] = useState(0);
     const router = useRouter();
 
+    console.log("Car ID:", car.id, "Images:", car.images);
+
     const nextImage = (e: React.MouseEvent) => {
         e.stopPropagation();
         setCurrentImage((prevImage) => (prevImage === car.images.length - 1 ? 0 : prevImage + 1));

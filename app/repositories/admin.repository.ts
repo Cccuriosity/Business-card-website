@@ -35,7 +35,7 @@ function carToFormData(data: Car): FormData {
     formData.append("drive", data.drive);
     formData.append("bodyNumber", data.vin);
     formData.append("is_sold", data.isSold ? "true" : "false");
-    if (data.soldAt) formData.append("soldData", data.soldAt);
+    if (data.soldAt) formData.append("sold_date", data.soldAt);
     return formData;
 }
 
@@ -148,11 +148,7 @@ export const AdminRepository = {
         deletedImages: string[]
     ): Promise<void> {
         const formData = carToFormData(data);
-
-        if (deletedImages && deletedImages.length > 0) {
-            formData.append("deletedImages", deletedImages.join(","));
-        }
-
+        deletedImages.forEach((url) => formData.append("deletedImages[]", url));
         newImageFiles.forEach((file) => formData.append("newImages[]", file));
 
         const res = await fetch(`${API_BASE}/catalog/${id}`, {

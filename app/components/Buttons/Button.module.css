@@ -61,3 +61,8 @@
 .ScrollButton:hover {
     background-color: var(--transparent-white-hover);
 }
+
+.BackButton {
+    background-color: var(--white);
+    color: var(--black);
+}

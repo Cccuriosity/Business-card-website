@@ -12,6 +12,7 @@ import Button from "@/app/components/Buttons/Button";
 import MiniReview from "@/app/components/Review/MiniReview";
 import { useToast } from "@/app/hooks/useToast";
 import Toast from "@/app/components/Toast";
+import BackButton from "@/app/components/Buttons/BackButton";
 
 export default function PreviewPage() {
     const router = useRouter();
@@ -55,6 +56,7 @@ export default function PreviewPage() {
         <>
             <Header />
             <div className={styles.PreviewPage}>
+                <BackButton />
                 <CarDetail
                     car={car}
                     isAdmin={isAdmin}

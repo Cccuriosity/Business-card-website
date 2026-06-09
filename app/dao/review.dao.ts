@@ -2,6 +2,11 @@ import { ReviewDTO } from "@/app/dto/review.dto";
 import { Review } from "@/app/types/review";
 
 export function mapReviewToDomain(dto: ReviewDTO): Review {
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("ru-RU");
+    };
+
     return {
         id: dto.id,
         lotId: dto.lot_id,
@@ -12,6 +17,6 @@ export function mapReviewToDomain(dto: ReviewDTO): Review {
         avatarUrl: dto.avatar_url,
         rating: dto.rating,
         comment: dto.comment,
-        createdAt: dto.created_at,
+        createdAt: formatDate(dto.created_at),
     };
 }

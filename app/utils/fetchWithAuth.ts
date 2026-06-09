@@ -35,13 +35,17 @@ export async function fetchWithAuth(
     const res = await fetch(url, options);
 
     if (res.status === 401 && retry) {
+        if (!localStorage.getItem("refresh_token")) {
+            return res;
+        }
+
         const refreshed = await refreshToken();
         if (refreshed) {
             const newOptions = {
                 ...options,
                 headers: {
                     ...options.headers,
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    Authorization: 'Bearer ${localStorage.getItem("token")}',
                 },
             };
             return fetchWithAuth(url, newOptions, false);

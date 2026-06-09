@@ -11,6 +11,7 @@ import { Car } from "@/app/types/car";
 import { CarRepository } from "@/app/repositories/car.repository";
 import { useToast } from "@/app/hooks/useToast";
 import Toast from "@/app/components/Toast";
+import BackButton from "@/app/components/Buttons/BackButton";
 
 export default function AdminUserPage() {
     const { id } = useParams();
@@ -68,6 +69,7 @@ export default function AdminUserPage() {
         <>
             <Header />
             <div className={styles.AdminUserPage}>
+                <BackButton />
                 <Profile
                     user={user}
                     onDeleteUser={handleDeleteUser}

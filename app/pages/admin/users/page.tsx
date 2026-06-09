@@ -7,6 +7,7 @@ import UserCard from "@/app/components/UserCard";
 import { AdminRepository } from "@/app/repositories/admin.repository";
 import { UserListItem } from "@/app/types/user";
 import { useRouter } from "next/navigation";
+import BackButton from "@/app/components/Buttons/BackButton";
 
 export default function AdminUsersPage() {
     const [users, setUsers] = useState<UserListItem[]>([]);
@@ -29,6 +30,7 @@ export default function AdminUsersPage() {
         <>
             <Header />
             <div className={styles.AdminUsersPage}>
+                <BackButton />
                 <span className={styles.Title}>Администрирование</span>
                 <span className={styles.Subtitle}>Пользователи</span>
 

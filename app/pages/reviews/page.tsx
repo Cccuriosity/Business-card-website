@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/app/components/Header";
 import styles from "./ReviewsPage.module.css";
 import ReviewForm from "@/app/components/Review/ReviewForm";
@@ -24,82 +25,66 @@ export default function ReviewsPage() {
 
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
-
     const [loading, setLoading] = useState(false);
-    const [isRefreshing, setIsRefreshing] = useState(false);
 
     const { toast, showToast } = useToast();
 
-    const loadUser = useCallback(() => {
+    const loaderRef = useInfiniteScroll(() => setPage((prev) => prev + 1), hasMore, loading);
+
+    useEffect(() => {
         UserRepository.getProfile()
             .then(setUser)
             .catch(() => setUser(null));
     }, []);
 
     useEffect(() => {
-        loadUser();
-    }, [loadUser]);
-
-    const loadReviews = useCallback(
-        async (targetPage: number, replace = false) => {
-            if (loading) return;
-
-            try {
-                setLoading(true);
-
-                const newReviews = await ReviewRepository.getReviews({
-                    date_order: dateOrder,
-                    rating_order: ratingOrder,
-                    page: targetPage,
-                    limit: 10,
-                });
-
-                setHasMore(newReviews.length === 10);
-
-                setReviews((prev) => (replace ? newReviews : [...prev, ...newReviews]));
-            } catch {
-                showToast("Ошибка загрузки отзывов", "error");
-            } finally {
-                setLoading(false);
-                setIsRefreshing(false);
-            }
-        },
-        [dateOrder, ratingOrder, loading, showToast]
-    );
-
-    useEffect(() => {
-        loadReviews(page, page === 1);
-    }, [page, loadReviews]);
-
-    const handleSortChange = (newDateOrder: "asc" | "desc", newRatingOrder: "asc" | "desc") => {
-        setIsRefreshing(true);
-
-        setDateOrder(newDateOrder);
-        setRatingOrder(newRatingOrder);
-
         setPage(1);
         setHasMore(true);
-    };
-
-    useEffect(() => {
-        if (!isRefreshing) return;
-
-        loadReviews(1, true);
     }, [dateOrder, ratingOrder]);
 
-    const loaderRef = useInfiniteScroll(
-        () => setPage((prev) => prev + 1),
-        hasMore,
-        loading || isRefreshing
-    );
+    useEffect(() => {
+        let cancelled = false;
+        setLoading(true);
+
+        ReviewRepository.getReviews({
+            date_order: dateOrder,
+            rating_order: ratingOrder,
+            page,
+            limit: 10,
+        })
+            .then((newReviews) => {
+                if (cancelled) return;
+
+                // Если вернули меньше 10, значит это последняя страница
+                if (newReviews.length < 10) {
+                    setHasMore(false);
+                }
+
+                setReviews((prev) => (page === 1 ? newReviews : [...prev, ...newReviews]));
+            })
+            .catch(() => {
+                if (!cancelled) {
+                    showToast("Ошибка загрузки отзывов", "error");
+                }
+            })
+            .finally(() => {
+                if (!cancelled) {
+                    setLoading(false);
+                }
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [page, dateOrder, ratingOrder, showToast]);
 
     const handleReviewSubmit = () => {
-        loadUser();
+        UserRepository.getProfile()
+            .then(setUser)
+            .catch(() => setUser(null));
 
         setPage(1);
         setHasMore(true);
-
-        loadReviews(1, true);
 
         showToast("Отзыв отправлен");
     };
@@ -129,34 +114,19 @@ export default function ReviewsPage() {
                 <SortMenu
                     dateOrder={dateOrder}
                     ratingOrder={ratingOrder}
-                    onDateOrder={(value) => handleSortChange(value, ratingOrder)}
-                    onRatingOrder={(value) => handleSortChange(dateOrder, value)}
+                    onDateOrder={setDateOrder}
+                    onRatingOrder={setRatingOrder}
                 />
 
-                <div
-                    className={styles.ReviewsList}
-                    style={{
-                        opacity: isRefreshing ? 0.6 : 1,
-                        transition: "opacity 0.2s",
-                    }}
-                >
+                <div className={styles.ReviewsList}>
                     {reviews.map((review) => (
                         <FullReview key={review.id} review={review} />
                     ))}
                 </div>
 
-                <div ref={loaderRef} style={{ height: 1 }} />
+                <div ref={loaderRef} style={{ height: "1px" }} />
 
-                {(loading || isRefreshing) && (
-                    <div
-                        style={{
-                            textAlign: "center",
-                            padding: "1rem",
-                        }}
-                    >
-                        Загрузка...
-                    </div>
-                )}
+                {loading && <div style={{ textAlign: "center", padding: "1rem" }}>Загрузка...</div>}
             </div>
         </>
     );

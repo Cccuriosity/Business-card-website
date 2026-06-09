@@ -40,6 +40,7 @@ export default function UserPage() {
 
     const handleLogout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("refresh_token");
         localStorage.removeItem("isAdmin");
         router.push("/pages/profile");
     };

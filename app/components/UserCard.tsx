@@ -18,8 +18,8 @@ export default function UserCard({ user }: UserCardProps) {
                 <Image
                     src={user.avatarUrl ?? "/ProfileWhite.png"}
                     alt="Аватар"
-                    width={50}
-                    height={50}
+                    fill
+                    style={{ objectFit: "cover" }}
                 />
             </div>
             <div className={styles.Info}>

@@ -133,7 +133,7 @@ export default function Profile({
         <div className={styles.Profile}>
             <div className={styles.LeftColumn}>
                 <div className={styles.ProfileIcon}>
-                    <Image src={user.avatar} alt="Аватар" width={200} height={200} />
+                    <Image src={user.avatar} alt="Аватар" fill style={{ objectFit: "cover" }} />
                 </div>
                 <span className={styles.Content}>
                     {user.lastName} {user.firstName}

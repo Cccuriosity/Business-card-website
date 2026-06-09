@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/app/components/Header";
 import styles from "./ChangePasswordPage.module.css";
@@ -15,6 +15,12 @@ export default function ChangePasswordPage() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
 
+    useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            router.replace("/pages/profile/signin");
+        }
+    }, [router]);
+
     const handleSubmit = async () => {
         if (!oldPassword) {
             setError("Введите старый пароль");
@@ -24,8 +30,8 @@ export default function ChangePasswordPage() {
             setError("Введите новый пароль");
             return;
         }
-        if (newPassword.length < 6) {
-            setError("Минимум 6 символов");
+        if (newPassword.length < 8) {
+            setError("Минимум 8 символов");
             return;
         }
         if (newPassword !== confirmPassword) {

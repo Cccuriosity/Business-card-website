@@ -4,6 +4,7 @@ import Header from "@/app/components/Header";
 import styles from "./AdminPage.module.css";
 import Button from "@/app/components/Buttons/Button";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function AdminPage() {
     const router = useRouter();
@@ -12,6 +13,12 @@ export default function AdminPage() {
         localStorage.removeItem("token");
         router.push("/pages/profile");
     };
+
+    useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            router.replace("/pages/profile/signin");
+        }
+    }, [router]);
 
     return (
         <>

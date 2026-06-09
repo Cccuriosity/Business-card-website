@@ -41,11 +41,6 @@ export interface VerifyDTO {
     code: string;
 }
 
-export interface RefreshTokenDTO {
-    refresh_token: string;
-}
-
-export interface RefreshTokenResponseDTO {
-    token: string;
-    refresh_token: string;
+export interface VerifyResendDTO {
+    email: string;
 }

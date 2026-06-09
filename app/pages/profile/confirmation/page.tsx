@@ -36,7 +36,11 @@ function ConfirmationForm() {
         }
 
         try {
-            await AuthRepository.forgotPasswordRequest({ email });
+            if (type === "register") {
+                await AuthRepository.verifyResend({ email });
+            } else {
+                await AuthRepository.forgotPasswordRequest({ email });
+            }
             setCodeSent(true);
             setCountdown(60);
             setError("");

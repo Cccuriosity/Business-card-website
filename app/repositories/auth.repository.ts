@@ -7,6 +7,7 @@ import {
     VerifyDTO,
     ForgotPasswordVerifyDTO,
     ForgotPasswordResetDTO,
+    VerifyResendDTO,
 } from "@/app/dto/auth.dto";
 import { getAuthHeaders } from "@/app/utils/auth";
 import { fetchWithAuth } from "@/app/utils/fetchWithAuth";
@@ -74,5 +75,9 @@ export const AuthRepository = {
 
     async forgotPasswordReset(data: ForgotPasswordResetDTO): Promise<void> {
         await apiRequest("/auth/forgot-password/reset", data);
+    },
+
+    async verifyResend(data: VerifyResendDTO): Promise<void> {
+        await apiRequest("/auth/verify/resend", data);
     },
 };

@@ -20,6 +20,12 @@ export default function AdminUserPage() {
     const { toast, showToast } = useToast();
 
     useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            router.replace("/pages/profile/signin");
+        }
+    }, [router]);
+
+    useEffect(() => {
         AdminRepository.getUserById(Number(id)).then(setUser);
     }, [id]);
 

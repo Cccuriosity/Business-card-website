@@ -6,9 +6,17 @@ import styles from "./AdminUsersPage.module.css";
 import UserCard from "@/app/components/UserCard";
 import { AdminRepository } from "@/app/repositories/admin.repository";
 import { UserListItem } from "@/app/types/user";
+import { useRouter } from "next/navigation";
 
 export default function AdminUsersPage() {
     const [users, setUsers] = useState<UserListItem[]>([]);
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            router.replace("/pages/profile/signin");
+        }
+    }, [router]);
 
     useEffect(() => {
         AdminRepository.getUsers().then(setUsers);

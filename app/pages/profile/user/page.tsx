@@ -16,6 +16,12 @@ export default function UserPage() {
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            router.replace("/pages/profile/signin");
+        }
+    }, [router]);
+
+    useEffect(() => {
         UserRepository.getProfile().then((user) => {
             if (user.isAdmin) router.push("/pages/admin");
             else setUser(user);

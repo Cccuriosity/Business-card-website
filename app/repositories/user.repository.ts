@@ -3,6 +3,7 @@ import { RequestDTO } from "@/app/dto/request.dto";
 import { mapProfileToDomain } from "@/app/dao/user.dao";
 import { getAuthHeaders } from "@/app/utils/auth";
 import { User } from "@/app/types/user";
+import { fetchWithAuth } from "@/app/utils/fetchWithAuth";
 
 const USE_MOCK = false;
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
@@ -49,7 +50,7 @@ export const UserRepository = {
     async getProfile(): Promise<User> {
         if (USE_MOCK) return mapProfileToDomain(MOCK_USER, MOCK_REQUESTS);
 
-        const res = await fetch(`${API_BASE}/profile`, {
+        const res = await fetchWithAuth(`${API_BASE}/profile`, {
             headers: getAuthHeaders(),
         });
         if (!res.ok) throw new Error(`Ошибка ${res.status}`);
@@ -71,7 +72,7 @@ export const UserRepository = {
         if (data.phone) formData.append("phone_number", data.phone);
         if (avatarFile) formData.append("avatar", avatarFile);
 
-        const res = await fetch(`${API_BASE}/profile`, {
+        const res = await fetchWithAuth(`${API_BASE}/profile`, {
             method: "POST",
             headers: getAuthHeaders(),
             body: formData,

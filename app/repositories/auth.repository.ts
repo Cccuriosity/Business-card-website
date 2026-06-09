@@ -9,6 +9,7 @@ import {
     ForgotPasswordResetDTO,
 } from "@/app/dto/auth.dto";
 import { getAuthHeaders } from "@/app/utils/auth";
+import { fetchWithAuth } from "@/app/utils/fetchWithAuth";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -22,7 +23,7 @@ function decodeJwtRole(token: string): boolean {
 }
 
 async function apiRequest<T>(endpoint: string, body: unknown): Promise<T> {
-    const res = await fetch(`${API_BASE}${endpoint}`, {
+    const res = await fetchWithAuth(`${API_BASE}${endpoint}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -31,13 +32,10 @@ async function apiRequest<T>(endpoint: string, body: unknown): Promise<T> {
         body: JSON.stringify(body),
     });
 
-    if (!res.ok) {
-        throw new Error(`Ошибка ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`Ошибка ${res.status}`);
 
     const text = await res.text();
     if (!text) return {} as T;
-
     try {
         return JSON.parse(text);
     } catch {
@@ -49,6 +47,7 @@ export const AuthRepository = {
     async login(data: LoginDTO): Promise<void> {
         const res = await apiRequest<LoginResponseDTO>("/auth/login", data);
         localStorage.setItem("token", res.token);
+        localStorage.setItem("refresh_token", res.refresh_token);
         localStorage.setItem("isAdmin", String(decodeJwtRole(res.token)));
     },
 

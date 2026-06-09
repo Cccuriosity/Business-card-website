@@ -32,6 +32,21 @@
     align-self: center;
 }
 
+.Hint {
+    font-size: var(--medium-font-size);
+    font-weight: var(--light);
+    color: var(--dark-gray);
+    text-align: center;
+}
+
+.Link {
+    font-size: var(--medium-font-size);
+    font-weight: var(--light);
+    color: var(--blue);
+    cursor: pointer;
+    text-align: center;
+}
+
 @media (max-width: 768px) {
     .ConfirmationPage {
         padding: 5rem 1rem 1rem;

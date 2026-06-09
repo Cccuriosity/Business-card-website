@@ -24,13 +24,17 @@ function ResetPasswordForm() {
             setError("Пароли не совпадают");
             return;
         }
+        if (!token || token === "undefined") {
+            setError("Ссылка сброса недействительна. Запросите код заново.");
+            return;
+        }
 
         try {
             await AuthRepository.forgotPasswordReset({
                 reset_token: token,
                 new_password: newPassword,
             });
-            router.push("/pages/auth/login");
+            router.push("/pages/auth/signin");
         } catch (err) {
             setError("Ошибка при смене пароля");
             console.error(err);

@@ -1,10 +1,4 @@
-export interface LotShort {
-    id: number;
-    manufacturer: string;
-    model: string;
-    year: number;
-    bodyNumber: string;
-}
+import { LotShort } from "@/app/types/car";
 
 export interface Request {
     id: number;

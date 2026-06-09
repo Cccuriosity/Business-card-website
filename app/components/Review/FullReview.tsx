@@ -15,10 +15,10 @@ export default function FullReview({ review }: FullReviewProps) {
                 <div className={styles.User}>
                     <div className={styles.Avatar}>
                         <Image
-                            src={review.avatarUrl ?? "/default-avatar.png"}
+                            src={review.avatarUrl ?? "/ProfileWhite.png"}
                             alt="Аватар"
-                            width={40}
-                            height={40}
+                            fill
+                            style={{ objectFit: "cover" }}
                         />
                     </div>
                     <span>

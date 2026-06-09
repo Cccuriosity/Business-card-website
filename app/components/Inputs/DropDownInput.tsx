@@ -33,6 +33,10 @@ export default function DropDownInput({
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    useEffect(() => {
+        setSearch(value);
+    }, [value]);
+
     const filtered = isTyping
         ? options.filter((opt) => opt.toLowerCase().includes(search.toLowerCase()))
         : options;
@@ -51,9 +55,14 @@ export default function DropDownInput({
                     className={styles.Input}
                     value={search}
                     onChange={(e) => {
-                        setSearch(e.target.value);
+                        const next = e.target.value;
+                        setSearch(next);
                         setIsTyping(true);
                         setIsOpen(true);
+
+                        if (next === "") {
+                            onChange("");
+                        }
                     }}
                     placeholder={placeholder}
                 />

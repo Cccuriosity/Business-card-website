@@ -17,3 +17,11 @@ export interface Car {
     images: string[];
     review?: Review;
 }
+
+export interface LotShort {
+    id: number;
+    manufacturer: string;
+    model: string;
+    year: number;
+    bodyNumber: string;
+}

@@ -5,6 +5,7 @@ export interface LoginDTO {
 
 export interface LoginResponseDTO {
     token: string;
+    refresh_token: string;
     is_admin: boolean;
 }
 
@@ -38,4 +39,13 @@ export interface ForgotPasswordResetDTO {
 export interface VerifyDTO {
     email: string;
     code: string;
+}
+
+export interface RefreshTokenDTO {
+    refresh_token: string;
+}
+
+export interface RefreshTokenResponseDTO {
+    token: string;
+    refresh_token: string;
 }

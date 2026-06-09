@@ -49,7 +49,26 @@ export default function CatalogPage() {
     }, []);
 
     useEffect(() => {
-        if (!hasMore || loading) return;
+        setPage(1);
+        setHasMore(true);
+    }, [
+        brand,
+        model,
+        year,
+        color,
+        transmission,
+        engineVolume,
+        driveType,
+        priceFrom,
+        priceTo,
+        mileageFrom,
+        mileageTo,
+        search,
+    ]);
+
+    useEffect(() => {
+        if (!filterOptions) return;
+        let cancelled = false;
         setLoading(true);
         CarRepository.getCars(
             {
@@ -71,10 +90,16 @@ export default function CatalogPage() {
             filterOptions
         )
             .then((newCars) => {
+                if (cancelled) return;
                 if (newCars.length < 10) setHasMore(false);
                 setCars((prev) => (page === 1 ? newCars : [...prev, ...newCars]));
             })
-            .finally(() => setLoading(false));
+            .finally(() => {
+                if (!cancelled) setLoading(false);
+            });
+        return () => {
+            cancelled = true;
+        };
     }, [
         page,
         brand,
@@ -89,6 +114,7 @@ export default function CatalogPage() {
         mileageFrom,
         mileageTo,
         search,
+        filterOptions,
     ]);
 
     const availableCars = cars.filter((car) => !car.isSold);

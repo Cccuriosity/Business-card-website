@@ -3,7 +3,7 @@ import Header from "@/app/components/Header";
 import styles from "./ConfirmationPage.module.css";
 import Button from "@/app/components/Buttons/Button";
 import Input from "@/app/components/Inputs/Input";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AuthRepository } from "@/app/repositories/auth.repository";
 
@@ -17,6 +17,13 @@ function ConfirmationForm() {
     const [code, setCode] = useState("");
     const [codeSent, setCodeSent] = useState(!!emailFromParams);
     const [error, setError] = useState("");
+    const [countdown, setCountdown] = useState(emailFromParams ? 60 : 0);
+
+    useEffect(() => {
+        if (countdown <= 0) return;
+        const timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
+        return () => clearTimeout(timer);
+    }, [countdown]);
 
     const handleSendCode = async () => {
         if (!email.trim()) {
@@ -31,6 +38,7 @@ function ConfirmationForm() {
         try {
             await AuthRepository.forgotPasswordRequest({ email });
             setCodeSent(true);
+            setCountdown(60);
             setError("");
         } catch {
             setError("Ошибка отправки кода");
@@ -38,9 +46,6 @@ function ConfirmationForm() {
     };
 
     const handleVerify = async () => {
-        console.log("type:", type);
-        console.log("code:", code);
-        console.log("email:", email);
         if (!code.trim()) {
             setError("Введите код");
             return;
@@ -52,7 +57,11 @@ function ConfirmationForm() {
                 router.push("/pages/profile/signin");
             } else {
                 const resetToken = await AuthRepository.forgotPasswordVerify({ email, code });
-                router.push(`/pages/profile/resetpassword?token=${resetToken}`);
+                if (!resetToken) {
+                    setError("Не удалось получить токен сброса. Попробуйте ещё раз.");
+                    return;
+                }
+                router.push("/pages/profile/resetpassword?token=" + encodeURIComponent(resetToken));
             }
         } catch {
             setError("Неверный код");
@@ -82,6 +91,9 @@ function ConfirmationForm() {
                 {codeSent && (
                     <>
                         <span className={styles.Title}>Код отправлен на {email}</span>
+                        <span className={styles.Hint}>
+                            Если письмо не пришло — проверьте папку «Спам»
+                        </span>
                         <Input
                             type="text"
                             placeholder="Код подтверждения"
@@ -92,6 +104,15 @@ function ConfirmationForm() {
                         <Button variant="Dark" type="button" onClick={handleVerify}>
                             Проверить
                         </Button>
+                        {countdown > 0 ? (
+                            <span className={styles.Hint}>
+                                Отправить повторно через {countdown} сек
+                            </span>
+                        ) : (
+                            <span className={styles.Link} onClick={handleSendCode}>
+                                Отправить повторно
+                            </span>
+                        )}
                     </>
                 )}
             </form>

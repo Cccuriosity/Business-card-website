@@ -12,10 +12,10 @@ export default function MiniReview({ review }: ReviewProps) {
             <div className={styles.User}>
                 <div className={styles.Avatar}>
                     <Image
-                        src={review.avatarUrl ?? "/default-avatar.png"}
+                        src={review.avatarUrl ?? "/ProfileWhite.png"}
                         alt="Аватар"
-                        width={30}
-                        height={30}
+                        fill
+                        style={{ objectFit: "cover" }}
                     />
                 </div>
                 <span>

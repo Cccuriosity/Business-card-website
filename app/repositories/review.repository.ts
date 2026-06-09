@@ -2,6 +2,7 @@ import { ReviewDTO } from "@/app/dto/review.dto";
 import { mapReviewToDomain } from "@/app/dao/review.dao";
 import { getAuthHeaders } from "@/app/utils/auth";
 import { Review } from "@/app/types/review";
+import { fetchWithAuth } from "@/app/utils/fetchWithAuth";
 
 const USE_MOCK = false;
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
@@ -57,7 +58,7 @@ export const ReviewRepository = {
     async createReview(data: { lot_id?: number; rating: number; comment: string }): Promise<void> {
         if (USE_MOCK) return;
 
-        const res = await fetch(`${API_BASE}/reviews`, {
+        const res = await fetchWithAuth(`${API_BASE}/reviews`, {
             method: "POST",
             headers: { "Content-Type": "application/json", ...getAuthHeaders() },
             body: JSON.stringify(data),

@@ -1,4 +1,5 @@
 import { getAuthHeaders } from "@/app/utils/auth";
+import { fetchWithAuth } from "@/app/utils/fetchWithAuth";
 import { ProfileDTO, UserListItemDTO } from "@/app/dto/user.dto";
 import { Car } from "@/app/types/car";
 import { User, UserListItem } from "@/app/types/user";
@@ -9,7 +10,7 @@ const USE_MOCK = false;
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 async function apiRequest<T = void>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const res = await fetch(`${API_BASE}${endpoint}`, {
+    const res = await fetchWithAuth(`${API_BASE}${endpoint}`, {
         ...options,
         headers: { "Content-Type": "application/json", ...getAuthHeaders(), ...options.headers },
     });
@@ -133,7 +134,7 @@ export const AdminRepository = {
         const formData = carToFormData(data);
         imageFiles.forEach((file) => formData.append("images[]", file));
 
-        const res = await fetch(`${API_BASE}/catalog`, {
+        const res = await fetchWithAuth(`${API_BASE}/catalog`, {
             method: "POST",
             headers: getAuthHeaders(),
             body: formData,
@@ -152,10 +153,9 @@ export const AdminRepository = {
         if (deletedImages && deletedImages.length > 0) {
             formData.append("deletedImages", deletedImages.join(","));
         }
-
         newImageFiles.forEach((file) => formData.append("newImages[]", file));
 
-        const res = await fetch(`${API_BASE}/catalog/${id}`, {
+        const res = await fetchWithAuth(`${API_BASE}/catalog/${id}`, {
             method: "POST",
             headers: getAuthHeaders(),
             body: formData,

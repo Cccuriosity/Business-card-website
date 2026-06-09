@@ -4,8 +4,14 @@
     height: calc(100vh);
     display: flex;
     flex-direction: column;
+    gap: 1rem;
     justify-content: center;
     box-sizing: border-box;
+}
+
+.AdminUserPage > button:first-of-type {
+    align-self: flex-start;
+    width: fit-content;
 }
 
 @media (max-width: 768px) {

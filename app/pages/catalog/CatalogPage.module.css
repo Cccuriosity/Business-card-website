@@ -54,9 +54,10 @@
 }
 
 .Cars {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 2rem;
-    flex-wrap: wrap;
+    width: 100%;
 }
 
 .Divider {

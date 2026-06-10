@@ -7,20 +7,80 @@
     align-items: center;
     box-sizing: border-box;
 }
+
 .Menu {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
+
 .Menu Button {
     align-self: center;
 }
+
 .Title {
     font-size: var(--large-font-size);
     font-weight: var(--light);
     align-self: center;
 }
+
 .Row {
     display: flex;
     gap: 0.5rem;
+}
+
+.RowBottom {
+    align-items: flex-end;
+}
+
+.Error {
+    font-size: var(--big-font-size);
+    font-weight: var(--light);
+    align-self: center;
+}
+
+.Wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.Agreement {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.AgreementText {
+    font-size: var(--small-font-size);
+    font-weight: var(--light);
+}
+
+.Link {
+    color: var(--blue);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .SignUpPage {
+        padding: 5rem 1rem 1rem;
+        height: auto;
+        min-height: 100vh;
+        align-items: center;
+    }
+
+    .Menu {
+        width: 100%;
+    }
+
+    .Row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .Menu Button {
+        width: 100%;
+    }
 }

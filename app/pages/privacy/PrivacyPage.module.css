@@ -1,0 +1,26 @@
+.PrivacyPage {
+    padding: 6rem 4rem 4rem;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-weight: var(--light);
+}
+
+.Title {
+    font-size: var(--huge-font-size);
+    font-weight: var(--light);
+}
+
+.Subtitle {
+    font-size: var(--large-font-size);
+    font-weight: var(--light);
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .Page {
+        padding: 5rem 1rem 2rem;
+    }
+}

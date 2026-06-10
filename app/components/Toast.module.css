@@ -1,0 +1,22 @@
+.Toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    font-size: var(--medium-font-size);
+    font-weight: var(--light);
+    color: var(--black);
+    border: 1px solid var(--black);
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.Success {
+    background: var(--light-green);
+}
+
+.Error {
+    background: var(--light-red);
+}

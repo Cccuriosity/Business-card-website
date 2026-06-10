@@ -1,8 +1,11 @@
+import { LotShort } from "@/app/types/car";
+
 export interface Request {
-    callTime: string;
-    car: string;
+    id: number;
+    carName?: string;
+    lot?: LotShort;
+    callTime?: string;
     comment?: string;
-    date: string;
-    status: string;
-    isAdmin?: boolean;
+    isSolved: boolean;
+    createdAt: string;
 }

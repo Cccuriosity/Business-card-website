@@ -1,15 +1,24 @@
-import styles from "./Input.module.css"
+import styles from "./Input.module.css";
 
 interface InputProps {
-    type: string
-    placeholder?: string
-    value?: string | number
+    type: string;
+    placeholder?: string;
+    value?: string | number;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    name?: string
+    name?: string;
+    readOnly?: boolean;
 }
 
-export default function Input ({type, placeholder, name, value, onChange}: InputProps) {
+export default function Input({ type, placeholder, name, value, onChange, readOnly }: InputProps) {
     return (
-        <input className={styles.Input} type={type} name={name} placeholder={placeholder} value={value} onChange={onChange}/>
-    )
+        <input
+            className={styles.Input}
+            type={type}
+            name={name}
+            placeholder={placeholder}
+            value={value ?? ""}
+            onChange={onChange}
+            readOnly={readOnly}
+        />
+    );
 }

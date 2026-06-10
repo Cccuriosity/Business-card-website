@@ -9,6 +9,7 @@
     margin: 32px;
     border-radius: var(--border-radius);
 }
+
 .Title {
     position: absolute;
     top: -24px;
@@ -19,6 +20,7 @@
     color: var(--white);
     border-radius: var(--border-radius) var(--border-radius) var(--border-radius) 0;
 }
+
 .Form {
     width: 100%;
     display: flex;
@@ -27,6 +29,7 @@
     padding: 24px;
     justify-content: center;
 }
+
 .Content {
     width: 40%;
     font-size: var(--big-font-size);
@@ -35,6 +38,7 @@
     justify-content: center;
     gap: 16px;
 }
+
 .Warning {
     width: 100%;
     font-size: var(--large-font-size);
@@ -42,4 +46,40 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+.Link {
+    color: var(--blue);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.Hint {
+    font-size: var(--big-font-size);
+    font-weight: var(--light);
+}
+
+@media (max-width: 768px) {
+    .Container {
+        flex-direction: column;
+        margin: 16px;
+        gap: 16px;
+        padding-top: 80px;
+    }
+
+    .Content {
+        width: 100%;
+        font-size: var(--medium-font-size);
+    }
+
+    .Form {
+        padding: 0;
+    }
+
+    .Warning {
+        font-size: var(--big-font-size);
+    }
+    .Hint {
+        font-size: var(--medium-font-size);
+    }
 }

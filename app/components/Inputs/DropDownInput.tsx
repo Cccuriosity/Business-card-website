@@ -1,46 +1,52 @@
-'use client'
+"use client";
 
-import { useState, useRef, useEffect } from 'react'
-import styles from './DropDownInput.module.css'
-import Image from 'next/image'
+import { useState, useRef, useEffect } from "react";
+import styles from "./DropDownInput.module.css";
+import Image from "next/image";
 
 type DropDownInputProps = {
-    options: string[]
-    value: string
-    onChange: (value: string) => void
-    placeholder?: string
-}
+    options: string[];
+    value: string;
+    onChange: (value: string) => void;
+    placeholder?: string;
+};
 
 export default function DropDownInput({
-                                          options,
-                                          value,
-                                          onChange,
-                                          placeholder
-                                      }: DropDownInputProps) {
-    const [isOpen, setIsOpen] = useState(false)
-    const [search, setSearch] = useState(value)
-    const ref = useRef<HTMLDivElement>(null)
+    options,
+    value,
+    onChange,
+    placeholder,
+}: DropDownInputProps) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [search, setSearch] = useState(value);
+    const [isTyping, setIsTyping] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (!ref.current?.contains(e.target as Node)) {
-                setIsOpen(false)
+                setIsOpen(false);
+                setIsTyping(false);
             }
-        }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [])
+    useEffect(() => {
+        setSearch(value);
+    }, [value]);
 
-    const filtered = options.filter(opt =>
-        opt.toLowerCase().includes(search.toLowerCase())
-    )
+    const filtered = isTyping
+        ? options.filter((opt) => opt.toLowerCase().includes(search.toLowerCase()))
+        : options;
 
     const handleSelect = (opt: string) => {
-        setSearch(opt)
-        onChange(opt)
-        setIsOpen(false)
-    }
+        setSearch(opt);
+        setIsTyping(false);
+        onChange(opt);
+        setIsOpen(false);
+    };
 
     return (
         <div className={styles.Container} ref={ref}>
@@ -48,16 +54,28 @@ export default function DropDownInput({
                 <input
                     className={styles.Input}
                     value={search}
-                    onChange={e => {
-                        setSearch(e.target.value)
-                        setIsOpen(true)
+                    onChange={(e) => {
+                        const next = e.target.value;
+                        setSearch(next);
+                        setIsTyping(true);
+                        setIsOpen(true);
+
+                        if (next === "") {
+                            onChange("");
+                        }
                     }}
                     placeholder={placeholder}
                 />
                 <div
                     className={styles.Arrow}
-                    style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}
-                    onClick={() => setIsOpen(prev => !prev)}
+                    style={{
+                        transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                        transition: "transform 0.3s",
+                    }}
+                    onClick={() => {
+                        setIsOpen((prev) => !prev);
+                        setIsTyping(false);
+                    }}
                 >
                     <Image src="/DropDown.png" alt="dropdown" width={20} height={20} />
                 </div>
@@ -66,10 +84,10 @@ export default function DropDownInput({
             {isOpen && (
                 <div className={styles.List}>
                     {filtered.length ? (
-                        filtered.map(opt => (
+                        filtered.map((opt) => (
                             <div
                                 key={opt}
-                                className={`${styles.Item} ${search && opt.toLowerCase() === search.toLowerCase() ? styles.Active : ''}`}
+                                className={`${styles.Item} ${opt === value ? styles.Active : ""}`}
                                 onClick={() => handleSelect(opt)}
                             >
                                 {opt}
@@ -81,5 +99,5 @@ export default function DropDownInput({
                 </div>
             )}
         </div>
-    )
+    );
 }

@@ -1,0 +1,40 @@
+.PreviewPage {
+    padding: 6rem 2rem 2rem;
+    width: 100%;
+    height: calc(100vh);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.OrderButton {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem 2rem 2rem;
+}
+
+.Review {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.Title {
+    font-size: var(--large-font-size);
+    font-weight: var(--light);
+}
+
+@media (max-width: 768px) {
+    .PreviewPage {
+        padding: 5rem 1rem 1rem;
+        height: auto;
+    }
+    .OrderButton {
+        justify-content: flex-start;
+        padding: 1rem 0;
+    }
+}

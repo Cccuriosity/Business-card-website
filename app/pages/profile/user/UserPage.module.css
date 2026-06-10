@@ -6,3 +6,10 @@
     justify-content: center;
     box-sizing: border-box;
 }
+
+@media (max-width: 768px) {
+    .UserPage {
+        padding: 5rem 1rem 1rem;
+        height: auto;
+    }
+}

@@ -9,14 +9,21 @@
     color: var(--black);
     resize: none;
 }
+
+.Input:read-only {
+    cursor: default;
+}
+
 .Input::placeholder {
     color: var(--dark-gray);
     font-weight: var(--thin);
 }
+
 .SearchBar {
     display: flex;
     height: 3rem;
 }
+
 .SearchButton {
     outline: none;
     border: none;
@@ -29,7 +36,16 @@
     align-items: center;
     justify-content: center;
 }
+
 .SearchBar Input {
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
+}
+
+@media (max-width: 768px) {
+    .Input {
+        font-size: var(--big-font-size);
+        width: 100%;
+        box-sizing: border-box;
+    }
 }

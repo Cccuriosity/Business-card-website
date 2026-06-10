@@ -5,16 +5,40 @@
     font-weight: var(--light);
     gap: 1rem;
 }
+
 .Star {
     border: none;
     background: none;
     padding: 0;
 }
+
 .Stars {
     display: flex;
     gap: 0.5rem;
 }
+
 .ReviewForm > button:last-child {
     align-self: flex-start;
     width: auto;
+}
+
+.LotSelect {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.Link {
+    color: var(--blue);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .ReviewForm {
+        font-size: var(--big-font-size);
+    }
+
+    .ReviewForm > button:last-child {
+        width: 100%;
+    }
 }

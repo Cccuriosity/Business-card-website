@@ -5,10 +5,13 @@
     justify-content: space-between;
     position: fixed;
     height: 4rem;
+    z-index: 1;
 }
+
 .Buttons {
     display: flex;
 }
+
 .Title {
     font-size: var(--huge-font-size);
     color: var(--white);
@@ -16,4 +19,55 @@
     margin-bottom: auto;
     margin-top: auto;
     margin-left: 1rem;
+}
+
+.Burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 1rem;
+}
+
+.BurgerLine {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: var(--white);
+}
+
+.ProfileText {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .Burger {
+        display: flex;
+    }
+
+    .Buttons {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 4rem;
+        left: 0;
+        width: 100%;
+        background: var(--blue);
+        z-index: 1;
+    }
+
+    .ButtonsOpen {
+        display: flex;
+    }
+
+    .ProfileText {
+        display: block;
+    }
+
+    .ProfileIcon {
+        display: none;
+    }
 }

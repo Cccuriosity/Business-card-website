@@ -1,24 +1,29 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import styles from "./Input.module.css";
 import Image from "next/image";
 import Input from "@/app/components/Inputs/Input";
 
-export default function SearchBar() {
+interface SearchBarProps {
+    onSearch: (query: string) => void;
+}
+
+export default function SearchBar({ onSearch }: SearchBarProps) {
     const [searchText, setSearchText] = useState("");
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchText(e.target.value);
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onSearch(searchText.trim());
     };
 
     return (
-        <form className={styles.SearchBar}>
+        <form className={styles.SearchBar} onSubmit={handleSubmit}>
             <Input
                 type="text"
                 placeholder="Поиск автомобиля"
                 value={searchText}
-                onChange={handleChange}
+                onChange={(e) => setSearchText(e.target.value)}
             />
             <button type={"submit"} className={styles.SearchButton}>
                 <Image
@@ -29,5 +34,5 @@ export default function SearchBar() {
                 />
             </button>
         </form>
-    )
+    );
 }

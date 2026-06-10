@@ -3,31 +3,47 @@
     background: var(--white);
     border-radius: 10px;
     overflow: hidden;
+    width: 220px;
 }
+
 .CarPhotos {
-    display: flex;
     position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
 }
+
 .CarPhotos button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    z-index: 1;
 }
+
 .CarPhotos button:first-child {
     left: 8px;
 }
+
 .CarPhotos button:last-child {
     right: 8px;
 }
+
 .Description {
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding: 8px;
 }
+
 .Description span:first-child {
     font-size: var(--big-font-size);
 }
+
 .Description span:nth-child(2) {
     font-size: var(--medium-font-size);
+}
+
+@media (max-width: 768px) {
+    .CarCard {
+        width: calc(50% - 0.5rem);
+    }
 }

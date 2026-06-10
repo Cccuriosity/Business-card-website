@@ -7,7 +7,25 @@
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
+
 .Link {
     margin: 0;
     padding: 0;
+}
+
+.Icon {
+    width: 80px;
+    height: 80px;
+}
+
+@media (max-width: 768px) {
+    .Footer {
+        width: calc(100% + 2rem);
+        margin-left: -1rem;
+    }
+
+    .Icon {
+        width: 48px;
+        height: 48px;
+    }
 }

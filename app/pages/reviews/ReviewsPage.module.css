@@ -9,11 +9,19 @@
     flex-direction: column;
     gap: 1rem;
 }
+
 .ReviewsList::-webkit-scrollbar {
     display: none;
 }
+
 .ReviewsList {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .ReviewsPage {
+        padding: 5rem 1rem 1rem;
+    }
 }

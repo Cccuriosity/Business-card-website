@@ -27,6 +27,10 @@ export default function CarCard({ car }: CarCardProps) {
         setCurrentImage((prevImage) => (prevImage === 0 ? car.images.length - 1 : prevImage - 1));
     };
 
+    const formatPrice = (price: number) => {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽";
+    };
+
     return (
         <div className={styles.CarCard} onClick={() => router.push(`/pages/catalog/${car.id}`)}>
             <div className={styles.CarPhotos}>
@@ -43,7 +47,7 @@ export default function CarCard({ car }: CarCardProps) {
                 <span>
                     {car.manufacturer} {car.model}
                 </span>
-                <span>{car.price} ₽</span>
+                <span>{formatPrice(car.price)} ₽</span>
                 <span>
                     {car.year} г. {car.engineVolume} л.
                 </span>

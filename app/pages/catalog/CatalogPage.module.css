@@ -50,6 +50,9 @@
 .CarsCatalog {
     overflow-y: auto;
 }
+.CarsCatalog::-webkit-scrollbar {
+    display: none;
+}
 
 .Catalog {
     width: 100%;

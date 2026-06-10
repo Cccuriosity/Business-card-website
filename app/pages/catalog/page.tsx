@@ -240,13 +240,15 @@ export default function CatalogPage() {
                         />
                     </div>
                     {isAdmin && (
-                        <Button
-                            variant="Dark"
-                            onClick={() => router.push("/pages/admin/create")}
-                            type="button"
-                        >
-                            Добавить автомобиль
-                        </Button>
+                        <span className={styles.AdminActions}>
+                            <Button
+                                variant="Dark"
+                                onClick={() => router.push("/pages/admin/create")}
+                                type="button"
+                            >
+                                Добавить автомобиль
+                            </Button>
+                        </span>
                     )}
                 </div>
 

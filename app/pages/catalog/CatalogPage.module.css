@@ -78,6 +78,10 @@
     font-family: var(--font);
 }
 
+.AdminActions {
+    margin-top: 1rem;
+}
+
 @media (max-width: 768px) {
     .CatalogPage {
         flex-direction: column;

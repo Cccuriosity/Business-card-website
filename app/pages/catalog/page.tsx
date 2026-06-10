@@ -204,40 +204,41 @@ export default function CatalogPage() {
 
                 <div className={styles.Catalog}>
                     <SearchBar onSearch={setSearch} />
+                    <div className={styles.CarsCatalog}>
+                        {loading && (
+                            <div style={{ textAlign: "center", padding: "2rem" }}>Загрузка...</div>
+                        )}
 
-                    {loading && (
-                        <div style={{ textAlign: "center", padding: "2rem" }}>Загрузка...</div>
-                    )}
+                        {!loading && availableCars.length > 0 && (
+                            <>
+                                <div className={styles.SectionTitle}>В наличии:</div>
+                                <div className={styles.Divider}></div>
+                                <div className={styles.Cars}>
+                                    {availableCars.map((car) => (
+                                        <CarCard key={car.id} car={car} />
+                                    ))}
+                                </div>
+                            </>
+                        )}
 
-                    {!loading && availableCars.length > 0 && (
-                        <>
-                            <div className={styles.SectionTitle}>В наличии:</div>
-                            <div className={styles.Divider}></div>
-                            <div className={styles.Cars}>
-                                {availableCars.map((car) => (
-                                    <CarCard key={car.id} car={car} />
-                                ))}
+                        {!loading && soldCars.length > 0 && (
+                            <>
+                                <div className={styles.SectionTitle}>Проданные:</div>
+                                <div className={styles.Divider}></div>
+                                <div className={styles.Cars}>
+                                    {soldCars.map((car) => (
+                                        <CarCard key={car.id} car={car} />
+                                    ))}
+                                </div>
+                            </>
+                        )}
+
+                        {!loading && availableCars.length === 0 && soldCars.length === 0 && (
+                            <div style={{ textAlign: "center", padding: "2rem" }}>
+                                Автомобили не найдены
                             </div>
-                        </>
-                    )}
-
-                    {!loading && soldCars.length > 0 && (
-                        <>
-                            <div className={styles.SectionTitle}>Проданные:</div>
-                            <div className={styles.Divider}></div>
-                            <div className={styles.Cars}>
-                                {soldCars.map((car) => (
-                                    <CarCard key={car.id} car={car} />
-                                ))}
-                            </div>
-                        </>
-                    )}
-
-                    {!loading && availableCars.length === 0 && soldCars.length === 0 && (
-                        <div style={{ textAlign: "center", padding: "2rem" }}>
-                            Автомобили не найдены
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </div>
         </>

@@ -4,7 +4,7 @@
 import Header from "@/app/components/Header";
 import styles from "./CatalogPage.module.css";
 import DropDownInput from "@/app/components/Inputs/DropDownInput";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Input from "@/app/components/Inputs/Input";
 import SearchBar from "@/app/components/Inputs/SearchBar";
@@ -15,7 +15,6 @@ import { CarRepository } from "@/app/repositories/car.repository";
 import { FilterRepository } from "@/app/repositories/filter.repository";
 import { FilterOptions } from "@/app/types/filter";
 import Button from "@/app/components/Buttons/Button";
-import { useInfiniteScroll } from "@/app/hooks/useInfiniteScroll";
 
 export default function CatalogPage() {
     const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
@@ -34,12 +33,8 @@ export default function CatalogPage() {
     const [filtersOpen, setFiltersOpen] = useState(false);
     const [search, setSearch] = useState("");
     const [isAdmin, setIsAdmin] = useState(false);
-    const router = useRouter();
-    const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
-    const onLoadMore = useCallback(() => setPage((prev) => prev + 1), []);
-    const loaderRef = useInfiniteScroll(onLoadMore, hasMore, loading);
+    const router = useRouter();
 
     useEffect(() => {
         setIsAdmin(localStorage.getItem("isAdmin") === "true");
@@ -50,10 +45,6 @@ export default function CatalogPage() {
     }, []);
 
     useEffect(() => {
-        setCars([]);
-        setHasMore(true);
-
-        let cancelled = false;
         setLoading(true);
         CarRepository.getCars(
             {
@@ -70,21 +61,16 @@ export default function CatalogPage() {
                 mileageFrom: mileageFrom ? Number(mileageFrom) : undefined,
                 mileageTo: mileageTo ? Number(mileageTo) : undefined,
                 page: 1,
-                limit: 10,
+                limit: 1000, // Загружаем все сразу
             },
             filterOptions
         )
             .then((newCars) => {
-                if (cancelled) return;
-                if (newCars.length < 10) setHasMore(false);
                 setCars(newCars);
             })
             .finally(() => {
-                if (!cancelled) setLoading(false);
+                setLoading(false);
             });
-        return () => {
-            cancelled = true;
-        };
     }, [
         brand,
         model,
@@ -100,43 +86,6 @@ export default function CatalogPage() {
         search,
         filterOptions,
     ]);
-
-    useEffect(() => {
-        if (page === 1) return;
-
-        let cancelled = false;
-        setLoading(true);
-        CarRepository.getCars(
-            {
-                search,
-                brand: brand || undefined,
-                model: model || undefined,
-                year: year ? Number(year) : undefined,
-                color: color || undefined,
-                transmission: transmission || undefined,
-                engineVolume: engineVolume ? Number(engineVolume) : undefined,
-                driveType: driveType || undefined,
-                priceFrom: priceFrom ? Number(priceFrom) : undefined,
-                priceTo: priceTo ? Number(priceTo) : undefined,
-                mileageFrom: mileageFrom ? Number(mileageFrom) : undefined,
-                mileageTo: mileageTo ? Number(mileageTo) : undefined,
-                page,
-                limit: 10,
-            },
-            filterOptions
-        )
-            .then((newCars) => {
-                if (cancelled) return;
-                if (newCars.length < 10) setHasMore(false);
-                setCars((prev) => [...prev, ...newCars]);
-            })
-            .finally(() => {
-                if (!cancelled) setLoading(false);
-            });
-        return () => {
-            cancelled = true;
-        };
-    }, [page]);
 
     const availableCars = cars.filter((car) => !car.isSold);
     const soldCars = cars.filter((car) => car.isSold);
@@ -256,11 +205,14 @@ export default function CatalogPage() {
                 <div className={styles.Catalog}>
                     <SearchBar onSearch={setSearch} />
 
-                    {availableCars.length > 0 && (
+                    {loading && (
+                        <div style={{ textAlign: "center", padding: "2rem" }}>Загрузка...</div>
+                    )}
+
+                    {!loading && availableCars.length > 0 && (
                         <>
                             <div className={styles.SectionTitle}>В наличии:</div>
                             <div className={styles.Divider}></div>
-
                             <div className={styles.Cars}>
                                 {availableCars.map((car) => (
                                     <CarCard key={car.id} car={car} />
@@ -269,7 +221,7 @@ export default function CatalogPage() {
                         </>
                     )}
 
-                    {soldCars.length > 0 && (
+                    {!loading && soldCars.length > 0 && (
                         <>
                             <div className={styles.SectionTitle}>Проданные:</div>
                             <div className={styles.Divider}></div>
@@ -280,9 +232,11 @@ export default function CatalogPage() {
                             </div>
                         </>
                     )}
-                    <div ref={loaderRef} style={{ height: "20px" }} />
-                    {loading && (
-                        <div style={{ textAlign: "center", padding: "1rem" }}>Загрузка...</div>
+
+                    {!loading && availableCars.length === 0 && soldCars.length === 0 && (
+                        <div style={{ textAlign: "center", padding: "2rem" }}>
+                            Автомобили не найдены
+                        </div>
                     )}
                 </div>
             </div>

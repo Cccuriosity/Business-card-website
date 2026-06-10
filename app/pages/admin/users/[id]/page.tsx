@@ -7,8 +7,6 @@ import styles from "./AdminUserPage.module.css";
 import Profile from "@/app/components/Profile";
 import { AdminRepository } from "@/app/repositories/admin.repository";
 import { User } from "@/app/types/user";
-import { Car } from "@/app/types/car";
-import { CarRepository } from "@/app/repositories/car.repository";
 import { useToast } from "@/app/hooks/useToast";
 import Toast from "@/app/components/Toast";
 import BackButton from "@/app/components/Buttons/BackButton";
@@ -17,7 +15,7 @@ export default function AdminUserPage() {
     const { id } = useParams();
     const router = useRouter();
     const [user, setUser] = useState<User | null>(null);
-    const [cars, setCars] = useState<Car[]>([]);
+    const [availableLots, setAvailableLots] = useState<{ id: number; label: string }[]>([]);
     const { toast, showToast } = useToast();
 
     useEffect(() => {
@@ -27,17 +25,11 @@ export default function AdminUserPage() {
     }, [router]);
 
     useEffect(() => {
-        AdminRepository.getUserById(Number(id)).then(setUser);
+        AdminRepository.getUserById(Number(id)).then(({ user, availableLots }) => {
+            setUser(user);
+            setAvailableLots(availableLots);
+        });
     }, [id]);
-
-    useEffect(() => {
-        CarRepository.getCars({}).then(setCars);
-    }, []);
-
-    const availableLots = cars.map((car) => ({
-        id: car.id,
-        label: `${car.manufacturer} ${car.model} ${car.year}`,
-    }));
 
     const handleDeleteUser = async () => {
         if (!user) return;
@@ -55,8 +47,11 @@ export default function AdminUserPage() {
     ) => {
         try {
             await AdminRepository.updateRequest(requestId, data);
-            const updated = await AdminRepository.getUserById(Number(id));
+            const { user: updated, availableLots: updatedLots } = await AdminRepository.getUserById(
+                Number(id)
+            );
             setUser(updated);
+            setAvailableLots(updatedLots);
             showToast("Заявка обновлена");
         } catch {
             showToast("Ошибка при обновлении заявки", "error");

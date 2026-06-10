@@ -4,7 +4,7 @@ import { ProfileDTO, UserListItemDTO } from "@/app/dto/user.dto";
 import { Car } from "@/app/types/car";
 import { User, UserListItem } from "@/app/types/user";
 import { mapProfileToDomain, mapUserListItemToDomain } from "@/app/dao/user.dao";
-import { RequestDTO } from "@/app/dto/request.dto";
+import { LotShortDTO, RequestDTO } from "@/app/dto/request.dto";
 
 const USE_MOCK = false;
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
@@ -78,42 +78,39 @@ export const AdminRepository = {
         return data.map(mapUserListItemToDomain);
     },
 
-    async getUserById(id: number): Promise<User> {
+    async getUserById(
+        id: number
+    ): Promise<{ user: User; availableLots: { id: number; label: string }[] }> {
         if (USE_MOCK) {
             const mockUser = MOCK_USERS.find((u) => u.id === id);
             if (!mockUser) throw new Error(`Пользователь id=${id} не найден`);
             return {
-                id: mockUser.id,
-                firstName: mockUser.first_name,
-                lastName: mockUser.last_name,
-                phone: mockUser.phone_number,
-                email: "",
-                avatar: mockUser.avatar_url ?? "/ProfileWhite.png",
-                isAdmin: mockUser.is_admin,
-                requests: [
-                    {
-                        id: 1,
-                        carName: "BMW X5",
-                        callTime: "14:00",
-                        comment: "Хочу узнать подробнее",
-                        isSolved: false,
-                        createdAt: "2025-05-01",
-                    },
-                    {
-                        id: 2,
-                        carName: "Toyota Tundra",
-                        callTime: "10:00",
-                        comment: undefined,
-                        isSolved: true,
-                        createdAt: "2025-04-15",
-                    },
-                ],
+                user: {
+                    id: mockUser.id,
+                    firstName: mockUser.first_name,
+                    lastName: mockUser.last_name,
+                    phone: mockUser.phone_number,
+                    email: "",
+                    avatar: mockUser.avatar_url ?? "/ProfileWhite.png",
+                    isAdmin: mockUser.is_admin,
+                    requests: [],
+                },
+                availableLots: [],
             };
         }
-        const data = await apiRequest<{ user: ProfileDTO; requests: RequestDTO[] }>(
-            `/admin/users/${id}`
-        );
-        return mapProfileToDomain(data.user, data.requests);
+
+        const data = await apiRequest<{
+            user: ProfileDTO;
+            requests: RequestDTO[];
+            available_lots: LotShortDTO[];
+        }>(`/admin/users/${id}`);
+        return {
+            user: mapProfileToDomain(data.user, data.requests),
+            availableLots: data.available_lots.map((lot) => ({
+                id: lot.id,
+                label: `${lot.manufacturer} ${lot.model} ${lot.year}`,
+            })),
+        };
     },
 
     async updateRequest(

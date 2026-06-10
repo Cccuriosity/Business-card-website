@@ -49,8 +49,41 @@ export default function CatalogPage() {
     }, []);
 
     useEffect(() => {
-        setPage(1);
+        setCars([]);
         setHasMore(true);
+
+        let cancelled = false;
+        setLoading(true);
+        CarRepository.getCars(
+            {
+                search,
+                brand: brand || undefined,
+                model: model || undefined,
+                year: year ? Number(year) : undefined,
+                color: color || undefined,
+                transmission: transmission || undefined,
+                engineVolume: engineVolume ? Number(engineVolume) : undefined,
+                driveType: driveType || undefined,
+                priceFrom: priceFrom ? Number(priceFrom) : undefined,
+                priceTo: priceTo ? Number(priceTo) : undefined,
+                mileageFrom: mileageFrom ? Number(mileageFrom) : undefined,
+                mileageTo: mileageTo ? Number(mileageTo) : undefined,
+                page: 1,
+                limit: 10,
+            },
+            filterOptions
+        )
+            .then((newCars) => {
+                if (cancelled) return;
+                if (newCars.length < 10) setHasMore(false);
+                setCars(newCars);
+            })
+            .finally(() => {
+                if (!cancelled) setLoading(false);
+            });
+        return () => {
+            cancelled = true;
+        };
     }, [
         brand,
         model,
@@ -64,10 +97,12 @@ export default function CatalogPage() {
         mileageFrom,
         mileageTo,
         search,
+        filterOptions,
     ]);
 
     useEffect(() => {
-        if (!filterOptions) return;
+        if (page === 1) return;
+
         let cancelled = false;
         setLoading(true);
         CarRepository.getCars(
@@ -92,7 +127,7 @@ export default function CatalogPage() {
             .then((newCars) => {
                 if (cancelled) return;
                 if (newCars.length < 10) setHasMore(false);
-                setCars((prev) => (page === 1 ? newCars : [...prev, ...newCars]));
+                setCars((prev) => [...prev, ...newCars]);
             })
             .finally(() => {
                 if (!cancelled) setLoading(false);
@@ -100,22 +135,7 @@ export default function CatalogPage() {
         return () => {
             cancelled = true;
         };
-    }, [
-        page,
-        brand,
-        model,
-        year,
-        color,
-        transmission,
-        engineVolume,
-        driveType,
-        priceFrom,
-        priceTo,
-        mileageFrom,
-        mileageTo,
-        search,
-        filterOptions,
-    ]);
+    }, [page]);
 
     const availableCars = cars.filter((car) => !car.isSold);
     const soldCars = cars.filter((car) => car.isSold);

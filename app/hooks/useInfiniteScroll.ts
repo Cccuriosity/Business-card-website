@@ -5,12 +5,22 @@ export function useInfiniteScroll(onLoadMore: () => void, hasMore: boolean, load
 
     useEffect(() => {
         if (!loaderRef.current) return;
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && hasMore && !loading) onLoadMore();
-        });
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore && !loading) {
+                    onLoadMore();
+                }
+            },
+            {
+                rootMargin: "200px",
+                threshold: 0.1,
+            }
+        );
+
         observer.observe(loaderRef.current);
         return () => observer.disconnect();
-    }, [hasMore, loading]);
+    }, [onLoadMore, hasMore, loading]);
 
     return loaderRef;
 }

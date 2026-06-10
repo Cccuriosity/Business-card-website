@@ -4,7 +4,7 @@
 import Header from "@/app/components/Header";
 import styles from "./CatalogPage.module.css";
 import DropDownInput from "@/app/components/Inputs/DropDownInput";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Input from "@/app/components/Inputs/Input";
 import SearchBar from "@/app/components/Inputs/SearchBar";
@@ -38,7 +38,8 @@ export default function CatalogPage() {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
-    const loaderRef = useInfiniteScroll(() => setPage((prev) => prev + 1), hasMore, loading);
+    const onLoadMore = useCallback(() => setPage((prev) => prev + 1), []);
+    const loaderRef = useInfiniteScroll(onLoadMore, hasMore, loading);
 
     useEffect(() => {
         setIsAdmin(localStorage.getItem("isAdmin") === "true");

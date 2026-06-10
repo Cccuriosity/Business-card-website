@@ -24,6 +24,7 @@ export default function SignUpPage() {
         if (!/\S+@\S+\.\S+/.test(email)) return "Некорректная почта";
         if (!phone.trim()) return "Введите телефон";
         if (!password) return "Введите пароль";
+        if (password.length < 8) return "Минимум 8 символов";
         if (password !== confirmPassword) return "Пароли не совпадают";
         return "";
     };

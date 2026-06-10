@@ -41,8 +41,7 @@ export default function CarCard({ car }: CarCardProps) {
             </div>
             <div className={styles.Description}>
                 <span>
-                    {car.manufacturer}
-                    {car.model}
+                    {car.manufacturer} {car.model}
                 </span>
                 <span>{car.price} ₽</span>
                 <span>

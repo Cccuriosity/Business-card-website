@@ -8,6 +8,11 @@
     gap: 1rem;
 }
 
+.AdminUsersPage > button:first-of-type {
+    align-self: flex-start;
+    width: fit-content;
+}
+
 .Title {
     font-size: var(--huge-font-size);
     font-weight: var(--light);

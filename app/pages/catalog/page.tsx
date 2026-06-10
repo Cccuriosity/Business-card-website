@@ -279,7 +279,7 @@ export default function CatalogPage() {
                             </div>
                         </>
                     )}
-                    <div ref={loaderRef} style={{ height: "1px" }} />
+                    <div ref={loaderRef} style={{ height: "20px" }} />
                     {loading && (
                         <div style={{ textAlign: "center", padding: "1rem" }}>Загрузка...</div>
                     )}

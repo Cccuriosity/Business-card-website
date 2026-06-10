@@ -5,6 +5,7 @@
     display: flex;
     gap: 2rem;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .Title {
@@ -51,6 +52,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    overflow-y: auto;
 }
 
 .Cars {

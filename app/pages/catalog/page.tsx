@@ -61,7 +61,7 @@ export default function CatalogPage() {
                 mileageFrom: mileageFrom ? Number(mileageFrom) : undefined,
                 mileageTo: mileageTo ? Number(mileageTo) : undefined,
                 page: 1,
-                limit: 1000, // Загружаем все сразу
+                limit: 100,
             },
             filterOptions
         )

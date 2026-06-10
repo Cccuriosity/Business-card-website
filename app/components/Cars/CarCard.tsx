@@ -6,7 +6,6 @@ import { Car } from "@/app/types/car";
 import Image from "next/image";
 import ScrollButton from "@/app/components/Buttons/ScrollButton";
 import styles from "./CarCard.module.css";
-import { images } from "next/dist/build/webpack/config/blocks/images";
 
 interface CarCardProps {
     car: Car;
@@ -35,14 +34,14 @@ export default function CarCard({ car }: CarCardProps) {
     return (
         <div className={styles.CarCard} onClick={() => router.push(`/pages/catalog/${car.id}`)}>
             <div className={styles.CarPhotos}>
-                {images.length > 1 && <ScrollButton direction="left" onClick={prevImage} />}
+                {car.images.length > 1 && <ScrollButton direction="left" onClick={prevImage} />}
                 <Image
                     src={car.images[currentImage]}
                     alt={`${car.manufacturer} ${car.model}`}
                     fill
                     style={{ objectFit: "cover" }}
                 />
-                {images.length > 1 && <ScrollButton direction="right" onClick={nextImage} />}
+                {car.images.length > 1 && <ScrollButton direction="right" onClick={nextImage} />}
             </div>
             <div className={styles.Description}>
                 <span>

@@ -56,7 +56,7 @@
 .Cars {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 220px));
-    gap: 1rem;
+    gap: 0.9rem;
     width: 100%;
 }
 

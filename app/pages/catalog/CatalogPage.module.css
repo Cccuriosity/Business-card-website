@@ -1,11 +1,16 @@
 .CatalogPage {
     padding: 6rem 2rem 2rem;
     width: 100%;
-    height: calc(100vh);
+    height: 100vh;
     display: flex;
     gap: 2rem;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.CatalogPage::-webkit-scrollbar {
+    display: none;
 }
 
 .Title {
@@ -59,7 +64,6 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    overflow: hidden;
 }
 
 .Cars {

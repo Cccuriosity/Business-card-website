@@ -1,11 +1,10 @@
 .CatalogPage {
     padding: 6rem 2rem 2rem;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     gap: 2rem;
     box-sizing: border-box;
-    overflow: hidden;
 }
 
 .Catalog {
@@ -13,12 +12,9 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    overflow: hidden;
-    height: 100%;
 }
 
 .CarsCatalog {
-    overflow-y: auto;
     scrollbar-width: none;
     flex: 1;
 }
@@ -102,18 +98,7 @@
 @media (max-width: 768px) {
     .CatalogPage {
         flex-direction: column;
-        height: 100vh;
-        overflow: hidden;
         padding: 5rem 1rem 2rem;
-    }
-
-    .Catalog {
-        height: 100%;
-        overflow: hidden;
-    }
-
-    .CarsCatalog {
-        overflow-y: auto;
     }
 
     .FiltersToggle {

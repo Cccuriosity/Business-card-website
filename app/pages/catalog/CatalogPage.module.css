@@ -103,6 +103,14 @@
         padding: 5rem 1rem 2rem;
     }
 
+    .Catalog {
+        overflow: visible;
+    }
+
+    .CarsCatalog {
+        overflow: visible;
+    }
+
     .FiltersToggle {
         display: block;
     }

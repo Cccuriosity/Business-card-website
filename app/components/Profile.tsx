@@ -65,6 +65,14 @@ export default function Profile({
     };
 
     const handleSave = () => {
+        if (!formData.lastName.trim()) {
+            setError("Введите фамилию");
+            return;
+        }
+        if (!formData.firstName.trim()) {
+            setError("Введите имя");
+            return;
+        }
         if (!formData.email.trim()) {
             setError("Введите почту");
             return;

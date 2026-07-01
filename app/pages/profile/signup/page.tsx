@@ -69,20 +69,20 @@ export default function SignUpPage() {
                         </div>
                         <div className={styles.Wrapper}>
                             <Input
-                                type="email"
-                                placeholder="Почта"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                type="text"
+                                placeholder="Имя"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
                             />
                         </div>
                     </div>
                     <div className={styles.Row}>
                         <div className={styles.Wrapper}>
                             <Input
-                                type="text"
-                                placeholder="Имя"
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
+                                type="email"
+                                placeholder="Почта"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
                         <div className={styles.Wrapper}>

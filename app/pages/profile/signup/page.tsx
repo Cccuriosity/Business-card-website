@@ -21,6 +21,8 @@ export default function SignUpPage() {
         if (!lastName.trim()) return "Введите фамилию";
         if (!firstName.trim()) return "Введите имя";
         if (!email.trim()) return "Введите почту";
+        if (!/^\+?[0-9]{10,15}$/.test(phone.replace(/[\s\-()]/g, "")))
+            return "Некорректный номер телефона";
         if (!/\S+@\S+\.\S+/.test(email)) return "Некорректная почта";
         if (!phone.trim()) return "Введите телефон";
         if (!password) return "Введите пароль";

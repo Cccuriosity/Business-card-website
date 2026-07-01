@@ -44,6 +44,7 @@ export default function Profile({
     const [isEditing, setIsEditing] = useState(false);
     const [avatarPreview, setAvatarPreview] = useState<string>(user.avatar);
     const [avatarFile, setAvatarFile] = useState<File | undefined>();
+    const [error, setError] = useState("");
     const [formData, setFormData] = useState({
         firstName: user.firstName,
         lastName: user.lastName,
@@ -64,6 +65,23 @@ export default function Profile({
     };
 
     const handleSave = () => {
+        if (!formData.email.trim()) {
+            setError("Введите почту");
+            return;
+        }
+        if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            setError("Некорректная почта");
+            return;
+        }
+        if (!formData.phone.trim()) {
+            setError("Введите телефон");
+            return;
+        }
+        if (!/^\+?[0-9]{10,15}$/.test(formData.phone.replace(/[\s\-()]/g, ""))) {
+            setError("Некорректный номер телефона");
+            return;
+        }
+        setError("");
         try {
             onSave?.(formData, avatarFile);
             setIsEditing(false);
@@ -121,7 +139,7 @@ export default function Profile({
                         </span>
                     </div>
                 </div>
-
+                {error && <span className={styles.Error}>{error}</span>}
                 <Button variant={"Dark"} onClick={handleSave}>
                     Сохранить изменения
                 </Button>

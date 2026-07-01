@@ -87,6 +87,12 @@
     text-decoration: underline;
 }
 
+.Error {
+    font-size: var(--big-font-size);
+    font-weight: var(--light);
+    align-self: center;
+}
+
 @media (max-width: 768px) {
     .Profile {
         flex-direction: column;

@@ -68,7 +68,12 @@ export default function DictionariesPage() {
             case "manufacturers":
                 return filterOptions.brands.map((b) => ({ id: b.id, label: b.name }));
             case "car_models":
-                return filterOptions.models.map((m) => ({ id: m.id, label: m.name }));
+                const selectedBrand = filterOptions.brands.find(
+                    (b) => b.name === selectedManufacturer
+                );
+                return filterOptions.models
+                    .filter((m) => (selectedBrand ? m.manufacturerId === selectedBrand.id : true))
+                    .map((m) => ({ id: m.id, label: m.name }));
             case "colors":
                 return filterOptions.colors.map((c) => ({ id: c.id, label: c.name }));
             case "engine_volumes":

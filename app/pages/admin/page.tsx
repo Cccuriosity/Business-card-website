@@ -34,6 +34,12 @@ export default function AdminPage() {
                     <Button variant="Dark" onClick={() => router.push("/pages/admin/users")}>
                         Пользователи
                     </Button>
+                    <Button
+                        variant="Light"
+                        onClick={() => router.push("/pages/admin/dictionaries")}
+                    >
+                        Справочники
+                    </Button>
                     <Button variant="Light" onClick={handleLogout}>
                         Выход
                     </Button>

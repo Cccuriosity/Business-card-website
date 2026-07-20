@@ -163,4 +163,24 @@ export const AdminRepository = {
     async deleteCar(id: number): Promise<void> {
         await apiRequest(`/catalog/${id}`, { method: "DELETE" });
     },
+
+    async addDictionaryItem(
+        type: "manufacturers" | "car_models" | "colors" | "engine_volumes",
+        value: string,
+        manufacturerId?: number
+    ): Promise<void> {
+        await apiRequest(`/admin/dictionaries/${type}`, {
+            method: "POST",
+            body: JSON.stringify({ value, manufacturer_id: manufacturerId ?? null }),
+        });
+    },
+
+    async deleteDictionaryItem(
+        type: "manufacturers" | "car_models" | "colors" | "engine_volumes",
+        id: number
+    ): Promise<void> {
+        await apiRequest(`/admin/dictionaries/${type}?id=${id}`, {
+            method: "DELETE",
+        });
+    },
 };

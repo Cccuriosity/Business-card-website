@@ -201,10 +201,6 @@ export default function Profile({
                         </Button>
                     </>
                 )}
-                {error && <span className={styles.Error}>{error}</span>}
-                <Button variant={"Dark"} onClick={handleSave}>
-                    Сохранить изменения
-                </Button>
             </div>
         );
     }

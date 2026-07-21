@@ -9,6 +9,7 @@ import styles from "./Profile.module.css";
 import Input from "@/app/components/Inputs/Input";
 import { useRouter } from "next/navigation";
 import { User } from "@/app/types/user";
+import { AuthRepository } from "@/app/repositories/auth.repository";
 
 interface ProfileProps {
     user: User;
@@ -51,6 +52,29 @@ export default function Profile({
         email: user.email,
         phone: user.phone,
     });
+    const [verifyStep, setVerifyStep] = useState(false);
+    const [verifyCode, setVerifyCode] = useState("");
+    const [pendingData, setPendingData] = useState<{
+        data: Partial<User>;
+        avatarFile?: File;
+    } | null>(null);
+
+    const handleVerifyCode = async () => {
+        if (!verifyCode.trim()) {
+            setError("Введите код");
+            return;
+        }
+        try {
+            await AuthRepository.verify({ email: formData.email, code: verifyCode });
+            if (pendingData) {
+                onSave?.(pendingData.data, pendingData.avatarFile);
+            }
+            setVerifyStep(false);
+            setIsEditing(false);
+        } catch {
+            setError("Неверный код");
+        }
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -64,7 +88,7 @@ export default function Profile({
         }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!formData.lastName.trim()) {
             setError("Введите фамилию");
             return;
@@ -90,12 +114,20 @@ export default function Profile({
             return;
         }
         setError("");
-        try {
-            onSave?.(formData, avatarFile);
-            setIsEditing(false);
-        } catch (error) {
-            console.log(error);
+
+        if (formData.email !== user.email) {
+            try {
+                await AuthRepository.forgotPasswordRequest({ email: formData.email });
+                setPendingData({ data: formData, avatarFile });
+                setVerifyStep(true);
+            } catch {
+                setError("Ошибка отправки кода на почту");
+            }
+            return;
         }
+
+        onSave?.(formData, avatarFile);
+        setIsEditing(false);
     };
 
     const handleDownloadClick = () => fileInputRef.current?.click();
@@ -147,6 +179,28 @@ export default function Profile({
                         </span>
                     </div>
                 </div>
+                {verifyStep ? (
+                    <>
+                        <span className={styles.Label}>Код отправлен на {formData.email}</span>
+                        <Input
+                            type="text"
+                            placeholder="Код подтверждения"
+                            value={verifyCode}
+                            onChange={(e) => setVerifyCode(e.target.value)}
+                        />
+                        {error && <span className={styles.Error}>{error}</span>}
+                        <Button variant="Dark" onClick={handleVerifyCode}>
+                            Подтвердить
+                        </Button>
+                    </>
+                ) : (
+                    <>
+                        {error && <span className={styles.Error}>{error}</span>}
+                        <Button variant="Dark" onClick={handleSave}>
+                            Сохранить изменения
+                        </Button>
+                    </>
+                )}
                 {error && <span className={styles.Error}>{error}</span>}
                 <Button variant={"Dark"} onClick={handleSave}>
                     Сохранить изменения
